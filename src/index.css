@@ -1,0 +1,9 @@
+/**
+ * Index CSS
+ * Import styles in correct order
+ */
+
+@import './styles/global.css';
+@import './styles/theme.css';
+@import './styles/layout.css';
+@import './styles/animations.css';

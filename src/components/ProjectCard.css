@@ -1,0 +1,75 @@
+/**
+ * ProjectCard Styles
+ * Browser window styled project cards
+ */
+
+.project-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--color-surface);
+}
+
+.project-card__body {
+  padding: var(--space-lg);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.project-card__title {
+  font-size: var(--text-xl);
+  font-weight: 600;
+  margin-bottom: var(--space-sm);
+  color: var(--color-text);
+}
+
+.project-card__description {
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  line-height: 1.7;
+  margin-bottom: var(--space-lg);
+  flex: 1;
+}
+
+/* Tech Stack Tags */
+.project-card__tech {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
+  margin-bottom: var(--space-lg);
+}
+
+.project-card__tag {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  padding: var(--space-xs) var(--space-sm);
+  background: var(--color-bg-alt);
+  border: var(--border-light);
+  color: var(--color-text-secondary);
+}
+
+/* Action */
+.project-card__action {
+  margin-top: auto;
+  padding-top: var(--space-md);
+  border-top: var(--border-light);
+}
+
+.project-card__action .btn-link {
+  color: var(--color-text);
+  font-weight: 500;
+}
+
+.project-card__action .btn-link:hover span {
+  display: inline-block;
+  transform: translateX(4px);
+  transition: transform var(--transition-fast);
+}
+
+.project-card__coming-soon {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}

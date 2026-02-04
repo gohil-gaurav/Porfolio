@@ -1,0 +1,193 @@
+/**
+ * Theme CSS
+ * Light and dark mode color schemes
+ */
+
+/* ==================== Light Theme (Default) ==================== */
+:root,
+[data-theme="light"] {
+  --color-bg: #f7f7f7;
+  --color-bg-alt: #efefef;
+  --color-surface: #ffffff;
+  --color-text: #1a1a1a;
+  --color-text-secondary: #555555;
+  --color-text-muted: #888888;
+  --color-border: #1a1a1a;
+  --color-border-light: #d0d0d0;
+  --color-accent: #000000;
+  --color-hover-bg: #f0f0f0;
+  --color-shadow: rgba(0, 0, 0, 0.08);
+  --color-shadow-hover: rgba(0, 0, 0, 0.15);
+  --color-highlight: #e8e8e8;
+}
+
+/* ==================== Dark Theme ==================== */
+/*
+ * Pure Black Premium Dark Theme
+ * 
+ * Design Philosophy:
+ * - Pure black (#000) background for OLED-friendly, deep look
+ * - Off-white text (#e6e6e6) to avoid harsh contrast
+ * - Borders are near-invisible (#1a1a1a) for subtle separation
+ * - Cards barely lift from background for cohesive feel
+ * - No white borders ever - everything stays soft gray
+ * 
+ * Contrast maintained for readability without eye strain
+ */
+[data-theme="dark"] {
+  /* Backgrounds - pure black base */
+  --color-bg: #000000;
+  --color-bg-alt: #080808;
+  --color-surface: #0c0c0c;
+  
+  /* Text hierarchy - off-white, never pure white */
+  --color-text: #e6e6e6;
+  --color-text-secondary: #9a9a9a;
+  --color-text-muted: #6f6f6f;
+  
+  /* Borders - barely visible, soft gray */
+  --color-border: #1f1f1f;
+  --color-border-light: #171717;
+  
+  /* Accents & interactions */
+  --color-accent: #d0d0d0;
+  --color-hover-bg: #121212;
+  
+  /* Shadows - subtle depth */
+  --color-shadow: rgba(0, 0, 0, 0.5);
+  --color-shadow-hover: rgba(0, 0, 0, 0.7);
+  
+  /* Highlights for selections */
+  --color-highlight: #1a1a1a;
+}
+
+/* ==================== Theme Transition ==================== */
+body,
+.navbar,
+.card,
+.btn,
+.quicklinks__item,
+.skill-card,
+.project-card,
+.blog-card,
+.footer {
+  transition: 
+    background-color 0.3s ease,
+    color 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+/* ==================== Reduced Motion ==================== */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ==================== Dark Theme Refinements ==================== */
+/*
+ * Component overrides for pure black premium feel
+ * - Cards blend into background with subtle borders
+ * - Hover states increase brightness slightly, not dramatically
+ * - Badges are muted gray-on-gray
+ */
+
+/* Skill cards - blend with background */
+[data-theme="dark"] .skill-card {
+  background: var(--color-surface);
+  border-color: var(--color-border);
+}
+
+[data-theme="dark"] .skill-card:hover {
+  border-color: #2a2a2a;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6);
+  background: #101010;
+}
+
+/* Proficiency badges - muted gray-on-gray */
+[data-theme="dark"] .level--proficient {
+  background: #1f1f1f;
+  color: #b0b0b0;
+  border-color: #2a2a2a;
+}
+
+[data-theme="dark"] .level--intermediate {
+  color: #9a9a9a;
+  border-color: #1f1f1f;
+}
+
+[data-theme="dark"] .level--learning {
+  color: #6f6f6f;
+  border-color: #1f1f1f;
+}
+
+/* Cards - subtle lift on hover */
+[data-theme="dark"] .card:hover,
+[data-theme="dark"] .project-card:hover,
+[data-theme="dark"] .blog-card:hover {
+  border-color: #2a2a2a;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+  background: #101010;
+}
+
+/* Window headers - barely elevated */
+[data-theme="dark"] .window-header {
+  background: #080808;
+  border-color: var(--color-border);
+}
+
+[data-theme="dark"] .window-dot {
+  border-color: #2a2a2a;
+  background: #000000;
+}
+
+/* Buttons - softer contrast */
+[data-theme="dark"] .btn-primary {
+  background: #e6e6e6;
+  color: #000000;
+}
+
+[data-theme="dark"] .btn-primary:hover {
+  background: #000000;
+  color: #e6e6e6;
+  border-color: #2a2a2a;
+}
+
+[data-theme="dark"] .btn-secondary:hover {
+  background: #1a1a1a;
+  color: #e6e6e6;
+}
+
+/* Filter buttons - muted active state */
+[data-theme="dark"] .filter-btn--active {
+  background: #1f1f1f;
+  color: #b0b0b0;
+  border-color: #2a2a2a;
+}
+
+[data-theme="dark"] .filter-btn:hover {
+  border-color: #2a2a2a;
+  color: #e6e6e6;
+}
+
+/* QuickLinks - gentle hover */
+[data-theme="dark"] .quicklinks__item {
+  background: var(--color-surface);
+  border-color: var(--color-border);
+}
+
+[data-theme="dark"] .quicklinks__item:hover {
+  border-color: #2a2a2a;
+  background: #101010;
+}
+
+/* Selection - subtle highlight */
+[data-theme="dark"] ::selection {
+  background: #2a2a2a;
+  color: #e6e6e6;
+}

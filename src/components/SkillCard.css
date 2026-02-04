@@ -1,0 +1,113 @@
+/**
+ * SkillCard Styles
+ */
+
+.skill-card {
+  border: 1px solid var(--color-border);
+  padding: 1.25rem;
+  background: var(--color-bg);
+  transition: var(--transition-base);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.skill-card:hover {
+  border-color: var(--color-text);
+  box-shadow: 4px 4px 0 var(--color-border-light);
+}
+
+.skill-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.skill-card__name {
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.skill-card__level {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 0.2rem 0.5rem;
+  border: 1px solid var(--color-border-light);
+}
+
+.level--proficient {
+  background: var(--color-text);
+  color: var(--color-bg);
+  border-color: var(--color-text);
+}
+
+.level--intermediate {
+  background: transparent;
+  color: var(--color-text);
+}
+
+.level--learning {
+  background: transparent;
+  color: var(--color-text-secondary);
+  border-style: dashed;
+}
+
+.skill-card__body {
+  flex: 1;
+}
+
+.skill-card__category {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.skill-card__description {
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+}
+
+.skill-card__terminal {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--color-text-secondary);
+  padding-top: 0.75rem;
+  border-top: 1px dashed var(--color-border-light);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  overflow: hidden;
+}
+
+.terminal-prompt {
+  color: var(--color-text);
+}
+
+.terminal-command {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.terminal-cursor {
+  animation: blink 1s infinite;
+}
+
+@media (max-width: 480px) {
+  .skill-card {
+    padding: 1rem;
+  }
+  
+  .skill-card__terminal {
+    display: none;
+  }
+}
