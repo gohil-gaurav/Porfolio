@@ -1,187 +1,485 @@
 /**
- * Navbar Styles
- * Minimal horizontal navigation
+ * Navbar Styles - Command Bar Design
+ * 
+ * Design Philosophy:
+ * - Floating glass morphism navbar centered on screen
+ * - Subtle frosted glass effect with backdrop-filter
+ * - Dark-mode focused with muted, professional colors
+ * - Command palette inspired (like Raycast, Linear, Vercel)
+ * 
+ * Scroll Transformation:
+ * - Initial: Full-width, spacious, welcoming
+ * - Scrolled: Compact pill, focused, minimal
+ * - Smooth 250ms transitions between states
  */
 
-.navbar {
+/* ==================== CSS Custom Properties for States ==================== */
+.cmdbar {
+  /* Initial (expanded) state values */
+  --cmdbar-padding-x: 24px;
+  --cmdbar-padding-y: 20px;
+  --cmdbar-max-width: 100%;
+  --cmdbar-inner-padding-x: 24px;
+  --cmdbar-inner-padding-y: 12px;
+  --cmdbar-border-radius: 0;
+  --cmdbar-bg-opacity: 0.6;
+}
+
+.cmdbar--compact {
+  /* Compact (scrolled) state values */
+  --cmdbar-padding-x: 24px;
+  --cmdbar-padding-y: 12px;
+  --cmdbar-max-width: 900px;
+  --cmdbar-inner-padding-x: 16px;
+  --cmdbar-inner-padding-y: 8px;
+  --cmdbar-border-radius: 16px;
+  --cmdbar-bg-opacity: 0.8;
+}
+
+/* ==================== Command Bar Container ==================== */
+.cmdbar {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
-  z-index: 100;
-  background: var(--color-bg);
-  border-bottom: var(--border);
+  z-index: 1000;
+  padding: var(--cmdbar-padding-y) var(--cmdbar-padding-x);
+  
+  /* Smooth transitions for scroll transformation */
+  transition: 
+    transform 0.3s ease,
+    opacity 0.3s ease,
+    padding 0.25s ease-out;
 }
 
-.navbar__inner {
+.cmdbar--hidden {
+  transform: translateY(-100%);
+  opacity: 0;
+}
+
+/* Respect reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .cmdbar,
+  .cmdbar__container,
+  .cmdbar__inner {
+    transition: none !important;
+  }
+}
+
+/* ==================== Floating Container ==================== */
+.cmdbar__container {
+  max-width: var(--cmdbar-max-width);
+  margin: 0 auto;
+  
+  /* Smooth width transition */
+  transition: max-width 0.25s ease-out;
+}
+
+.cmdbar__inner {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  height: 60px;
+  gap: 8px;
+  padding: var(--cmdbar-inner-padding-y) var(--cmdbar-inner-padding-x);
+  border-radius: var(--cmdbar-border-radius);
+  
+  /* Glass effect with dynamic opacity */
+  background: rgba(18, 18, 18, var(--cmdbar-bg-opacity));
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  
+  /* Subtle border */
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  
+  /* Soft shadow */
+  box-shadow: 
+    0 4px 24px rgba(0, 0, 0, 0.25),
+    0 1px 2px rgba(0, 0, 0, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.03);
+  
+  /* Smooth transitions for all properties */
+  transition: 
+    padding 0.25s ease-out,
+    border-radius 0.25s ease-out,
+    background 0.25s ease-out,
+    box-shadow 0.25s ease-out;
 }
 
-/* Logo */
-.navbar__logo {
+/* Enhanced shadow when compact (floating effect) */
+.cmdbar--compact .cmdbar__inner {
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.3),
+    0 2px 8px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+/* Fallback for browsers without backdrop-filter */
+@supports not (backdrop-filter: blur(16px)) {
+  .cmdbar__inner {
+    background: rgba(18, 18, 18, 0.95);
+  }
+}
+
+/* ==================== Left Section ==================== */
+.cmdbar__left {
   display: flex;
   align-items: center;
-  text-decoration: none;
+  gap: 12px;
 }
 
-.navbar__avatar {
-  height: 40px;
-  width: 40px;
+/* Avatar */
+.cmdbar__avatar-link {
+  display: flex;
+  flex-shrink: 0;
+}
+
+.cmdbar__avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
   object-fit: cover;
   object-position: top;
-  border-radius: 50%;
-  border: 1px solid var(--color-border-light);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   filter: grayscale(100%);
   opacity: 0.9;
-  transition: all var(--transition-base);
+  transition: all 0.2s ease;
 }
 
-.navbar__logo:hover .navbar__avatar {
+.cmdbar__avatar-link:hover .cmdbar__avatar {
   opacity: 1;
-  border-color: var(--color-text-muted);
+  border-color: rgba(255, 255, 255, 0.2);
 }
 
-/* Dark mode avatar adjustment */
-[data-theme="dark"] .navbar__avatar {
-  filter: grayscale(100%) brightness(0.9);
-  border-color: var(--color-border);
+/* Divider */
+.cmdbar__divider {
+  width: 1px;
+  height: 20px;
+  background: rgba(255, 255, 255, 0.1);
 }
 
-[data-theme="dark"] .navbar__logo:hover .navbar__avatar {
-  border-color: #2a2a2a;
-}
-
-/* Menu */
-.navbar__menu {
+/* Navigation */
+.cmdbar__nav {
   display: flex;
   align-items: center;
-  gap: var(--space-xl);
+  gap: 4px;
   list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
-.navbar__link {
+.cmdbar__nav-item {
+  margin: 0;
+}
+
+.cmdbar__nav-link {
+  display: block;
+  padding: 6px 12px;
   font-family: var(--font-mono);
-  font-size: var(--text-sm);
-  color: var(--color-text);
+  font-size: 13px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.6);
   text-decoration: none;
-  padding: var(--space-xs) 0;
-  position: relative;
+  border-radius: 8px;
+  transition: all 0.15s ease;
 }
 
-.navbar__link::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 0;
-  height: 1px;
-  background: var(--color-text);
-  transition: width var(--transition-base);
+.cmdbar__nav-link:hover {
+  color: rgba(255, 255, 255, 0.95);
+  background: rgba(255, 255, 255, 0.08);
 }
 
-.navbar__link:hover {
-  opacity: 1;
+/* ==================== Center Spacer ==================== */
+.cmdbar__spacer {
+  flex: 1;
+  min-width: 20px;
 }
 
-.navbar__link:hover::after {
-  width: 100%;
+/* ==================== Right Section ==================== */
+.cmdbar__right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
-/* Mobile Toggle */
-.navbar__toggle {
+/* Search Button */
+.cmdbar__search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.cmdbar__search:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.cmdbar__search-icon {
+  width: 14px;
+  height: 14px;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.cmdbar__search-kbd {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.cmdbar__search-kbd kbd {
+  display: inline-block;
+  padding: 2px 5px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 4px;
+  line-height: 1;
+}
+
+/* ==================== Mobile Toggle ==================== */
+.cmdbar__toggle {
   display: none;
   width: 32px;
   height: 32px;
-  background: none;
-  border: var(--border);
+  padding: 0;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
   cursor: pointer;
   position: relative;
+  transition: all 0.15s ease;
 }
 
-.navbar__toggle-line,
-.navbar__toggle-line::before,
-.navbar__toggle-line::after {
+.cmdbar__toggle:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.cmdbar__toggle-icon,
+.cmdbar__toggle-icon::before,
+.cmdbar__toggle-icon::after {
   position: absolute;
-  width: 16px;
-  height: 1px;
-  background: var(--color-text);
-  transition: all var(--transition-fast);
+  width: 14px;
+  height: 1.5px;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 1px;
+  transition: all 0.2s ease;
 }
 
-.navbar__toggle-line {
+.cmdbar__toggle-icon {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
 
-.navbar__toggle-line::before,
-.navbar__toggle-line::after {
+.cmdbar__toggle-icon::before,
+.cmdbar__toggle-icon::after {
   content: '';
   left: 0;
 }
 
-.navbar__toggle-line::before {
+.cmdbar__toggle-icon::before {
   top: -5px;
 }
 
-.navbar__toggle-line::after {
+.cmdbar__toggle-icon::after {
   top: 5px;
 }
 
 /* Toggle open state */
-.navbar__toggle-line.open {
+.cmdbar__toggle-icon.open {
   background: transparent;
 }
 
-.navbar__toggle-line.open::before {
+.cmdbar__toggle-icon.open::before {
   top: 0;
   transform: rotate(45deg);
 }
 
-.navbar__toggle-line.open::after {
+.cmdbar__toggle-icon.open::after {
   top: 0;
   transform: rotate(-45deg);
 }
 
-/* Mobile Responsive */
+/* ==================== Mobile Menu ==================== */
+.cmdbar__mobile-menu {
+  display: none;
+  margin-top: 8px;
+  padding: 12px 16px;
+  background: rgba(18, 18, 18, 0.95);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.cmdbar__mobile-nav {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.cmdbar__mobile-nav li {
+  margin: 0;
+}
+
+.cmdbar__mobile-link {
+  display: block;
+  padding: 12px 16px;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.7);
+  text-decoration: none;
+  border-radius: 8px;
+  transition: all 0.15s ease;
+}
+
+.cmdbar__mobile-link:hover {
+  color: rgba(255, 255, 255, 0.95);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* ==================== Light Mode Adjustments ==================== */
+[data-theme="light"] .cmdbar {
+  --cmdbar-bg-opacity: 0.75;
+}
+
+[data-theme="light"] .cmdbar--compact {
+  --cmdbar-bg-opacity: 0.9;
+}
+
+[data-theme="light"] .cmdbar__inner {
+  background: rgba(255, 255, 255, var(--cmdbar-bg-opacity));
+  border-color: rgba(0, 0, 0, 0.08);
+  box-shadow: 
+    0 4px 24px rgba(0, 0, 0, 0.06),
+    0 1px 2px rgba(0, 0, 0, 0.03),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+[data-theme="light"] .cmdbar--compact .cmdbar__inner {
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.1),
+    0 2px 8px rgba(0, 0, 0, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+[data-theme="light"] .cmdbar__avatar {
+  border-color: rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="light"] .cmdbar__avatar-link:hover .cmdbar__avatar {
+  border-color: rgba(0, 0, 0, 0.2);
+}
+
+[data-theme="light"] .cmdbar__divider {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="light"] .cmdbar__nav-link {
+  color: rgba(0, 0, 0, 0.55);
+}
+
+[data-theme="light"] .cmdbar__nav-link:hover {
+  color: rgba(0, 0, 0, 0.9);
+  background: rgba(0, 0, 0, 0.05);
+}
+
+[data-theme="light"] .cmdbar__search {
+  background: rgba(0, 0, 0, 0.04);
+  border-color: rgba(0, 0, 0, 0.08);
+}
+
+[data-theme="light"] .cmdbar__search:hover {
+  background: rgba(0, 0, 0, 0.08);
+  border-color: rgba(0, 0, 0, 0.12);
+}
+
+[data-theme="light"] .cmdbar__search-icon {
+  color: rgba(0, 0, 0, 0.45);
+}
+
+[data-theme="light"] .cmdbar__search-kbd kbd {
+  color: rgba(0, 0, 0, 0.4);
+  background: rgba(0, 0, 0, 0.04);
+  border-color: rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="light"] .cmdbar__toggle {
+  background: rgba(0, 0, 0, 0.04);
+  border-color: rgba(0, 0, 0, 0.08);
+}
+
+[data-theme="light"] .cmdbar__toggle:hover {
+  background: rgba(0, 0, 0, 0.08);
+}
+
+[data-theme="light"] .cmdbar__toggle-icon,
+[data-theme="light"] .cmdbar__toggle-icon::before,
+[data-theme="light"] .cmdbar__toggle-icon::after {
+  background: rgba(0, 0, 0, 0.7);
+}
+
+[data-theme="light"] .cmdbar__mobile-menu {
+  background: rgba(255, 255, 255, 0.95);
+  border-color: rgba(0, 0, 0, 0.08);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="light"] .cmdbar__mobile-link {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+[data-theme="light"] .cmdbar__mobile-link:hover {
+  color: rgba(0, 0, 0, 0.9);
+  background: rgba(0, 0, 0, 0.05);
+}
+
+/* ==================== Responsive ==================== */
 @media (max-width: 768px) {
-  .navbar__toggle {
+  .cmdbar {
+    padding: 12px 16px;
+  }
+  
+  .cmdbar__container {
+    max-width: 100%;
+  }
+
+  .cmdbar__nav {
+    display: none;
+  }
+
+  .cmdbar__divider {
+    display: none;
+  }
+
+  .cmdbar__search-kbd {
+    display: none;
+  }
+
+  .cmdbar__toggle {
     display: block;
   }
 
-  .navbar__menu {
-    position: fixed;
-    top: 60px;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: var(--color-bg);
-    flex-direction: column;
-    justify-content: center;
-    gap: var(--space-2xl);
-    opacity: 0;
-    visibility: hidden;
-    transition: all var(--transition-base);
-  }
-
-  .navbar__menu--open {
-    opacity: 1;
-    visibility: visible;
-  }
-
-  .navbar__link {
-    font-size: var(--text-xl);
-  }
-  
-  .navbar__item--theme {
-    margin-top: var(--space-lg);
+  .cmdbar__mobile-menu {
+    display: block;
   }
 }
 
-/* Theme toggle item */
-.navbar__item--theme {
-  margin-left: var(--space-md);
+@media (max-width: 480px) {
+  .cmdbar__inner {
+    padding: 6px 12px;
+  }
+
+  .cmdbar__search {
+    padding: 6px 8px;
+  }
 }
