@@ -7,10 +7,9 @@
 import { useState, useEffect, createContext } from 'react';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
-import QuickLinks from './components/QuickLinks';
-import Skills from './components/Skills';
 import Projects from './components/Projects';
 import Blog from './components/Blog';
+import About from './components/About';
 import Footer from './components/Footer';
 
 // Theme context for child components
@@ -44,10 +43,9 @@ function App() {
         {/* Main Content */}
         <main>
           <Hero />
-          <QuickLinks />
-          <Skills />
           <Projects />
           <Blog />
+          <About />
         </main>
         
         {/* Footer */}

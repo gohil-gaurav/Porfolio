@@ -30,8 +30,8 @@ const Projects = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
         >
-          <span className="section-label">[03] Work</span>
-          <h2 className="section-title">Projects</h2>
+          <span className="section-label">[Projects]</span>
+          <h2 className="section-title">My Work</h2>
           <p className="projects__subtitle">
             A selection of things I've built and experimented with.
           </p>

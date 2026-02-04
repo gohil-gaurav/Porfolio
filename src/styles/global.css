@@ -124,12 +124,18 @@ code, pre {
 
 .section-header {
   margin-bottom: var(--space-2xl);
+  text-align: left;
+}
+
+.section-label {
+  display: block;
+  margin-bottom: var(--space-sm);
 }
 
 .section-title {
   font-size: var(--text-3xl);
   font-weight: 700;
-  margin-bottom: var(--space-sm);
+  margin: 0 0 var(--space-md) 0;
   display: inline-block;
   border-bottom: 3px solid var(--color-text);
   padding-bottom: var(--space-xs);
