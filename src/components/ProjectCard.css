@@ -48,28 +48,106 @@
   color: var(--color-text-secondary);
 }
 
-/* Action */
-.project-card__action {
+/* Footer */
+.project-card__footer {
   margin-top: auto;
   padding-top: var(--space-md);
   border-top: var(--border-light);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
 }
 
-.project-card__action .btn-link {
+.project-card__footer .btn-link {
   color: var(--color-text);
   font-weight: 500;
+  font-size: var(--text-sm);
 }
 
-.project-card__action .btn-link:hover span {
+.project-card__footer .btn-link:hover span {
   display: inline-block;
   transform: translateX(4px);
   transition: transform var(--transition-fast);
 }
 
-.project-card__coming-soon {
+/* ==================== Status Badge System ==================== */
+
+/*
+ * Design Philosophy:
+ * - Color is reserved ONLY for status badges (semantic meaning)
+ * - Muted, desaturated tones maintain the minimalist aesthetic
+ * - Transparent backgrounds keep the black & white foundation
+ * - Subtle borders add definition without overwhelming
+ */
+
+.status-badge {
+  display: inline-block;
   font-family: var(--font-mono);
-  font-size: var(--text-xs);
-  color: var(--color-text-muted);
+  font-size: 0.65rem;
+  font-weight: 500;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.08em;
+  padding: 0.35em 0.75em;
+  border-radius: 3px;
+  transition: all var(--transition-fast);
+}
+
+/* Coming Soon - Muted Orange/Amber */
+.status-badge[data-status="pending"] {
+  color: #d29922;
+  border: 1px solid rgba(210, 153, 34, 0.4);
+  background: rgba(210, 153, 34, 0.08);
+}
+
+/* Building - Soft Red */
+.status-badge[data-status="progress"] {
+  color: #c24c4c;
+  border: 1px solid rgba(194, 76, 76, 0.4);
+  background: rgba(194, 76, 76, 0.08);
+}
+
+/* Live - Muted Green */
+.status-badge[data-status="success"] {
+  color: #3fb950;
+  border: 1px solid rgba(63, 185, 80, 0.4);
+  background: rgba(63, 185, 80, 0.08);
+}
+
+/* Hover: Badge brightens when card is hovered */
+.project-card:hover .status-badge[data-status="pending"] {
+  color: #e5ac30;
+  border-color: rgba(229, 172, 48, 0.6);
+  background: rgba(229, 172, 48, 0.12);
+}
+
+.project-card:hover .status-badge[data-status="progress"] {
+  color: #d65c5c;
+  border-color: rgba(214, 92, 92, 0.6);
+  background: rgba(214, 92, 92, 0.12);
+}
+
+.project-card:hover .status-badge[data-status="success"] {
+  color: #56d364;
+  border-color: rgba(86, 211, 100, 0.6);
+  background: rgba(86, 211, 100, 0.12);
+}
+
+/* Dark mode adjustments - softer colors */
+[data-theme="dark"] .status-badge[data-status="pending"] {
+  color: #d4a025;
+  border-color: rgba(212, 160, 37, 0.35);
+  background: rgba(212, 160, 37, 0.06);
+}
+
+[data-theme="dark"] .status-badge[data-status="progress"] {
+  color: #cf5858;
+  border-color: rgba(207, 88, 88, 0.35);
+  background: rgba(207, 88, 88, 0.06);
+}
+
+[data-theme="dark"] .status-badge[data-status="success"] {
+  color: #3fb950;
+  border-color: rgba(63, 185, 80, 0.35);
+  background: rgba(63, 185, 80, 0.06);
 }

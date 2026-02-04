@@ -6,10 +6,18 @@
 import { motion } from 'framer-motion';
 import './ProjectCard.css';
 
+// Status configuration - maps status to display text
+const STATUS_CONFIG = {
+  'coming-soon': { label: 'Coming Soon', type: 'pending' },
+  'building': { label: 'Building', type: 'progress' },
+  'live': { label: 'Live', type: 'success' }
+};
+
 const ProjectCard = ({ project, index }) => {
   const { filename, title, description, techStack, link, status } = project;
 
-  const isComingSoon = status === 'coming-soon';
+  const statusConfig = STATUS_CONFIG[status] || STATUS_CONFIG['coming-soon'];
+  const isClickable = status === 'live';
 
   const cardVariants = {
     hidden: { 
@@ -63,19 +71,24 @@ const ProjectCard = ({ project, index }) => {
           ))}
         </div>
 
-        {/* Action */}
-        <div className="project-card__action">
-          {isComingSoon ? (
-            <span className="project-card__coming-soon">
-              Coming Soon
-            </span>
-          ) : (
+        {/* Status Badge */}
+        <div className="project-card__footer">
+          <span 
+            className="status-badge" 
+            data-status={statusConfig.type}
+          >
+            {statusConfig.label}
+          </span>
+          
+          {isClickable && (
             <motion.a 
               href={link} 
               className="btn-link"
+              target="_blank"
+              rel="noopener noreferrer"
               whileHover={{ x: 4 }}
             >
-              View Project <span>→</span>
+              View <span>→</span>
             </motion.a>
           )}
         </div>

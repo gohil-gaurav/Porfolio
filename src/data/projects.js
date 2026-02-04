@@ -11,7 +11,7 @@ export const projects = [
     description: 'Interactive dashboard for visualizing and analyzing datasets. Features data cleaning, statistical analysis, and beautiful charts.',
     techStack: ['Python', 'Pandas', 'Matplotlib', 'Seaborn'],
     link: '#',
-    status: 'coming-soon'
+    status: 'coming-soon' // Options: 'coming-soon' | 'building' | 'live'
   },
   {
     id: 2,
@@ -20,7 +20,7 @@ export const projects = [
     description: 'Full-featured student management application with registration, course management, and grade tracking functionality.',
     techStack: ['Django', 'Python', 'SQLite', 'HTML/CSS'],
     link: '#',
-    status: 'coming-soon'
+    status: 'building'
   },
   {
     id: 3,
@@ -28,8 +28,8 @@ export const projects = [
     title: 'Portfolio Website',
     description: 'Minimalist personal portfolio built with React. Clean design inspired by retro-terminal aesthetics.',
     techStack: ['React', 'CSS', 'Vite'],
-    link: '#',
-    status: 'coming-soon'
+    link: 'https://github.com/yourusername/portfolio',
+    status: 'live'
   }
 ];
 
