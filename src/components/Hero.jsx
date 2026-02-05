@@ -11,19 +11,31 @@ const Hero = () => {
   const { theme } = useContext(ThemeContext);
   const isDark = theme === 'dark';
 
-  // Terminal styling based on theme
+  // Terminal styling - minimal, clean aesthetic
   const terminal = {
-    bg: isDark ? 'rgba(22, 24, 28, 0.9)' : 'rgba(255, 255, 255, 0.95)',
-    headerBg: isDark ? 'rgba(30, 32, 38, 0.95)' : 'rgba(245, 245, 247, 0.95)',
-    border: isDark ? 'rgba(255, 255, 255, 0.06)' : 'rgba(0, 0, 0, 0.08)',
-    text: isDark ? 'rgba(255, 255, 255, 0.7)' : 'rgba(0, 0, 0, 0.7)',
-    muted: isDark ? 'rgba(255, 255, 255, 0.4)' : 'rgba(0, 0, 0, 0.4)',
-    prompt: isDark ? '#22c55e' : '#16a34a',
-    command: isDark ? 'rgba(255, 255, 255, 0.85)' : 'rgba(0, 0, 0, 0.85)',
-    output: isDark ? 'rgba(255, 255, 255, 0.55)' : 'rgba(0, 0, 0, 0.55)',
+    // Dark: deep black | Light: pure white
+    bg: isDark ? '#000000' : '#ffffff',
+    headerBg: isDark ? '#0a0a0a' : '#fafafa',
+    // Dark: subtle border | Light: thin gray outline
+    border: isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.12)',
+    // Soft off-white in dark, dark gray in light
+    text: isDark ? '#e5e5e5' : '#1a1a1a',
+    // Muted colors for secondary text
+    muted: isDark ? 'rgba(255, 255, 255, 0.35)' : 'rgba(0, 0, 0, 0.4)',
+    // Prompt: muted green (dark) / neutral gray (light)
+    prompt: isDark ? '#4ade80' : '#666666',
+    // Commands: clear readable text
+    command: isDark ? '#f5f5f5' : '#1a1a1a',
+    // Output: dimmer than commands
+    output: isDark ? 'rgba(255, 255, 255, 0.55)' : 'rgba(0, 0, 0, 0.6)',
+    // Soft shadow (not heavy glow)
     shadow: isDark 
-      ? '0 8px 32px rgba(0, 0, 0, 0.4), 0 2px 8px rgba(0, 0, 0, 0.2)'
-      : '0 8px 32px rgba(0, 0, 0, 0.08), 0 2px 8px rgba(0, 0, 0, 0.04)'
+      ? '0 4px 20px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.05)'
+      : '0 4px 24px rgba(0, 0, 0, 0.06), 0 0 0 1px rgba(0, 0, 0, 0.06)',
+    // Window controls: muted in dark, colored in light
+    controls: isDark 
+      ? { close: '#3a3a3a', minimize: '#3a3a3a', maximize: '#3a3a3a' }
+      : { close: '#ff5f57', minimize: '#febc2e', maximize: '#28c840' }
   };
 
   const monoFont = "'JetBrains Mono', 'SF Mono', 'Fira Code', 'Consolas', monospace";
@@ -58,12 +70,12 @@ const Hero = () => {
     }
   };
 
-  // Terminal lines data
+  // Terminal lines data - clean commands
   const terminalLines = [
-    { prompt: '~', command: 'whoami', output: 'gaurav' },
-    { prompt: '~', command: 'cat skills.txt', output: 'Python, Pandas, NumPy, Django, React, Git' },
-    { prompt: '~', command: 'echo $STATUS', output: 'Learning & Building' },
-    { prompt: '~', command: '', output: null, cursor: true }
+    { command: 'whoami', output: 'gaurav' },
+    { command: 'cat skills.txt', output: 'Python, Pandas, NumPy, Django, React, Git' },
+    { command: 'echo $STATUS', output: 'Learning & Building' },
+    { command: '', output: null, cursor: true }
   ];
 
   return (
@@ -165,80 +177,95 @@ const Hero = () => {
               style={{
                 background: terminal.bg,
                 border: `1px solid ${terminal.border}`,
-                borderRadius: '12px',
+                borderRadius: '3px',
                 boxShadow: terminal.shadow,
-                overflow: 'hidden'
+                overflow: 'hidden',
+                minHeight: '420px'
               }}
             >
-              {/* Terminal Header */}
+              {/* Terminal Header - thin, minimal */}
               <div 
-                className="flex items-center gap-2 px-4 py-3"
+                className="flex items-center px-4 py-2.5"
                 style={{ 
                   background: terminal.headerBg,
                   borderBottom: `1px solid ${terminal.border}`
                 }}
               >
-                {/* Window controls */}
+                {/* Window controls - small dots */}
                 <div className="flex items-center gap-1.5">
                   <span 
-                    className="w-3 h-3 rounded-full"
-                    style={{ background: isDark ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.12)' }}
+                    className="w-3 h-3 rounded-full transition-colors duration-300"
+                    style={{ background: terminal.controls.close }}
                   />
                   <span 
-                    className="w-3 h-3 rounded-full"
-                    style={{ background: isDark ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.12)' }}
+                    className="w-3 h-3 rounded-full transition-colors duration-300"
+                    style={{ background: terminal.controls.minimize }}
                   />
                   <span 
-                    className="w-3 h-3 rounded-full"
-                    style={{ background: isDark ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.12)' }}
+                    className="w-3 h-3 rounded-full transition-colors duration-300"
+                    style={{ background: terminal.controls.maximize }}
                   />
                 </div>
-                {/* Terminal title */}
+                {/* Terminal title - centered */}
                 <span 
-                  className="flex-1 text-center text-xs"
+                  className="flex-1 text-center text-[11px] tracking-wide"
                   style={{ 
                     color: terminal.muted,
-                    fontFamily: monoFont
+                    fontFamily: monoFont,
+                    letterSpacing: '0.05em'
                   }}
                 >
                   terminal
                 </span>
-                <div className="w-12" /> {/* Spacer for balance */}
+                <div className="w-14" /> {/* Spacer for balance */}
               </div>
 
               {/* Terminal Body */}
               <div 
-                className="p-5 space-y-3"
+                className="px-6 py-6"
                 style={{ fontFamily: monoFont }}
               >
-                {terminalLines.map((line, index) => (
-                  <div key={index} className="space-y-1">
-                    {/* Command line */}
-                    <div className="flex items-center gap-2 text-sm">
-                      <span style={{ color: terminal.prompt }}>❯</span>
-                      <span style={{ color: terminal.muted }}>{line.prompt}</span>
-                      <span style={{ color: terminal.command }}>{line.command}</span>
-                      {line.cursor && (
-                        <span 
-                          className="w-2 h-4 inline-block"
+                <div className="space-y-5">
+                  {terminalLines.map((line, index) => (
+                    <div key={index} className="space-y-1.5">
+                      {/* Command line */}
+                      <div 
+                        className="flex items-center gap-2"
+                        style={{ 
+                          fontSize: '13px',
+                          lineHeight: '1.6'
+                        }}
+                      >
+                        <span style={{ color: terminal.prompt }}>$</span>
+                        <span style={{ color: terminal.command }}>{line.command}</span>
+                        {line.cursor && (
+                          <span 
+                            className="w-2 h-4 inline-block ml-0.5"
+                            style={{ 
+                              background: isDark ? '#4ade80' : '#666666',
+                              animation: 'blink 1s step-end infinite'
+                            }}
+                          />
+                        )}
+                      </div>
+                      {/* Output - dimmer than command */}
+                      {line.output && (
+                        <div 
+                          className="pl-5"
                           style={{ 
-                            background: terminal.prompt,
-                            animation: 'pulse 1.2s ease-in-out infinite'
+                            color: terminal.output,
+                            fontSize: '13px',
+                            lineHeight: '1.7'
                           }}
-                        />
+                        >
+                          {line.output}
+                        </div>
                       )}
                     </div>
-                    {/* Output */}
-                    {line.output && (
-                      <div 
-                        className="text-sm pl-6"
-                        style={{ color: terminal.output }}
-                      >
-                        {line.output}
-                      </div>
-                    )}
-                  </div>
-                ))}
+                  ))}
+                </div>
+                {/* Bottom spacing */}
+                <div className="h-12" />
               </div>
             </div>
           </motion.div>
