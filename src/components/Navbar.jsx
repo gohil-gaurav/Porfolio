@@ -1,19 +1,20 @@
 /**
  * Navbar Component
- * Modern floating command-bar style navigation with Tailwind CSS
+ * Premium floating navigation with glass morphism
+ * Inspired by modern developer portfolios
  */
 
-import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import ThemeToggle from './ThemeToggle';
+import { useState, useEffect, useContext } from 'react';
+import { ThemeContext } from '../App';
 import avatarImg from '../assets/images/avatar.jpeg';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isVisible, setIsVisible] = useState(true);
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [lastScrollY, setLastScrollY] = useState(0);
-  const [isDark, setIsDark] = useState(true);
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const [activeSection, setActiveSection] = useState('');
+  const [searchHovered, setSearchHovered] = useState(false);
+  const { theme, toggleTheme } = useContext(ThemeContext);
+  const isDark = theme === 'dark';
 
   const navLinks = [
     { id: 'projects', label: 'Work' },
@@ -21,49 +22,29 @@ const Navbar = () => {
     { id: 'about', label: 'About' }
   ];
 
-  // Track theme changes
-  useEffect(() => {
-    const observer = new MutationObserver(() => {
-      setIsDark(document.documentElement.getAttribute('data-theme') !== 'light');
-    });
-    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
-    setIsDark(document.documentElement.getAttribute('data-theme') !== 'light');
-    return () => observer.disconnect();
-  }, []);
+  // Monospace font for terminal aesthetic
+  const monoFont = "'JetBrains Mono', 'SF Mono', 'Fira Code', 'Consolas', monospace";
 
+  // Smooth scroll tracking for navbar transformation
   useEffect(() => {
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    
     const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      setIsScrolled(currentScrollY > 60);
-      
-      if (currentScrollY < 100) {
-        setIsVisible(true);
-      } else if (currentScrollY > lastScrollY && currentScrollY > 200) {
-        setIsVisible(false);
-      } else {
-        setIsVisible(true);
+      const scrollY = window.scrollY;
+      const progress = Math.min(scrollY / 150, 1);
+      setScrollProgress(progress);
+
+      // Detect active section
+      const sections = navLinks.map(link => document.getElementById(link.id)).filter(Boolean);
+      for (const section of sections.reverse()) {
+        if (section.getBoundingClientRect().top <= 150) {
+          setActiveSection(section.id);
+          return;
+        }
       }
-      
-      setLastScrollY(currentScrollY);
+      setActiveSection('');
     };
 
-    if (!prefersReducedMotion) {
-      window.addEventListener('scroll', handleScroll, { passive: true });
-      return () => window.removeEventListener('scroll', handleScroll);
-    }
-  }, [lastScrollY]);
-
-  useEffect(() => {
-    const handleKeyDown = (e) => {
-      if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
-        e.preventDefault();
-        console.log('Search triggered');
-      }
-    };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const scrollToTop = (e) => {
@@ -77,206 +58,364 @@ const Navbar = () => {
     setIsMenuOpen(false);
   };
 
-  // Dynamic colors based on theme
-  const colors = isDark ? {
-    bg: isScrolled ? 'rgba(18, 18, 18, 0.8)' : 'rgba(18, 18, 18, 0.6)',
-    border: 'rgba(255, 255, 255, 0.08)',
-    text: 'rgba(255, 255, 255, 0.6)',
-    textHover: 'rgba(255, 255, 255, 0.95)',
-    btnBg: 'rgba(255, 255, 255, 0.06)',
-    btnBgHover: 'rgba(255, 255, 255, 0.1)',
-  } : {
-    bg: isScrolled ? 'rgba(255, 255, 255, 0.9)' : 'rgba(255, 255, 255, 0.75)',
-    border: 'rgba(0, 0, 0, 0.08)',
-    text: 'rgba(0, 0, 0, 0.55)',
-    textHover: 'rgba(0, 0, 0, 0.9)',
-    btnBg: 'rgba(0, 0, 0, 0.04)',
-    btnBgHover: 'rgba(0, 0, 0, 0.08)',
+  // Dynamic values based on scroll progress
+  const navWidth = 94 - (scrollProgress * 22);
+  const navPadding = 20 - (scrollProgress * 8);
+  const navHeight = 56 - (scrollProgress * 8);
+  const bgOpacity = isDark 
+    ? 0.4 + (scrollProgress * 0.35)
+    : 0.5 + (scrollProgress * 0.35);
+  const blurAmount = 16 + (scrollProgress * 8);
+
+  // Glass background colors - softer charcoal instead of pure black
+  const glassBg = isDark
+    ? `rgba(28, 30, 35, ${bgOpacity})`
+    : `rgba(250, 250, 252, ${bgOpacity})`;
+  
+  const borderColor = isDark
+    ? `rgba(255, 255, 255, ${0.04 + scrollProgress * 0.02})`
+    : `rgba(0, 0, 0, ${0.04 + scrollProgress * 0.02})`;
+
+  // Refined color palette
+  const colors = {
+    text: isDark ? 'rgba(255, 255, 255, 0.55)' : 'rgba(0, 0, 0, 0.5)',
+    textHover: isDark ? 'rgba(255, 255, 255, 0.9)' : 'rgba(0, 0, 0, 0.85)',
+    textActive: isDark ? 'rgba(255, 255, 255, 1)' : 'rgba(0, 0, 0, 0.95)',
+    muted: isDark ? 'rgba(255, 255, 255, 0.35)' : 'rgba(0, 0, 0, 0.35)',
+    subtleBg: isDark ? 'rgba(255, 255, 255, 0.04)' : 'rgba(0, 0, 0, 0.03)',
+    hoverBg: isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.05)',
+    activeDot: isDark ? 'rgba(255, 255, 255, 0.9)' : 'rgba(0, 0, 0, 0.8)',
+    statusOnline: '#22c55e'
   };
 
   return (
-    <motion.nav 
-      className={`fixed top-0 left-0 right-0 z-1000 transition-all duration-300 ease-out px-6
-        ${isScrolled ? 'py-3' : 'py-5'}
-        ${!isVisible ? '-translate-y-full opacity-0' : ''}`}
-      initial={{ opacity: 0, y: -20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, ease: 'easeOut' }}
+    <header 
+      className="fixed top-0 left-0 right-0 z-50 flex justify-center pointer-events-none"
+      style={{ paddingTop: `${navPadding}px` }}
     >
-      <div className={`mx-auto transition-all duration-300 ${isScrolled ? 'max-w-[900px]' : 'max-w-full'}`}>
-        <div 
-          className={`flex items-center gap-2 transition-all duration-300
-            backdrop-blur-[16px] backdrop-saturate-180
-            ${isScrolled ? 'px-4 py-2 rounded-2xl' : 'px-6 py-3 rounded-none'}`}
-          style={{
-            background: colors.bg,
-            border: `1px solid ${colors.border}`,
-            boxShadow: isScrolled 
-              ? '0 8px 32px rgba(0,0,0,0.3), 0 2px 8px rgba(0,0,0,0.2)'
-              : '0 4px 24px rgba(0,0,0,0.25), 0 1px 2px rgba(0,0,0,0.15)'
-          }}
-        >
-          {/* Left Section */}
-          <div className="flex items-center gap-3">
-            <motion.a 
-              href="#" 
-              className="flex shrink-0"
-              onClick={scrollToTop}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              aria-label="Go to top"
-            >
-              <img 
-                src={avatarImg} 
-                alt="Gaurav" 
-                className="w-8 h-8 rounded-full object-cover object-top grayscale opacity-90 transition-all duration-200 hover:opacity-100"
-                style={{ border: `1px solid ${colors.border}` }}
-              />
-            </motion.a>
-
-            <span 
-              className="w-px h-5 hidden md:block" 
-              style={{ background: colors.border }}
-              aria-hidden="true"
+      <nav 
+        className="pointer-events-auto flex items-center justify-between transition-all duration-500 ease-out"
+        style={{
+          width: `${navWidth}%`,
+          maxWidth: '1200px',
+          height: `${navHeight}px`,
+          padding: '0 20px',
+          background: glassBg,
+          backdropFilter: `blur(${blurAmount}px) saturate(180%)`,
+          WebkitBackdropFilter: `blur(${blurAmount}px) saturate(180%)`,
+          border: `1px solid ${borderColor}`,
+          borderRadius: '16px',
+          boxShadow: isDark
+            ? `0 4px 24px rgba(0, 0, 0, ${0.25 + scrollProgress * 0.15}), 
+               inset 0 1px 0 rgba(255, 255, 255, 0.02)`
+            : `0 4px 24px rgba(0, 0, 0, ${0.06 + scrollProgress * 0.04}), 
+               inset 0 1px 0 rgba(255, 255, 255, 0.6)`
+        }}
+      >
+        {/* Left: Avatar + Navigation */}
+        <div className="flex items-center gap-6">
+          <a 
+            href="#" 
+            onClick={scrollToTop}
+            className="shrink-0 relative group"
+            aria-label="Go to top"
+          >
+          <div 
+            className="relative overflow-hidden rounded-full transition-all duration-300 ease-out"
+            style={{
+              width: `${28 - scrollProgress * 2}px`,
+              height: `${28 - scrollProgress * 2}px`,
+              opacity: 0.85,
+              boxShadow: `0 0 0 1.5px ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.08)'}`
+            }}
+          >
+            <img 
+              src={avatarImg} 
+              alt="Gaurav" 
+              className="w-full h-full object-cover object-top transition-all duration-300 group-hover:scale-110"
+              style={{ filter: 'grayscale(100%) contrast(1.05)' }}
             />
-
-            <ul className="hidden md:flex items-center gap-1 list-none m-0 p-0">
-              {navLinks.map((link) => (
-                <li key={link.id}>
-                  <a 
-                    href={`#${link.id}`}
-                    className="block px-3 py-1.5 font-mono text-[13px] font-medium no-underline rounded-lg transition-all duration-150"
-                    style={{ color: colors.text }}
-                    onMouseEnter={(e) => {
-                      e.target.style.color = colors.textHover;
-                      e.target.style.background = colors.btnBg;
-                    }}
-                    onMouseLeave={(e) => {
-                      e.target.style.color = colors.text;
-                      e.target.style.background = 'transparent';
-                    }}
-                    onClick={(e) => scrollToSection(e, link.id)}
-                  >
-                    {link.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
           </div>
-
-          <div className="flex-1 min-w-5" aria-hidden="true" />
-
-          {/* Right Section */}
-          <div className="flex items-center gap-2">
-            <button 
-              className="flex items-center gap-2 px-2.5 py-1.5 rounded-lg cursor-pointer transition-all duration-150"
-              style={{ 
-                background: colors.btnBg, 
-                border: `1px solid ${colors.border}` 
+            {/* Elegant status dot */}
+            <span 
+              className="absolute -bottom-0.5 -right-0.5 rounded-full transition-all duration-300"
+              style={{
+                width: '6px',
+                height: '6px',
+                background: colors.statusOnline,
+                boxShadow: `0 0 0 2px ${isDark ? 'rgba(28,30,35,0.9)' : 'rgba(250,250,252,0.9)'}`,
+                opacity: 0.9
               }}
-              onMouseEnter={(e) => e.target.style.background = colors.btnBgHover}
-              onMouseLeave={(e) => e.target.style.background = colors.btnBg}
-              aria-label="Search"
-              title="Search (Ctrl+K)"
-            >
-              <svg 
-                className="w-3.5 h-3.5"
-                style={{ color: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.45)' }}
-                viewBox="0 0 20 20" 
-                fill="none"
-              >
-                <path 
-                  d="M8.5 3a5.5 5.5 0 014.383 8.823l3.896 3.9a.75.75 0 01-1.06 1.06l-3.9-3.896A5.5 5.5 0 118.5 3zm0 1.5a4 4 0 100 8 4 4 0 000-8z" 
-                  fill="currentColor"
-                />
-              </svg>
-              <span className="hidden sm:flex items-center gap-0.5">
-                <kbd 
-                  className="inline-block px-1.5 py-0.5 font-mono text-[10px] font-medium rounded leading-none"
-                  style={{ 
-                    color: isDark ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.4)',
-                    background: colors.btnBg, 
-                    border: `1px solid ${colors.border}` 
-                  }}
-                >Ctrl</kbd>
-                <kbd 
-                  className="inline-block px-1.5 py-0.5 font-mono text-[10px] font-medium rounded leading-none"
-                  style={{ 
-                    color: isDark ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.4)',
-                    background: colors.btnBg, 
-                    border: `1px solid ${colors.border}` 
-                  }}
-                >K</kbd>
-              </span>
-            </button>
+            />
+          </a>
 
-            <ThemeToggle />
-          </div>
+          {/* Navigation Links - Left aligned */}
+          <ul className="hidden md:flex items-center gap-3">
+          {navLinks.map((link, index) => {
+            const isActive = activeSection === link.id;
+            return (
+              <li key={`${link.id}-${index}`} className="relative">
+                <a 
+                  href={`#${link.id}`}
+                  onClick={(e) => scrollToSection(e, link.id)}
+                  className="relative block px-2 py-2 text-[13px] tracking-wide transition-all duration-200"
+                  style={{ 
+                    color: isActive ? colors.textActive : colors.text,
+                    fontFamily: monoFont,
+                    fontWeight: isActive ? 500 : 400,
+                    textTransform: 'lowercase',
+                    letterSpacing: '0.02em'
+                  }}
+                  onMouseEnter={(e) => {
+                    if (!isActive) e.target.style.color = colors.textHover;
+                  }}
+                  onMouseLeave={(e) => {
+                    if (!isActive) e.target.style.color = colors.text;
+                  }}
+                >
+                  {link.label}
+                  {/* Active indicator - subtle underline */}
+                  <span 
+                    className="absolute left-1/2 transition-all duration-300 ease-out"
+                    style={{
+                      bottom: '6px',
+                      width: isActive ? '16px' : '0px',
+                      height: '1.5px',
+                      background: colors.activeDot,
+                      opacity: isActive ? 0.7 : 0,
+                      transform: 'translateX(-50%)',
+                      borderRadius: '1px'
+                    }}
+                  />
+                </a>
+              </li>
+            );
+          })}
+          </ul>
+        </div>
 
-          {/* Mobile Toggle */}
+        {/* Right: Utilities */}
+        <div className="flex items-center gap-3">
+          {/* Search - Command bar style */}
           <button 
-            className="hidden max-md:flex w-8 h-8 items-center justify-center rounded-lg cursor-pointer transition-all duration-150"
-            style={{ background: colors.btnBg, border: `1px solid ${colors.border}` }}
+            className="relative flex items-center gap-2 transition-all duration-300 ease-out"
+            style={{ 
+              height: `${32 - scrollProgress * 2}px`,
+              padding: '0 12px',
+              background: colors.subtleBg,
+              border: `1px solid ${borderColor}`,
+              borderRadius: '8px',
+              color: colors.muted,
+              cursor: 'pointer',
+              fontFamily: monoFont
+            }}
+            onMouseEnter={(e) => {
+              setSearchHovered(true);
+              e.currentTarget.style.color = colors.textHover;
+              e.currentTarget.style.background = colors.hoverBg;
+              e.currentTarget.style.borderColor = isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)';
+            }}
+            onMouseLeave={(e) => {
+              setSearchHovered(false);
+              e.currentTarget.style.color = colors.muted;
+              e.currentTarget.style.background = colors.subtleBg;
+              e.currentTarget.style.borderColor = borderColor;
+            }}
+            aria-label="Search (Ctrl+K)"
+            title="Search"
+          >
+            <svg 
+              className="transition-all duration-200 shrink-0" 
+              style={{ width: '14px', height: '14px' }}
+              viewBox="0 0 20 20" 
+              fill="currentColor"
+            >
+              <path d="M8.5 3a5.5 5.5 0 014.383 8.823l3.896 3.9a.75.75 0 01-1.06 1.06l-3.9-3.896A5.5 5.5 0 118.5 3zm0 1.5a4 4 0 100 8 4 4 0 000-8z"/>
+            </svg>
+            <span 
+              className="hidden sm:block text-[11px] transition-all duration-200"
+              style={{ opacity: 0.6 }}
+            >Search</span>
+            <kbd 
+              className="hidden sm:flex items-center text-[10px] font-medium px-1.5 py-0.5 rounded transition-all duration-200"
+              style={{ 
+                background: isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.04)',
+                opacity: 0.7
+              }}
+            >⌘K</kbd>
+          </button>
+
+          {/* Divider */}
+          <span 
+            className="hidden sm:block"
+            style={{ 
+              width: '1px', 
+              height: '14px', 
+              background: borderColor,
+              opacity: 0.4,
+              marginLeft: '4px',
+              marginRight: '4px'
+            }}
+          />
+
+          {/* Theme Toggle - Clean icon-based */}
+          <button 
+            className="flex items-center justify-center transition-all duration-300 ease-out"
+            style={{ 
+              width: `${28 - scrollProgress * 2}px`,
+              height: `${28 - scrollProgress * 2}px`,
+              background: 'transparent',
+              border: 'none',
+              borderRadius: '8px',
+              color: colors.muted,
+              cursor: 'pointer'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.color = colors.textHover;
+              e.currentTarget.style.background = colors.subtleBg;
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.color = colors.muted;
+              e.currentTarget.style.background = 'transparent';
+            }}
+            onClick={toggleTheme}
+            aria-label={`Switch to ${isDark ? 'light' : 'dark'} mode`}
+            title={isDark ? 'Light mode' : 'Dark mode'}
+          >
+            <div className="relative" style={{ width: '16px', height: '16px' }}>
+              {/* Sun icon */}
+              <svg 
+                className="absolute inset-0 transition-all duration-500 ease-out"
+                style={{ 
+                  opacity: isDark ? 1 : 0,
+                  transform: isDark ? 'rotate(0deg) scale(1)' : 'rotate(90deg) scale(0.5)'
+                }}
+                viewBox="0 0 24 24" 
+                fill="none" 
+                stroke="currentColor" 
+                strokeWidth="1.5" 
+                strokeLinecap="round" 
+                strokeLinejoin="round"
+              >
+                <circle cx="12" cy="12" r="4" />
+                <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" />
+              </svg>
+              {/* Moon icon */}
+              <svg 
+                className="absolute inset-0 transition-all duration-500 ease-out"
+                style={{ 
+                  opacity: isDark ? 0 : 1,
+                  transform: isDark ? 'rotate(-90deg) scale(0.5)' : 'rotate(0deg) scale(1)'
+                }}
+                viewBox="0 0 24 24" 
+                fill="none" 
+                stroke="currentColor" 
+                strokeWidth="1.5" 
+                strokeLinecap="round" 
+                strokeLinejoin="round"
+              >
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+              </svg>
+            </div>
+          </button>
+
+          {/* Mobile Menu Button */}
+          <button 
+            className="md:hidden flex items-center justify-center transition-all duration-200"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
+            style={{ 
+              width: '28px',
+              height: '28px',
+              marginLeft: '2px',
+              background: 'transparent',
+              border: 'none',
+              borderRadius: '6px',
+              color: colors.text,
+              cursor: 'pointer'
+            }}
             aria-label="Toggle menu"
             aria-expanded={isMenuOpen}
           >
-            <div className="relative w-3.5 h-3">
+            <div className="relative" style={{ width: '14px', height: '10px' }}>
               <span 
-                className={`absolute left-0 w-full h-[1.5px] rounded-sm transition-all duration-200 ${isMenuOpen ? 'top-1/2 -translate-y-1/2 rotate-45' : 'top-0'}`}
-                style={{ background: isDark ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.7)' }}
+                className="absolute left-0 w-full h-px rounded-full transition-all duration-300"
+                style={{ 
+                  background: 'currentColor',
+                  top: isMenuOpen ? '50%' : '0',
+                  transform: isMenuOpen ? 'rotate(45deg)' : 'none'
+                }}
               />
               <span 
-                className={`absolute left-0 top-1/2 -translate-y-1/2 w-full h-[1.5px] rounded-sm transition-all duration-200 ${isMenuOpen ? 'opacity-0' : ''}`}
-                style={{ background: isDark ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.7)' }}
+                className="absolute left-0 top-1/2 -translate-y-1/2 w-full h-px rounded-full transition-all duration-300"
+                style={{ 
+                  background: 'currentColor',
+                  opacity: isMenuOpen ? 0 : 1
+                }}
               />
               <span 
-                className={`absolute left-0 w-full h-[1.5px] rounded-sm transition-all duration-200 ${isMenuOpen ? 'top-1/2 -translate-y-1/2 -rotate-45' : 'bottom-0'}`}
-                style={{ background: isDark ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.7)' }}
+                className="absolute left-0 w-full h-px rounded-full transition-all duration-300"
+                style={{ 
+                  background: 'currentColor',
+                  bottom: isMenuOpen ? '50%' : '0',
+                  top: isMenuOpen ? '50%' : 'auto',
+                  transform: isMenuOpen ? 'rotate(-45deg)' : 'none'
+                }}
               />
             </div>
           </button>
         </div>
-      </div>
+      </nav>
 
-      {/* Mobile Menu */}
-      <AnimatePresence>
-        {isMenuOpen && (
-          <motion.div 
-            className="md:hidden mt-2 mx-6 px-4 py-3 rounded-xl backdrop-blur-[16px]"
-            style={{
-              background: isDark ? 'rgba(18,18,18,0.95)' : 'rgba(255,255,255,0.95)',
-              border: `1px solid ${colors.border}`,
-              boxShadow: '0 8px 32px rgba(0,0,0,0.3)'
-            }}
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.2 }}
-          >
-            <ul className="list-none m-0 p-0">
-              {navLinks.map((link, index) => (
-                <motion.li 
-                  key={link.id}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: index * 0.05 }}
+      {/* Mobile Menu Dropdown */}
+      <div 
+        className="md:hidden pointer-events-auto absolute left-1/2 -translate-x-1/2 py-2 px-2 transition-all duration-300"
+        style={{
+          width: `${navWidth - 4}%`,
+          maxWidth: '1160px',
+          top: `${navPadding + navHeight + 8}px`,
+          background: glassBg,
+          backdropFilter: `blur(${blurAmount}px) saturate(180%)`,
+          WebkitBackdropFilter: `blur(${blurAmount}px) saturate(180%)`,
+          border: `1px solid ${borderColor}`,
+          borderRadius: '12px',
+          boxShadow: isDark
+            ? '0 8px 32px rgba(0, 0, 0, 0.35)'
+            : '0 8px 32px rgba(0, 0, 0, 0.08)',
+          opacity: isMenuOpen ? 1 : 0,
+          transform: isMenuOpen ? 'translateY(0)' : 'translateY(-8px)',
+          pointerEvents: isMenuOpen ? 'auto' : 'none'
+        }}
+      >
+        <ul className="flex flex-col">
+          {navLinks.map((link, index) => {
+            const isActive = activeSection === link.id;
+            return (
+              <li key={`mobile-${link.id}-${index}`}>
+                <a 
+                  href={`#${link.id}`}
+                  onClick={(e) => scrollToSection(e, link.id)}
+                  className="flex items-center gap-2 px-4 py-3 text-[13px] font-normal rounded-lg transition-all duration-200"
+                  style={{ 
+                    color: isActive ? colors.textActive : colors.text,
+                    background: isActive ? colors.subtleBg : 'transparent',
+                    fontFamily: monoFont,
+                    textTransform: 'lowercase'
+                  }}
                 >
-                  <a 
-                    href={`#${link.id}`}
-                    className="block px-4 py-3 font-mono text-sm font-medium no-underline rounded-lg transition-all duration-150"
-                    style={{ color: isDark ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.6)' }}
-                    onClick={(e) => scrollToSection(e, link.id)}
-                  >
-                    {link.label}
-                  </a>
-                </motion.li>
-              ))}
-            </ul>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </motion.nav>
+                  {isActive && (
+                    <span 
+                      className="w-1.5 h-1.5 rounded-full"
+                      style={{ background: colors.activeDot }}
+                    />
+                  )}
+                  {link.label}
+                </a>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+    </header>
   );
 };
 

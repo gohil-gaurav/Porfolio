@@ -21,13 +21,13 @@ const Projects = () => {
   return (
     <section 
       id="projects" 
-      className="section"
+      className="section py-24"
       style={{ background: 'var(--color-bg)' }}
     >
       <div className="container">
         {/* Section Header */}
         <motion.div 
-          className="section-header"
+          className="section-header mb-12 text-left"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -35,14 +35,17 @@ const Projects = () => {
         >
           <span className="section-label">[Projects]</span>
           <h2 className="section-title">My Work</h2>
-          <p className="section-description">
+          <p 
+            className="text-lg max-w-[500px]"
+            style={{ color: 'var(--color-text-secondary)' }}
+          >
             A selection of things I've built and experimented with.
           </p>
         </motion.div>
 
         {/* Projects Grid */}
         <motion.div 
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mb-10"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12"
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"

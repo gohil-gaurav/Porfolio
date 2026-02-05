@@ -10,7 +10,7 @@ const Footer = () => {
 
   return (
     <motion.footer 
-      className="py-6"
+      className="py-8"
       style={{ 
         borderTop: '1px solid var(--color-border)',
         background: 'var(--color-bg)'
@@ -20,27 +20,25 @@ const Footer = () => {
       viewport={{ once: true }}
       transition={{ duration: 0.5 }}
     >
-      <div className="container">
-        <div className="flex flex-col sm:flex-row justify-between items-center gap-3">
-          {/* Left - Copyright */}
-          <p 
-            className="mono text-xs"
-            style={{ color: 'var(--color-text-muted)' }}
-          >
-            © {currentYear} Gaurav. All rights reserved.
-          </p>
+      <div className="container flex flex-col sm:flex-row justify-between items-center flex-wrap gap-4">
+        {/* Left - Copyright */}
+        <p 
+          className="font-mono text-xs"
+          style={{ color: 'var(--color-text-muted)' }}
+        >
+          © {currentYear} Gaurav. All rights reserved.
+        </p>
 
-          {/* Right - Built with */}
-          <p 
-            className="mono text-xs"
-            style={{ color: 'var(--color-text-muted)' }}
-          >
-            Built with{' '}
-            <span style={{ color: 'var(--color-text-secondary)' }}>React</span>
-            {' '}&amp;{' '}
-            <span style={{ color: 'var(--color-text-secondary)' }}>Framer Motion</span>
-          </p>
-        </div>
+        {/* Right - Built with */}
+        <p 
+          className="font-mono text-xs"
+          style={{ color: 'var(--color-text-muted)' }}
+        >
+          Built with{' '}
+          <span style={{ color: 'var(--color-text-secondary)' }}>React</span>
+          {' '}&amp;{' '}
+          <span style={{ color: 'var(--color-text-secondary)' }}>Framer Motion</span>
+        </p>
       </div>
     </motion.footer>
   );

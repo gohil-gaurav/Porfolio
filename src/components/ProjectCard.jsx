@@ -43,7 +43,7 @@ const ProjectCard = ({ project, index }) => {
       whileInView="visible"
       viewport={{ once: true, margin: '-50px' }}
       whileHover={{ 
-        y: -6,
+        y: -8,
         transition: { duration: 0.2 }
       }}
     >
@@ -58,30 +58,30 @@ const ProjectCard = ({ project, index }) => {
       </div>
 
       {/* Card Content */}
-      <div className="p-5 flex-1 flex flex-col">
+      <div className="p-6 flex-1 flex flex-col">
         <h3 
-          className="text-lg font-semibold mb-2 leading-snug"
+          className="text-xl font-semibold mb-2"
           style={{ color: 'var(--color-text)' }}
         >
           {title}
         </h3>
         <p 
-          className="text-sm leading-relaxed mb-5 flex-1"
+          className="text-sm leading-relaxed mb-6 flex-1"
           style={{ color: 'var(--color-text-secondary)' }}
         >
           {description}
         </p>
 
         {/* Tech Stack */}
-        <div className="flex flex-wrap gap-1.5 mb-5">
-          {techStack.map((tech, idx) => (
+        <div className="flex flex-wrap gap-1 mb-6">
+          {techStack.map((tech, index) => (
             <span 
-              key={idx} 
-              className="mono text-xs px-2 py-1"
+              key={index} 
+              className="font-mono text-xs px-2 py-1"
               style={{
                 background: 'var(--color-bg-alt)',
-                border: '1px solid var(--color-border)',
-                color: 'var(--color-text-muted)'
+                border: '1px solid var(--color-border-light)',
+                color: 'var(--color-text-secondary)'
               }}
             >
               {tech}
@@ -91,8 +91,8 @@ const ProjectCard = ({ project, index }) => {
 
         {/* Status Badge & Link */}
         <div 
-          className="mt-auto pt-4 flex items-center justify-between"
-          style={{ borderTop: '1px solid var(--color-border)' }}
+          className="mt-auto pt-4 flex items-center justify-between gap-4"
+          style={{ borderTop: '1px solid var(--color-border-light)' }}
         >
           <span 
             className="status-badge" 
@@ -104,13 +104,13 @@ const ProjectCard = ({ project, index }) => {
           {isClickable && (
             <motion.a 
               href={link} 
-              className="btn-link"
+              className="btn-link font-medium text-sm"
               style={{ color: 'var(--color-text)' }}
               target="_blank"
               rel="noopener noreferrer"
               whileHover={{ x: 4 }}
             >
-              View <span>→</span>
+              View <span className="inline-block transition-transform duration-100 group-hover:translate-x-1">→</span>
             </motion.a>
           )}
         </div>

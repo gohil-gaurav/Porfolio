@@ -47,7 +47,7 @@ const Blog = () => {
   return (
     <section 
       id="blog" 
-      className="section"
+      className="section py-24"
       style={{ 
         background: 'var(--color-bg-alt)',
         borderTop: '1px solid var(--color-border)'
@@ -56,7 +56,7 @@ const Blog = () => {
       <div className="container">
         {/* Section Header */}
         <motion.div 
-          className="section-header"
+          className="section-header mb-12"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -64,17 +64,20 @@ const Blog = () => {
         >
           <span className="section-label">[Blog]</span>
           <h2 className="section-title">From the blog</h2>
-          <p className="section-description">
+          <p 
+            className="text-lg max-w-[500px]"
+            style={{ color: 'var(--color-text-secondary)' }}
+          >
             Thoughts, learnings, and things I plan to write about.
           </p>
         </motion.div>
 
         {/* Placeholder Blog Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
           {upcomingTopics.map((topic, index) => (
             <motion.article 
               key={topic.id} 
-              className="card flex flex-col opacity-60 hover:opacity-75 transition-opacity duration-200"
+              className="card flex flex-col opacity-70 hover:opacity-80 transition-opacity"
               style={{ 
                 background: 'var(--color-surface)',
                 borderColor: 'var(--color-border)'
@@ -86,7 +89,7 @@ const Blog = () => {
               viewport={{ once: true, margin: '-50px' }}
             >
               {/* Window Header */}
-              <div className="window-header">
+              <div className="window-header opacity-80">
                 <div className="window-dots">
                   <span className="window-dot"></span>
                   <span className="window-dot"></span>
@@ -96,22 +99,24 @@ const Blog = () => {
               </div>
 
               {/* Card Content */}
-              <div className="p-5 flex-1 flex flex-col">
-                <span 
-                  className="mono text-xs uppercase tracking-widest mb-3"
-                  style={{ color: 'var(--color-text-muted)' }}
-                >
-                  {topic.topic}
-                </span>
+              <div className="p-6 flex-1 flex flex-col">
+                <div className="flex items-center gap-2 mb-4 font-mono text-xs">
+                  <span 
+                    className="uppercase tracking-wide"
+                    style={{ color: 'var(--color-text-muted)' }}
+                  >
+                    {topic.topic}
+                  </span>
+                </div>
 
                 <h3 
-                  className="text-base font-semibold mb-2 leading-snug"
+                  className="text-lg font-semibold mb-2 leading-tight"
                   style={{ color: 'var(--color-text-muted)' }}
                 >
                   {topic.title}
                 </h3>
                 <p 
-                  className="text-sm leading-relaxed mb-5 flex-1 line-clamp-3"
+                  className="text-sm leading-relaxed mb-6 flex-1 line-clamp-3"
                   style={{ color: 'var(--color-text-secondary)' }}
                 >
                   {topic.description}
@@ -120,7 +125,7 @@ const Blog = () => {
                 {/* Status Badge */}
                 <div 
                   className="mt-auto pt-4"
-                  style={{ borderTop: '1px solid var(--color-border)' }}
+                  style={{ borderTop: '1px solid var(--color-border-light)' }}
                 >
                   <span className="status-badge" data-status="pending">
                     Coming Soon
@@ -133,7 +138,7 @@ const Blog = () => {
 
         {/* Footer Note */}
         <motion.p 
-          className="text-center mono text-sm"
+          className="text-center font-mono text-sm m-0 pt-4"
           style={{ color: 'var(--color-text-muted)' }}
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
