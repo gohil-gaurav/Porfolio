@@ -17,7 +17,7 @@ const Hero = () => {
     bg: isDark ? '#000000' : '#ffffff',
     headerBg: isDark ? '#0a0a0a' : '#fafafa',
     // Dark: subtle border | Light: thin gray outline
-    border: isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.12)',
+    border: isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.18)',
     // Soft off-white in dark, dark gray in light
     text: isDark ? '#e5e5e5' : '#1a1a1a',
     // Muted colors for secondary text
@@ -32,10 +32,10 @@ const Hero = () => {
     shadow: isDark 
       ? '0 4px 20px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.05)'
       : '0 4px 24px rgba(0, 0, 0, 0.06), 0 0 0 1px rgba(0, 0, 0, 0.06)',
-    // Window controls: muted in dark, colored in light
+    // Window controls: muted gray in both modes (like reference)
     controls: isDark 
-      ? { close: '#3a3a3a', minimize: '#3a3a3a', maximize: '#3a3a3a' }
-      : { close: '#ff5f57', minimize: '#febc2e', maximize: '#28c840' }
+      ? { close: '#4a4a4a', minimize: '#4a4a4a', maximize: '#4a4a4a' }
+      : { close: '#c0c0c0', minimize: '#c0c0c0', maximize: '#c0c0c0' }
   };
 
   const monoFont = "'JetBrains Mono', 'SF Mono', 'Fira Code', 'Consolas', monospace";
@@ -73,9 +73,9 @@ const Hero = () => {
   // Terminal lines data - clean commands
   const terminalLines = [
     { command: 'whoami', output: 'gaurav' },
-    { command: 'cat skills.txt', output: 'Python, Pandas, NumPy, Django, React, Git' },
+    { command: 'cat skills.txt', output: ['Python, Pandas, NumPy', 'Django, React, Git'] },
     { command: 'echo $STATUS', output: 'Learning & Building' },
-    { command: '', output: null, cursor: true }
+    { command: '', cursor: true }
   ];
 
   return (
@@ -173,61 +173,62 @@ const Hero = () => {
             animate="visible"
           >
             <div 
-              className="w-full max-w-md lg:max-w-lg transition-all duration-300"
+              className="transition-all duration-300 flex flex-col"
               style={{
                 background: terminal.bg,
                 border: `1px solid ${terminal.border}`,
-                borderRadius: '3px',
+                borderRadius: '2px',
                 boxShadow: terminal.shadow,
                 overflow: 'hidden',
-                minHeight: '420px'
+                width: '360px',
+                height: '370px'
               }}
             >
               {/* Terminal Header - thin, minimal */}
               <div 
-                className="flex items-center px-4 py-2.5"
+                className="flex items-center px-4 py-5"
                 style={{ 
                   background: terminal.headerBg,
                   borderBottom: `1px solid ${terminal.border}`
                 }}
               >
-                {/* Window controls - small dots */}
+                {/* Window controls - small gray dots */}
                 <div className="flex items-center gap-1.5">
                   <span 
-                    className="w-3 h-3 rounded-full transition-colors duration-300"
+                    className="w-2.5 h-2.5 rounded-full"
                     style={{ background: terminal.controls.close }}
                   />
                   <span 
-                    className="w-3 h-3 rounded-full transition-colors duration-300"
+                    className="w-2.5 h-2.5 rounded-full"
                     style={{ background: terminal.controls.minimize }}
                   />
                   <span 
-                    className="w-3 h-3 rounded-full transition-colors duration-300"
+                    className="w-2.5 h-2.5 rounded-full"
                     style={{ background: terminal.controls.maximize }}
                   />
                 </div>
                 {/* Terminal title - centered */}
                 <span 
-                  className="flex-1 text-center text-[11px] tracking-wide"
+                  className="flex-1 text-center text-[11px]"
                   style={{ 
                     color: terminal.muted,
                     fontFamily: monoFont,
-                    letterSpacing: '0.05em'
+                    letterSpacing: '0.08em'
                   }}
                 >
                   terminal
                 </span>
-                <div className="w-14" /> {/* Spacer for balance */}
+                <div className="w-16" /> {/* Spacer for balance */}
               </div>
 
               {/* Terminal Body */}
               <div 
-                className="px-6 py-6"
+                className="px-8 py-6 flex-1 flex flex-col"
                 style={{ fontFamily: monoFont }}
               >
-                <div className="space-y-5">
+                <div className="flex-1 flex flex-col justify-around">
                   {terminalLines.map((line, index) => (
-                    <div key={index} className="space-y-1.5">
+                    <div key={index}>
                       {/* Command line */}
                       <div 
                         className="flex items-center gap-2"
@@ -240,32 +241,33 @@ const Hero = () => {
                         <span style={{ color: terminal.command }}>{line.command}</span>
                         {line.cursor && (
                           <span 
-                            className="w-2 h-4 inline-block ml-0.5"
                             style={{ 
-                              background: isDark ? '#4ade80' : '#666666',
+                              color: terminal.command,
                               animation: 'blink 1s step-end infinite'
                             }}
-                          />
+                          >_</span>
                         )}
                       </div>
-                      {/* Output - dimmer than command */}
+                      {/* Output - dimmer than command, indented */}
                       {line.output && (
                         <div 
-                          className="pl-5"
+                          className="mt-2"
                           style={{ 
                             color: terminal.output,
                             fontSize: '13px',
-                            lineHeight: '1.7'
+                            lineHeight: '1.8',
+                            marginLeft: '24px'
                           }}
                         >
-                          {line.output}
+                          {Array.isArray(line.output) 
+                            ? line.output.map((text, i) => <div key={i}>{text}</div>)
+                            : line.output
+                          }
                         </div>
                       )}
                     </div>
                   ))}
                 </div>
-                {/* Bottom spacing */}
-                <div className="h-12" />
               </div>
             </div>
           </motion.div>
