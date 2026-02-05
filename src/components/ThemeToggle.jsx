@@ -1,12 +1,11 @@
 /**
  * ThemeToggle Component
- * Dark/Light mode toggle - consumes theme from App.jsx context
+ * Dark/Light mode toggle with Tailwind CSS
  */
 
 import { useContext } from 'react';
 import { motion } from 'framer-motion';
 import { ThemeContext } from '../App';
-import './ThemeToggle.css';
 
 const ThemeToggle = () => {
   const { theme, toggleTheme } = useContext(ThemeContext);
@@ -14,27 +13,31 @@ const ThemeToggle = () => {
 
   return (
     <motion.button
-      className="theme-toggle"
+      className="inline-flex items-center gap-2 px-4 py-2 bg-transparent font-mono text-xs uppercase tracking-widest cursor-pointer transition-all duration-200
+        hover:opacity-100"
+      style={{
+        border: '1px solid var(--color-border)',
+        color: 'var(--color-text)'
+      }}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.background = 'var(--color-text)';
+        e.currentTarget.style.color = 'var(--color-bg)';
+        e.currentTarget.style.borderColor = 'var(--color-text)';
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.background = 'transparent';
+        e.currentTarget.style.color = 'var(--color-text)';
+        e.currentTarget.style.borderColor = 'var(--color-border)';
+      }}
       onClick={toggleTheme}
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
       aria-label={`Switch to ${isDark ? 'light' : 'dark'} mode`}
       title={`Switch to ${isDark ? 'light' : 'dark'} mode`}
     >
-      <span className="theme-toggle__icon">
+      <span className="flex items-center justify-center">
         {isDark ? (
-          // Sun icon for dark mode (click to go light)
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="18"
-            height="18"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <circle cx="12" cy="12" r="5" />
             <line x1="12" y1="1" x2="12" y2="3" />
             <line x1="12" y1="21" x2="12" y2="23" />
@@ -46,23 +49,12 @@ const ThemeToggle = () => {
             <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
           </svg>
         ) : (
-          // Moon icon for light mode (click to go dark)
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="18"
-            height="18"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
           </svg>
         )}
       </span>
-      <span className="theme-toggle__text">
+      <span className="hidden sm:inline">
         {isDark ? 'Light' : 'Dark'}
       </span>
     </motion.button>

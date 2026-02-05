@@ -4,7 +4,6 @@
  */
 
 import { motion } from 'framer-motion';
-import './ProjectCard.css';
 
 // Status configuration - maps status to display text
 const STATUS_CONFIG = {
@@ -37,13 +36,14 @@ const ProjectCard = ({ project, index }) => {
 
   return (
     <motion.article 
-      className="project-card card"
+      className="card flex flex-col"
+      style={{ background: 'var(--color-surface)' }}
       variants={cardVariants}
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, margin: '-50px' }}
       whileHover={{ 
-        y: -8,
+        y: -6,
         transition: { duration: 0.2 }
       }}
     >
@@ -58,21 +58,42 @@ const ProjectCard = ({ project, index }) => {
       </div>
 
       {/* Card Content */}
-      <div className="project-card__body">
-        <h3 className="project-card__title">{title}</h3>
-        <p className="project-card__description">{description}</p>
+      <div className="p-5 flex-1 flex flex-col">
+        <h3 
+          className="text-lg font-semibold mb-2 leading-snug"
+          style={{ color: 'var(--color-text)' }}
+        >
+          {title}
+        </h3>
+        <p 
+          className="text-sm leading-relaxed mb-5 flex-1"
+          style={{ color: 'var(--color-text-secondary)' }}
+        >
+          {description}
+        </p>
 
         {/* Tech Stack */}
-        <div className="project-card__tech">
-          {techStack.map((tech, index) => (
-            <span key={index} className="project-card__tag">
+        <div className="flex flex-wrap gap-1.5 mb-5">
+          {techStack.map((tech, idx) => (
+            <span 
+              key={idx} 
+              className="mono text-xs px-2 py-1"
+              style={{
+                background: 'var(--color-bg-alt)',
+                border: '1px solid var(--color-border)',
+                color: 'var(--color-text-muted)'
+              }}
+            >
               {tech}
             </span>
           ))}
         </div>
 
-        {/* Status Badge */}
-        <div className="project-card__footer">
+        {/* Status Badge & Link */}
+        <div 
+          className="mt-auto pt-4 flex items-center justify-between"
+          style={{ borderTop: '1px solid var(--color-border)' }}
+        >
           <span 
             className="status-badge" 
             data-status={statusConfig.type}
@@ -84,6 +105,7 @@ const ProjectCard = ({ project, index }) => {
             <motion.a 
               href={link} 
               className="btn-link"
+              style={{ color: 'var(--color-text)' }}
               target="_blank"
               rel="noopener noreferrer"
               whileHover={{ x: 4 }}

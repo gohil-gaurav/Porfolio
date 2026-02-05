@@ -5,7 +5,6 @@
 
 import { motion } from 'framer-motion';
 import avatarImg from '../assets/images/avatar.jpeg';
-import './About.css';
 
 // Skill icons with brand colors
 const skillIcons = [
@@ -66,41 +65,70 @@ const About = () => {
   };
 
   return (
-    <section id="about" className="about">
+    <section 
+      id="about" 
+      className="section"
+      style={{ borderTop: '1px solid var(--color-border)' }}
+    >
       <div className="container">
         <motion.div 
-          className="about__wrapper"
+          className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-12 lg:gap-16 items-start"
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: '-100px' }}
         >
           {/* Left - Avatar */}
-          <motion.div className="about__image" variants={itemVariants}>
-            <div className="about__avatar-container">
+          <motion.div 
+            className="flex justify-center lg:justify-start"
+            variants={itemVariants}
+          >
+            <div 
+              className="w-56 h-56 lg:w-64 lg:h-64 overflow-hidden transition-all duration-200"
+              style={{
+                border: '8px solid var(--color-text)',
+                boxShadow: '0 8px 32px var(--color-shadow)'
+              }}
+            >
               <img 
                 src={avatarImg} 
-                alt="Gaurav - Illustration" 
-                className="about__avatar"
+                alt="Gaurav" 
+                className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-300"
               />
             </div>
           </motion.div>
 
           {/* Right - Content */}
-          <div className="about__content">
-            <motion.span className="section-label" variants={itemVariants}>
+          <div className="flex flex-col">
+            {/* Section Header */}
+            <motion.span 
+              className="section-label"
+              variants={itemVariants}
+            >
               [About]
             </motion.span>
             
-            <motion.h2 className="about__title" variants={itemVariants}>
+            <motion.h2 
+              className="text-2xl lg:text-3xl font-semibold mb-2"
+              style={{ color: 'var(--color-text)' }}
+              variants={itemVariants}
+            >
               About Me
             </motion.h2>
             
-            <motion.h3 className="about__name" variants={itemVariants}>
+            <motion.h3 
+              className="text-lg font-normal mb-4"
+              style={{ color: 'var(--color-text-muted)' }}
+              variants={itemVariants}
+            >
               Gaurav
             </motion.h3>
             
-            <motion.p className="about__description" variants={itemVariants}>
+            <motion.p 
+              className="text-base leading-relaxed mb-8"
+              style={{ color: 'var(--color-text-secondary)' }}
+              variants={itemVariants}
+            >
               I'm an aspiring Data Scientist and Python Backend Developer with a passion 
               for building clean, efficient solutions. Currently focused on data analysis, 
               machine learning fundamentals, and web development. I enjoy turning complex 
@@ -108,19 +136,27 @@ const About = () => {
             </motion.p>
 
             {/* Skills */}
-            <motion.div className="about__skills" variants={itemVariants}>
-              <h4 className="about__skills-title">Skills</h4>
-              <div className="about__skills-grid">
+            <motion.div 
+              className="pt-6"
+              style={{ borderTop: '1px solid var(--color-border)' }}
+              variants={itemVariants}
+            >
+              <h4 
+                className="mono text-xs uppercase tracking-widest mb-4"
+                style={{ color: 'var(--color-text-muted)' }}
+              >
+                Skills
+              </h4>
+              <div className="flex flex-wrap gap-3">
                 {skillIcons.map((skill, index) => (
                   <motion.div 
                     key={skill.name}
-                    className="about__skill-icon"
+                    className="w-8 h-8 cursor-default transition-transform duration-200 hover:scale-110"
                     title={skill.name}
                     initial={{ opacity: 0, scale: 0.8 }}
                     whileInView={{ opacity: 1, scale: 1 }}
                     viewport={{ once: true }}
                     transition={{ delay: index * 0.05 }}
-                    whileHover={{ scale: 1.15, opacity: 1 }}
                   >
                     {skill.icon}
                   </motion.div>

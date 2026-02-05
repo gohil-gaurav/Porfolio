@@ -1,15 +1,9 @@
 /**
  * Blog Component
  * Blog preview section - Currently in "Coming Soon" state
- * 
- * Design Intent:
- * - Shows the section is planned and intentional
- * - Communicates future content without looking incomplete
- * - Uses ghost-style placeholder cards
  */
 
 import { motion } from 'framer-motion';
-import './Blog.css';
 
 // Placeholder topics for upcoming blog posts
 const upcomingTopics = [
@@ -51,7 +45,14 @@ const Blog = () => {
   };
 
   return (
-    <section id="blog" className="blog section">
+    <section 
+      id="blog" 
+      className="section"
+      style={{ 
+        background: 'var(--color-bg-alt)',
+        borderTop: '1px solid var(--color-border)'
+      }}
+    >
       <div className="container">
         {/* Section Header */}
         <motion.div 
@@ -63,17 +64,21 @@ const Blog = () => {
         >
           <span className="section-label">[Blog]</span>
           <h2 className="section-title">From the blog</h2>
-          <p className="blog__subtitle">
+          <p className="section-description">
             Thoughts, learnings, and things I plan to write about.
           </p>
         </motion.div>
 
         {/* Placeholder Blog Grid */}
-        <div className="blog__grid">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mb-8">
           {upcomingTopics.map((topic, index) => (
             <motion.article 
               key={topic.id} 
-              className="blog-card blog-card--placeholder card"
+              className="card flex flex-col opacity-60 hover:opacity-75 transition-opacity duration-200"
+              style={{ 
+                background: 'var(--color-surface)',
+                borderColor: 'var(--color-border)'
+              }}
               variants={cardVariants}
               initial="hidden"
               whileInView="visible"
@@ -91,16 +96,32 @@ const Blog = () => {
               </div>
 
               {/* Card Content */}
-              <div className="blog-card__body">
-                <div className="blog-card__meta">
-                  <span className="blog-card__topic">{topic.topic}</span>
-                </div>
+              <div className="p-5 flex-1 flex flex-col">
+                <span 
+                  className="mono text-xs uppercase tracking-widest mb-3"
+                  style={{ color: 'var(--color-text-muted)' }}
+                >
+                  {topic.topic}
+                </span>
 
-                <h3 className="blog-card__title">{topic.title}</h3>
-                <p className="blog-card__excerpt">{topic.description}</p>
+                <h3 
+                  className="text-base font-semibold mb-2 leading-snug"
+                  style={{ color: 'var(--color-text-muted)' }}
+                >
+                  {topic.title}
+                </h3>
+                <p 
+                  className="text-sm leading-relaxed mb-5 flex-1 line-clamp-3"
+                  style={{ color: 'var(--color-text-secondary)' }}
+                >
+                  {topic.description}
+                </p>
 
-                {/* Status Badge - reusing project status system */}
-                <div className="blog-card__footer">
+                {/* Status Badge */}
+                <div 
+                  className="mt-auto pt-4"
+                  style={{ borderTop: '1px solid var(--color-border)' }}
+                >
                   <span className="status-badge" data-status="pending">
                     Coming Soon
                   </span>
@@ -112,7 +133,8 @@ const Blog = () => {
 
         {/* Footer Note */}
         <motion.p 
-          className="blog__note"
+          className="text-center mono text-sm"
+          style={{ color: 'var(--color-text-muted)' }}
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}

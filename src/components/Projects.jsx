@@ -6,7 +6,6 @@
 import { motion } from 'framer-motion';
 import { projects } from '../data/projects';
 import ProjectCard from './ProjectCard';
-import './Projects.css';
 
 const Projects = () => {
   const containerVariants = {
@@ -20,7 +19,11 @@ const Projects = () => {
   };
 
   return (
-    <section id="projects" className="projects section">
+    <section 
+      id="projects" 
+      className="section"
+      style={{ background: 'var(--color-bg)' }}
+    >
       <div className="container">
         {/* Section Header */}
         <motion.div 
@@ -32,14 +35,14 @@ const Projects = () => {
         >
           <span className="section-label">[Projects]</span>
           <h2 className="section-title">My Work</h2>
-          <p className="projects__subtitle">
+          <p className="section-description">
             A selection of things I've built and experimented with.
           </p>
         </motion.div>
 
         {/* Projects Grid */}
         <motion.div 
-          className="projects__grid"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mb-10"
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
@@ -52,7 +55,7 @@ const Projects = () => {
 
         {/* View All Link */}
         <motion.div 
-          className="projects__footer"
+          className="text-center"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
