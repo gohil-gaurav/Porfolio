@@ -247,6 +247,27 @@ ul, ol {
   50% { opacity: 0; }
 }
 
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+}
+
+@keyframes gradient-shift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { 
+    box-shadow: 0 0 12px rgba(34, 197, 94, 0.4);
+    transform: scale(1);
+  }
+  50% { 
+    box-shadow: 0 0 20px rgba(34, 197, 94, 0.6);
+    transform: scale(1.1);
+  }
+}
+
 /* ==================== Responsive ==================== */
 @media (max-width: 768px) {
   .container {

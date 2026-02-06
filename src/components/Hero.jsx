@@ -1,6 +1,6 @@
 /**
  * Hero Component
- * Developer-focused landing section with terminal card
+ * Minimal, clean, developer-focused landing section
  */
 
 import { useContext } from 'react';
@@ -11,153 +11,215 @@ const Hero = () => {
   const { theme } = useContext(ThemeContext);
   const isDark = theme === 'dark';
 
-  // Terminal styling - minimal, clean aesthetic
-  const terminal = {
-    // Dark: deep black | Light: pure white
-    bg: isDark ? '#000000' : '#ffffff',
-    headerBg: isDark ? '#0a0a0a' : '#fafafa',
-    // Dark: subtle border | Light: thin gray outline
-    border: isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.18)',
-    // Soft off-white in dark, dark gray in light
-    text: isDark ? '#e5e5e5' : '#1a1a1a',
-    // Muted colors for secondary text
-    muted: isDark ? 'rgba(255, 255, 255, 0.35)' : 'rgba(0, 0, 0, 0.4)',
-    // Prompt: muted green (dark) / neutral gray (light)
-    prompt: isDark ? '#4ade80' : '#666666',
-    // Commands: clear readable text
-    command: isDark ? '#f5f5f5' : '#1a1a1a',
-    // Output: dimmer than commands
-    output: isDark ? 'rgba(255, 255, 255, 0.55)' : 'rgba(0, 0, 0, 0.6)',
-    // Soft shadow (not heavy glow)
-    shadow: isDark 
-      ? '0 4px 20px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.05)'
-      : '0 4px 24px rgba(0, 0, 0, 0.06), 0 0 0 1px rgba(0, 0, 0, 0.06)',
-    // Window controls: muted gray in both modes (like reference)
-    controls: isDark 
-      ? { close: '#4a4a4a', minimize: '#4a4a4a', maximize: '#4a4a4a' }
-      : { close: '#c0c0c0', minimize: '#c0c0c0', maximize: '#c0c0c0' }
-  };
-
   const monoFont = "'JetBrains Mono', 'SF Mono', 'Fira Code', 'Consolas', monospace";
+
+  // Terminal styling - pure black, minimal
+  const terminal = {
+    bg: isDark ? '#0a0a0a' : '#ffffff',
+    headerBg: isDark ? '#111111' : '#f8f8f8',
+    border: isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.1)',
+    text: isDark ? '#e5e5e5' : '#1a1a1a',
+    muted: isDark ? 'rgba(255, 255, 255, 0.4)' : 'rgba(0, 0, 0, 0.4)',
+    prompt: isDark ? '#6ee7b7' : '#555555',
+    command: isDark ? '#f5f5f5' : '#1a1a1a',
+    output: isDark ? 'rgba(255, 255, 255, 0.5)' : 'rgba(0, 0, 0, 0.55)',
+    shadow: isDark 
+      ? '0 4px 24px rgba(0, 0, 0, 0.3)'
+      : '0 4px 20px rgba(0, 0, 0, 0.08)',
+    controls: isDark 
+      ? { close: '#3a3a3a', minimize: '#3a3a3a', maximize: '#3a3a3a' }
+      : { close: '#d4d4d4', minimize: '#d4d4d4', maximize: '#d4d4d4' }
+  };
 
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: {
-        staggerChildren: 0.15,
-        delayChildren: 0.2
-      }
+      transition: { staggerChildren: 0.1, delayChildren: 0.1 }
     }
   };
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
+    hidden: { opacity: 0, y: 20 },
     visible: { 
       opacity: 1, 
       y: 0,
-      transition: { duration: 0.5, ease: 'easeOut' }
+      transition: { duration: 0.4, ease: 'easeOut' }
     }
   };
 
-  const terminalVariants = {
-    hidden: { opacity: 0, y: 20, scale: 0.98 },
-    visible: { 
-      opacity: 1, 
-      y: 0,
-      scale: 1,
-      transition: { duration: 0.6, delay: 0.4, ease: 'easeOut' }
-    }
-  };
-
-  // Terminal lines data - clean commands
+  // Terminal content
   const terminalLines = [
     { command: 'whoami', output: 'gaurav' },
     { command: 'cat skills.txt', output: ['Python, Pandas, NumPy', 'Django, React, Git'] },
-    { command: 'echo $STATUS', output: 'Learning & Building' },
+    { command: 'echo $STATUS', output: 'Open to opportunities' },
     { command: '', cursor: true }
   ];
 
   return (
     <section 
-      className="min-h-screen flex items-center pt-20"
-      style={{ borderBottom: '1px solid var(--color-border)' }}
+      className="min-h-screen flex items-center"
+      style={{ 
+        background: 'var(--color-bg)',
+        paddingTop: '80px'
+      }}
     >
       <div className="container">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center py-12 lg:py-16">
-          {/* Text Content - Left */}
+        <div 
+          className="grid grid-cols-1 lg:grid-cols-2 items-center"
+          style={{ 
+            gap: '80px',
+            padding: '60px 0'
+          }}
+        >
+          {/* Left Side - Text Content */}
           <motion.div 
-            className="max-w-xl"
             variants={containerVariants}
             initial="hidden"
             animate="visible"
+            style={{ maxWidth: '520px' }}
           >
-            {/* Main Heading */}
-            <motion.h1 
-              className="mb-8"
-              variants={itemVariants}
-              style={{ lineHeight: 1.1 }}
-            >
-              <span 
-                className="block text-2xl lg:text-3xl font-normal mb-2"
-                style={{ color: 'var(--color-text-muted)' }}
-              >
-                Hello.
-              </span>
-              <span 
-                className="block text-5xl lg:text-6xl font-semibold"
-                style={{ color: 'var(--color-text)' }}
-              >
-                I'm Gaurav.
-              </span>
-            </motion.h1>
-
-            {/* Subtitle */}
+            {/* Greeting */}
             <motion.p 
-              className="text-lg lg:text-xl leading-relaxed mb-10"
-              style={{ color: 'var(--color-text-secondary)' }}
               variants={itemVariants}
+              style={{ 
+                fontFamily: monoFont,
+                fontSize: '20px',
+                color: 'var(--color-text-muted)',
+                marginBottom: '12px',
+                letterSpacing: '0.02em'
+              }}
             >
-              Aspiring Data Scientist &amp; Python Backend Developer.
-              <br />
-              I work with Python, Data Analysis, and Web Technologies.
+              Hello, I'm
             </motion.p>
 
-            {/* CTA Button */}
-            <motion.div className="mb-10" variants={itemVariants}>
+            {/* Name */}
+            <motion.h1 
+              variants={itemVariants}
+              style={{ 
+                fontFamily: monoFont,
+                fontSize: '52px',
+                fontWeight: 700,
+                color: 'var(--color-text)',
+                marginBottom: '16px',
+                lineHeight: 1.1,
+                letterSpacing: '-0.02em'
+              }}
+            >
+              Gaurav
+            </motion.h1>
+
+            {/* Role */}
+            <motion.p 
+              variants={itemVariants}
+              style={{ 
+                fontFamily: monoFont,
+                fontSize: '16px',
+                color: 'var(--color-text-secondary)',
+                marginBottom: '24px',
+                letterSpacing: '0.01em'
+              }}
+            >
+              Data Scientist & Backend Developer
+            </motion.p>
+
+            {/* Description */}
+            <motion.p 
+              variants={itemVariants}
+              style={{ 
+                fontSize: '15px',
+                lineHeight: 1.7,
+                color: 'var(--color-text-muted)',
+                marginBottom: '32px',
+                maxWidth: '440px'
+              }}
+            >
+              Passionate about turning data into insights and building 
+              scalable backend solutions. I specialize in Python, Data Scientist, 
+              and Web Technologies.
+            </motion.p>
+
+            {/* Buttons */}
+            <motion.div 
+              variants={itemVariants}
+              style={{ 
+                display: 'flex',
+                gap: '12px',
+                marginBottom: '32px'
+              }}
+            >
+              {/* Primary Button */}
               <motion.a 
-                href="#projects" 
-                className="btn btn-primary"
-                whileHover={{ x: 4 }}
+                href="#projects"
+                whileHover={{ y: -2 }}
                 whileTap={{ scale: 0.98 }}
+                style={{
+                  fontFamily: monoFont,
+                  fontSize: '13px',
+                  padding: '12px 24px',
+                  background: isDark ? '#ffffff' : '#171717',
+                  color: isDark ? '#171717' : '#ffffff',
+                  borderRadius: '4px',
+                  textDecoration: 'none',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  fontWeight: 500,
+                  transition: 'all 0.2s ease'
+                }}
               >
                 View Projects
-                <span>→</span>
+                <span style={{ fontSize: '14px' }}>→</span>
+              </motion.a>
+
+              {/* Secondary Button */}
+              <motion.a 
+                href="#contact"
+                whileHover={{ y: -2 }}
+                whileTap={{ scale: 0.98 }}
+                style={{
+                  fontFamily: monoFont,
+                  fontSize: '13px',
+                  padding: '12px 24px',
+                  background: 'transparent',
+                  color: 'var(--color-text)',
+                  border: `1px solid ${isDark ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.2)'}`,
+                  borderRadius: '4px',
+                  textDecoration: 'none',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  fontWeight: 500,
+                  transition: 'all 0.2s ease'
+                }}
+              >
+                Get in Touch
               </motion.a>
             </motion.div>
 
-            {/* Status indicator */}
+            {/* Status Badge */}
             <motion.div 
-              className="inline-flex items-center gap-3 px-4 py-2.5"
-              style={{ 
-                border: '1px solid var(--color-border)',
-                background: 'var(--color-surface)',
-                borderRadius: '6px'
-              }}
               variants={itemVariants}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '8px'
+              }}
             >
               <span 
-                className="w-2 h-2 rounded-full"
                 style={{ 
-                  background: '#22c55e',
-                  boxShadow: '0 0 8px rgba(34, 197, 94, 0.4)'
+                  width: '6px',
+                  height: '6px',
+                  borderRadius: '50%',
+                  background: '#4ade80'
                 }}
               />
               <span 
-                className="text-xs uppercase tracking-widest"
                 style={{ 
+                  fontFamily: monoFont,
+                  fontSize: '11px',
                   color: 'var(--color-text-muted)',
-                  fontFamily: monoFont
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.08em'
                 }}
               >
                 Available for opportunities
@@ -165,109 +227,123 @@ const Hero = () => {
             </motion.div>
           </motion.div>
 
-          {/* Terminal Card - Right */}
+          {/* Right Side - Terminal */}
           <motion.div 
-            className="flex justify-center lg:justify-end items-center order-first lg:order-last"
-            variants={terminalVariants}
-            initial="hidden"
-            animate="visible"
+            className="flex justify-center lg:justify-end"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
           >
             <div 
-              className="transition-all duration-300 flex flex-col"
               style={{
                 background: terminal.bg,
                 border: `1px solid ${terminal.border}`,
-                borderRadius: '2px',
+                borderRadius: '4px',
                 boxShadow: terminal.shadow,
                 overflow: 'hidden',
-                width: '360px',
-                height: '370px'
+                width: '380px',
+                height: '400px',
+                display: 'flex',
+                flexDirection: 'column'
               }}
             >
-              {/* Terminal Header - thin, minimal */}
+              {/* Terminal Header */}
               <div 
-                className="flex items-center px-4 py-5"
                 style={{ 
+                  display: 'flex',
+                  alignItems: 'center',
+                  padding: '14px 16px',
                   background: terminal.headerBg,
                   borderBottom: `1px solid ${terminal.border}`
                 }}
               >
-                {/* Window controls - small gray dots */}
-                <div className="flex items-center gap-1.5">
-                  <span 
-                    className="w-2.5 h-2.5 rounded-full"
-                    style={{ background: terminal.controls.close }}
-                  />
-                  <span 
-                    className="w-2.5 h-2.5 rounded-full"
-                    style={{ background: terminal.controls.minimize }}
-                  />
-                  <span 
-                    className="w-2.5 h-2.5 rounded-full"
-                    style={{ background: terminal.controls.maximize }}
-                  />
+                {/* Window Controls */}
+                <div style={{ display: 'flex', gap: '6px' }}>
+                  <span style={{ 
+                    width: '10px', 
+                    height: '10px', 
+                    borderRadius: '50%',
+                    background: terminal.controls.close 
+                  }} />
+                  <span style={{ 
+                    width: '10px', 
+                    height: '10px', 
+                    borderRadius: '50%',
+                    background: terminal.controls.minimize 
+                  }} />
+                  <span style={{ 
+                    width: '10px', 
+                    height: '10px', 
+                    borderRadius: '50%',
+                    background: terminal.controls.maximize 
+                  }} />
                 </div>
-                {/* Terminal title - centered */}
+                {/* Title */}
                 <span 
-                  className="flex-1 text-center text-[11px]"
                   style={{ 
-                    color: terminal.muted,
+                    flex: 1,
+                    textAlign: 'center',
                     fontFamily: monoFont,
-                    letterSpacing: '0.08em'
+                    fontSize: '11px',
+                    color: terminal.muted,
+                    letterSpacing: '0.05em'
                   }}
                 >
                   terminal
                 </span>
-                <div className="w-16" /> {/* Spacer for balance */}
+                <div style={{ width: '42px' }} />
               </div>
 
               {/* Terminal Body */}
               <div 
-                className="px-8 py-6 flex-1 flex flex-col"
-                style={{ fontFamily: monoFont }}
+                style={{ 
+                  flex: 1,
+                  padding: '24px',
+                  fontFamily: monoFont,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'space-around'
+                }}
               >
-                <div className="flex-1 flex flex-col justify-around">
-                  {terminalLines.map((line, index) => (
-                    <div key={index}>
-                      {/* Command line */}
-                      <div 
-                        className="flex items-center gap-2"
-                        style={{ 
-                          fontSize: '13px',
-                          lineHeight: '1.6'
-                        }}
-                      >
-                        <span style={{ color: terminal.prompt }}>$</span>
-                        <span style={{ color: terminal.command }}>{line.command}</span>
-                        {line.cursor && (
-                          <span 
-                            style={{ 
-                              color: terminal.command,
-                              animation: 'blink 1s step-end infinite'
-                            }}
-                          >_</span>
-                        )}
-                      </div>
-                      {/* Output - dimmer than command, indented */}
-                      {line.output && (
-                        <div 
-                          className="mt-2"
+                {terminalLines.map((line, index) => (
+                  <div key={index}>
+                    {/* Command */}
+                    <div style={{ 
+                      display: 'flex', 
+                      alignItems: 'center', 
+                      gap: '8px',
+                      fontSize: '13px'
+                    }}>
+                      <span style={{ color: terminal.prompt }}>$</span>
+                      <span style={{ color: terminal.command }}>{line.command}</span>
+                      {line.cursor && (
+                        <span 
                           style={{ 
-                            color: terminal.output,
-                            fontSize: '13px',
-                            lineHeight: '1.8',
-                            marginLeft: '24px'
+                            color: terminal.command,
+                            animation: 'blink 1s step-end infinite'
                           }}
-                        >
-                          {Array.isArray(line.output) 
-                            ? line.output.map((text, i) => <div key={i}>{text}</div>)
-                            : line.output
-                          }
-                        </div>
+                        >_</span>
                       )}
                     </div>
-                  ))}
-                </div>
+                    {/* Output */}
+                    {line.output && (
+                      <div 
+                        style={{ 
+                          marginTop: '6px',
+                          marginLeft: '20px',
+                          fontSize: '13px',
+                          color: terminal.output,
+                          lineHeight: 1.6
+                        }}
+                      >
+                        {Array.isArray(line.output) 
+                          ? line.output.map((text, i) => <div key={i}>{text}</div>)
+                          : line.output
+                        }
+                      </div>
+                    )}
+                  </div>
+                ))}
               </div>
             </div>
           </motion.div>
