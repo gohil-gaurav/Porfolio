@@ -1,28 +1,32 @@
 /**
  * ProjectCard Component
- * Individual project card with browser window styling and animations
+ * Premium project card with image, clean layout, and minimal styling
  */
 
 import { motion } from 'framer-motion';
 
-// Status configuration - maps status to display text
+// Status configuration with muted colors
 const STATUS_CONFIG = {
-  'coming-soon': { label: 'Coming Soon', type: 'pending' },
-  'building': { label: 'Building', type: 'progress' },
-  'live': { label: 'Live', type: 'success' }
+  'coming-soon': { label: 'Coming Soon', color: '#f97316', bg: 'rgba(249, 115, 22, 0.1)' },
+  'building': { label: 'Building', color: '#ef4444', bg: 'rgba(239, 68, 68, 0.1)' },
+  'live': { label: 'Live', color: '#4ade80', bg: 'rgba(74, 222, 128, 0.1)' }
 };
 
-const ProjectCard = ({ project, index }) => {
-  const { filename, title, description, techStack, link, status } = project;
+// Placeholder image patterns for projects (gradient backgrounds)
+const PROJECT_IMAGES = {
+  1: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)',
+  2: 'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #1a1a1a 100%)',
+  3: 'linear-gradient(135deg, #0a0a0a 0%, #1f1f1f 50%, #0a0a0a 100%)'
+};
+
+const ProjectCard = ({ project, index, isDark, monoFont }) => {
+  const { id, filename, title, description, techStack, link, status } = project;
 
   const statusConfig = STATUS_CONFIG[status] || STATUS_CONFIG['coming-soon'];
   const isClickable = status === 'live';
 
   const cardVariants = {
-    hidden: { 
-      opacity: 0, 
-      y: 30 
-    },
+    hidden: { opacity: 0, y: 30 },
     visible: { 
       opacity: 1, 
       y: 0,
@@ -36,52 +40,122 @@ const ProjectCard = ({ project, index }) => {
 
   return (
     <motion.article 
-      className="card flex flex-col"
-      style={{ background: 'var(--color-surface)' }}
       variants={cardVariants}
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, margin: '-50px' }}
       whileHover={{ 
-        y: -8,
-        transition: { duration: 0.2 }
+        y: -6,
+        transition: { duration: 0.25, ease: 'easeOut' }
+      }}
+      style={{
+        background: isDark ? '#111111' : '#fafafa',
+        border: `1px solid ${isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.08)'}`,
+        borderRadius: '0',
+        overflow: 'hidden',
+        display: 'flex',
+        flexDirection: 'column',
+        boxShadow: isDark 
+          ? '0 4px 20px rgba(0,0,0,0.3)' 
+          : '0 4px 20px rgba(0,0,0,0.06)',
+        transition: 'box-shadow 0.3s ease'
       }}
     >
-      {/* Window Header */}
-      <div className="window-header">
-        <div className="window-dots">
-          <span className="window-dot"></span>
-          <span className="window-dot"></span>
-          <span className="window-dot"></span>
+      {/* Project Image / Preview Area */}
+      <div 
+        style={{
+          height: '200px',
+          background: PROJECT_IMAGES[id] || PROJECT_IMAGES[1],
+          position: 'relative',
+          overflow: 'hidden'
+        }}
+      >
+        {/* Dark overlay for consistency */}
+        <div 
+          style={{
+            position: 'absolute',
+            inset: 0,
+            background: isDark 
+              ? 'rgba(0,0,0,0.3)' 
+              : 'rgba(255,255,255,0.1)',
+            transition: 'background 0.3s ease'
+          }}
+        />
+        
+        {/* Terminal-style filename badge */}
+        <div 
+          style={{
+            position: 'absolute',
+            bottom: '12px',
+            left: '12px',
+            fontFamily: monoFont,
+            fontSize: '11px',
+            color: isDark ? 'rgba(255,255,255,0.6)' : 'rgba(0,0,0,0.5)',
+            background: isDark ? 'rgba(0,0,0,0.6)' : 'rgba(255,255,255,0.8)',
+            padding: '4px 10px',
+            borderRadius: '0',
+            backdropFilter: 'blur(8px)'
+          }}
+        >
+          {filename}
         </div>
-        <span className="window-filename">{filename}</span>
       </div>
 
       {/* Card Content */}
-      <div className="p-6 flex-1 flex flex-col">
+      <div 
+        style={{
+          padding: '24px',
+          flex: 1,
+          display: 'flex',
+          flexDirection: 'column'
+        }}
+      >
+        {/* Title */}
         <h3 
-          className="text-xl font-semibold mb-2"
-          style={{ color: 'var(--color-text)' }}
+          style={{
+            fontFamily: monoFont,
+            fontSize: '18px',
+            fontWeight: 600,
+            color: 'var(--color-text)',
+            marginBottom: '12px',
+            lineHeight: 1.3
+          }}
         >
           {title}
         </h3>
+
+        {/* Description - kept short */}
         <p 
-          className="text-sm leading-relaxed mb-6 flex-1"
-          style={{ color: 'var(--color-text-secondary)' }}
+          style={{
+            fontSize: '14px',
+            lineHeight: 1.6,
+            color: 'var(--color-text-muted)',
+            marginBottom: '20px',
+            flex: 1
+          }}
         >
-          {description}
+          {description.length > 120 ? description.slice(0, 120) + '...' : description}
         </p>
 
         {/* Tech Stack */}
-        <div className="flex flex-wrap gap-1 mb-6">
-          {techStack.map((tech, index) => (
+        <div 
+          style={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            gap: '6px',
+            marginBottom: '20px'
+          }}
+        >
+          {techStack.map((tech, i) => (
             <span 
-              key={index} 
-              className="font-mono text-xs px-2 py-1"
+              key={i}
               style={{
-                background: 'var(--color-bg-alt)',
-                border: '1px solid var(--color-border-light)',
-                color: 'var(--color-text-secondary)'
+                fontFamily: monoFont,
+                fontSize: '11px',
+                color: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)',
+                background: isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.04)',
+                padding: '4px 8px',
+                borderRadius: '0'
               }}
             >
               {tech}
@@ -89,28 +163,52 @@ const ProjectCard = ({ project, index }) => {
           ))}
         </div>
 
-        {/* Status Badge & Link */}
+        {/* Footer: Status Badge & CTA */}
         <div 
-          className="mt-auto pt-4 flex items-center justify-between gap-4"
-          style={{ borderTop: '1px solid var(--color-border-light)' }}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            paddingTop: '16px',
+            borderTop: `1px solid ${isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)'}`
+          }}
         >
+          {/* Status Badge */}
           <span 
-            className="status-badge" 
-            data-status={statusConfig.type}
+            style={{
+              fontFamily: monoFont,
+              fontSize: '10px',
+              fontWeight: 500,
+              textTransform: 'uppercase',
+              letterSpacing: '0.05em',
+              color: statusConfig.color,
+              background: statusConfig.bg,
+              padding: '5px 10px',
+              borderRadius: '0'
+            }}
           >
             {statusConfig.label}
           </span>
-          
+
+          {/* View Link */}
           {isClickable && (
             <motion.a 
-              href={link} 
-              className="btn-link font-medium text-sm"
-              style={{ color: 'var(--color-text)' }}
+              href={link}
               target="_blank"
               rel="noopener noreferrer"
-              whileHover={{ x: 4 }}
+              whileHover={{ x: 3 }}
+              style={{
+                fontFamily: monoFont,
+                fontSize: '12px',
+                color: 'var(--color-text-secondary)',
+                textDecoration: 'none',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '4px',
+                transition: 'color 0.2s ease'
+              }}
             >
-              View <span className="inline-block transition-transform duration-100 group-hover:translate-x-1">→</span>
+              View <span>→</span>
             </motion.a>
           )}
         </div>

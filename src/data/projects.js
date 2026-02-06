@@ -6,30 +6,33 @@
 export const projects = [
   {
     id: 1,
-    filename: '2026-data-dashboard.py',
+    filename: 'data-dashboard.py',
     title: 'Data Analysis Dashboard',
-    description: 'Interactive dashboard for visualizing and analyzing datasets. Features data cleaning, statistical analysis, and beautiful charts.',
+    description: 'Interactive dashboard for visualizing and analyzing datasets with data cleaning, statistical analysis, and beautiful charts.',
     techStack: ['Python', 'Pandas', 'Matplotlib', 'Seaborn'],
     link: '#',
-    status: 'coming-soon' // Options: 'coming-soon' | 'building' | 'live'
+    status: 'coming-soon', // Options: 'coming-soon' | 'building' | 'live'
+    image: null // Add image URL when available
   },
   {
     id: 2,
-    filename: '2026-student-system.py',
+    filename: 'student-system.py',
     title: 'Student Management System',
-    description: 'Full-featured student management application with registration, course management, and grade tracking functionality.',
+    description: 'Full-featured student management application with registration, course tracking, and grade management.',
     techStack: ['Django', 'Python', 'SQLite', 'HTML/CSS'],
     link: '#',
-    status: 'building'
+    status: 'building',
+    image: null
   },
   {
     id: 3,
-    filename: '2026-portfolio.jsx',
+    filename: 'portfolio.jsx',
     title: 'Portfolio Website',
     description: 'Minimalist personal portfolio built with React. Clean design inspired by retro-terminal aesthetics.',
-    techStack: ['React', 'CSS', 'Vite'],
+    techStack: ['React', 'Tailwind', 'Vite'],
     link: 'https://github.com/yourusername/portfolio',
-    status: 'live'
+    status: 'live',
+    image: null
   }
 ];
 
