@@ -1,38 +1,41 @@
 /**
  * Blog Component
- * Blog preview section - Currently in "Coming Soon" state
+ * Premium blog preview section with intentional "coming soon" state
  */
 
+import { useContext } from 'react';
 import { motion } from 'framer-motion';
+import { ThemeContext } from '../App';
 
-// Placeholder topics for upcoming blog posts
-const upcomingTopics = [
+// Upcoming blog post drafts
+const upcomingPosts = [
   {
     id: 1,
-    filename: 'draft-01.md',
-    topic: 'Data Science',
+    category: 'Data Science',
     title: 'Writing in Progress',
     description: 'Exploring data analysis techniques, machine learning fundamentals, and practical Python workflows.',
   },
   {
     id: 2,
-    filename: 'draft-02.md',
-    topic: 'Backend Development',
+    category: 'Backend',
     title: 'Writing in Progress',
     description: 'Thoughts on Django, APIs, database design, and building scalable backend systems.',
   },
   {
     id: 3,
-    filename: 'draft-03.md',
-    topic: 'Web Technologies',
+    category: 'Web',
     title: 'Writing in Progress',
     description: 'Learnings from React, modern CSS, and creating clean user interfaces.',
   }
 ];
 
 const Blog = () => {
+  const { theme } = useContext(ThemeContext);
+  const isDark = theme === 'dark';
+  const monoFont = "'JetBrains Mono', 'SF Mono', 'Fira Code', 'Consolas', monospace";
+
   const cardVariants = {
-    hidden: { opacity: 0, y: 20 },
+    hidden: { opacity: 0, y: 24 },
     visible: (index) => ({
       opacity: 1,
       y: 0,
@@ -47,105 +50,196 @@ const Blog = () => {
   return (
     <section 
       id="blog" 
-      className="section py-24"
       style={{ 
-        background: 'var(--color-bg-alt)',
-        borderTop: '1px solid var(--color-border)'
+        background: isDark ? '#0f0f0f' : '#f5f5f5',
+        padding: '100px 0'
       }}
     >
       <div className="container">
         {/* Section Header */}
         <motion.div 
-          className="section-header mb-12"
+          style={{ marginBottom: '64px' }}
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
         >
-          <span className="section-label">[Blog]</span>
-          <h2 className="section-title">From the blog</h2>
+          {/* Subtle label */}
           <p 
-            className="text-lg max-w-[500px]"
-            style={{ color: 'var(--color-text-secondary)' }}
+            style={{ 
+              fontFamily: monoFont,
+              fontSize: '11px',
+              color: 'var(--color-text-muted)',
+              textTransform: 'uppercase',
+              letterSpacing: '0.1em',
+              marginBottom: '12px',
+              opacity: 0.6
+            }}
           >
-            Thoughts, learnings, and things I plan to write about.
+            [BLOG]
+          </p>
+
+          {/* Main title with underline */}
+          <div style={{ marginBottom: '20px' }}>
+            <h2 
+              style={{ 
+                fontFamily: monoFont,
+                fontSize: '32px',
+                fontWeight: 600,
+                color: 'var(--color-text)',
+                letterSpacing: '-0.02em',
+                marginBottom: '8px',
+                display: 'inline-block'
+              }}
+            >
+              From the blog
+            </h2>
+            {/* Refined underline */}
+            <div 
+              style={{
+                width: '80px',
+                height: '1px',
+                background: isDark ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.15)'
+              }}
+            />
+          </div>
+
+          {/* Subtitle */}
+          <p 
+            style={{ 
+              fontSize: '15px',
+              color: 'var(--color-text-muted)',
+              maxWidth: '420px',
+              lineHeight: 1.6
+            }}
+          >
+            Thoughts, learnings, and things I'm working on writing about.
           </p>
         </motion.div>
 
-        {/* Placeholder Blog Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-          {upcomingTopics.map((topic, index) => (
+        {/* Blog Cards Grid */}
+        <div 
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(3, 1fr)',
+            gap: '28px',
+            marginBottom: '48px'
+          }}
+        >
+          {upcomingPosts.map((post, index) => (
             <motion.article 
-              key={topic.id} 
-              className="card flex flex-col opacity-70 hover:opacity-80 transition-opacity"
-              style={{ 
-                background: 'var(--color-surface)',
-                borderColor: 'var(--color-border)'
-              }}
+              key={post.id}
               variants={cardVariants}
               initial="hidden"
               whileInView="visible"
               custom={index}
               viewport={{ once: true, margin: '-50px' }}
+              whileHover={{ 
+                scale: 1.01,
+                transition: { duration: 0.2 }
+              }}
+              style={{
+                background: isDark ? '#141414' : '#ffffff',
+                border: `1px solid ${isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.06)'}`,
+                borderRadius: '2px',
+                padding: '32px 28px',
+                minHeight: '280px',
+                display: 'flex',
+                flexDirection: 'column',
+                cursor: 'pointer',
+                transition: 'all 0.25s ease'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.12)';
+                e.currentTarget.style.background = isDark ? '#171717' : '#fefefe';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.06)';
+                e.currentTarget.style.background = isDark ? '#141414' : '#ffffff';
+              }}
             >
-              {/* Window Header */}
-              <div className="window-header opacity-80">
-                <div className="window-dots">
-                  <span className="window-dot"></span>
-                  <span className="window-dot"></span>
-                  <span className="window-dot"></span>
-                </div>
-                <span className="window-filename">{topic.filename}</span>
-              </div>
+              {/* Category Label */}
+              <span 
+                style={{
+                  fontFamily: monoFont,
+                  fontSize: '10px',
+                  fontWeight: 500,
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.08em',
+                  color: isDark ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.4)',
+                  marginBottom: '20px'
+                }}
+              >
+                {post.category}
+              </span>
 
-              {/* Card Content */}
-              <div className="p-6 flex-1 flex flex-col">
-                <div className="flex items-center gap-2 mb-4 font-mono text-xs">
-                  <span 
-                    className="uppercase tracking-wide"
-                    style={{ color: 'var(--color-text-muted)' }}
-                  >
-                    {topic.topic}
-                  </span>
-                </div>
+              {/* Post Title */}
+              <h3 
+                style={{
+                  fontFamily: monoFont,
+                  fontSize: '18px',
+                  fontWeight: 600,
+                  color: 'var(--color-text)',
+                  marginBottom: '16px',
+                  lineHeight: 1.3,
+                  letterSpacing: '-0.01em'
+                }}
+              >
+                {post.title}
+              </h3>
 
-                <h3 
-                  className="text-lg font-semibold mb-2 leading-tight"
-                  style={{ color: 'var(--color-text-muted)' }}
-                >
-                  {topic.title}
-                </h3>
-                <p 
-                  className="text-sm leading-relaxed mb-6 flex-1 line-clamp-3"
-                  style={{ color: 'var(--color-text-secondary)' }}
-                >
-                  {topic.description}
-                </p>
+              {/* Description */}
+              <p 
+                style={{
+                  fontSize: '14px',
+                  lineHeight: 1.7,
+                  color: 'var(--color-text-muted)',
+                  flex: 1,
+                  marginBottom: '24px'
+                }}
+              >
+                {post.description.length > 120 
+                  ? post.description.slice(0, 120) + '...' 
+                  : post.description}
+              </p>
 
-                {/* Status Badge */}
-                <div 
-                  className="mt-auto pt-4"
-                  style={{ borderTop: '1px solid var(--color-border-light)' }}
+              {/* Status Badge */}
+              <div style={{ marginTop: 'auto' }}>
+                <span 
+                  style={{
+                    fontFamily: monoFont,
+                    fontSize: '10px',
+                    fontWeight: 500,
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.05em',
+                    color: '#d97706',
+                    background: 'rgba(217, 119, 6, 0.1)',
+                    padding: '5px 10px',
+                    borderRadius: '0'
+                  }}
                 >
-                  <span className="status-badge" data-status="pending">
-                    Coming Soon
-                  </span>
-                </div>
+                  Coming Soon
+                </span>
               </div>
             </motion.article>
           ))}
         </div>
 
-        {/* Footer Note */}
+        {/* Footer Message */}
         <motion.p 
-          className="text-center font-mono text-sm m-0 pt-4"
-          style={{ color: 'var(--color-text-muted)' }}
+          style={{
+            textAlign: 'center',
+            fontFamily: monoFont,
+            fontSize: '12px',
+            color: isDark ? 'rgba(255,255,255,0.35)' : 'rgba(0,0,0,0.35)',
+            letterSpacing: '0.02em'
+          }}
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.4 }}
         >
-          First post coming soon.
+          Writing in progress — thoughts coming soon.
         </motion.p>
       </div>
     </section>

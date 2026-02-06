@@ -1,43 +1,70 @@
 /**
  * Footer Component
- * Minimal text-based footer with animations
+ * Minimal, quiet footer with soft sign-off aesthetic
  */
 
+import { useContext } from 'react';
 import { motion } from 'framer-motion';
+import { ThemeContext } from '../App';
 
 const Footer = () => {
+  const { theme } = useContext(ThemeContext);
+  const isDark = theme === 'dark';
+  const monoFont = "'JetBrains Mono', 'SF Mono', 'Fira Code', 'Consolas', monospace";
   const currentYear = new Date().getFullYear();
 
   return (
     <motion.footer 
-      className="py-8"
       style={{ 
-        borderTop: '1px solid var(--color-border)',
-        background: 'var(--color-bg)'
+        background: 'var(--color-bg)',
+        paddingTop: '48px'
       }}
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}
       viewport={{ once: true }}
       transition={{ duration: 0.5 }}
     >
-      <div className="container flex flex-col sm:flex-row justify-between items-center flex-wrap gap-4">
+      {/* Thin divider */}
+      <div 
+        style={{
+          height: '1px',
+          background: isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)',
+          marginBottom: '32px'
+        }}
+      />
+
+      {/* Footer content */}
+      <div 
+        className="container"
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          paddingBottom: '32px'
+        }}
+      >
         {/* Left - Copyright */}
         <p 
-          className="font-mono text-xs"
-          style={{ color: 'var(--color-text-muted)' }}
+          style={{
+            fontFamily: monoFont,
+            fontSize: '11px',
+            color: isDark ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.3)',
+            letterSpacing: '0.02em'
+          }}
         >
-          © {currentYear} Gaurav. All rights reserved.
+          © {currentYear} Gaurav
         </p>
 
         {/* Right - Built with */}
         <p 
-          className="font-mono text-xs"
-          style={{ color: 'var(--color-text-muted)' }}
+          style={{
+            fontFamily: monoFont,
+            fontSize: '11px',
+            color: isDark ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.3)',
+            letterSpacing: '0.02em'
+          }}
         >
-          Built with{' '}
-          <span style={{ color: 'var(--color-text-secondary)' }}>React</span>
-          {' '}&amp;{' '}
-          <span style={{ color: 'var(--color-text-secondary)' }}>Framer Motion</span>
+          Built with React & Framer Motion
         </p>
       </div>
     </motion.footer>

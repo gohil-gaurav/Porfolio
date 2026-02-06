@@ -1,49 +1,30 @@
 /**
  * About Component
- * Personal introduction with avatar and inline skills
+ * Personal introduction with minimal, developer-focused aesthetic
  */
 
+import { useContext } from 'react';
 import { motion } from 'framer-motion';
+import { ThemeContext } from '../App';
 import avatarImg from '../assets/images/avatar.jpeg';
 
-// Skill icons with brand colors
-const skillIcons = [
-  { name: 'Python', icon: (
-    <svg viewBox="0 0 128 128"><path fill="#3776AB" d="M63.391 1.988c-4.222.02-8.252.379-11.8 1.007-10.45 1.846-12.346 5.71-12.346 12.837v9.411h24.693v3.137H29.977c-7.176 0-13.46 4.313-15.426 12.521-2.268 9.405-2.368 15.275 0 25.096 1.755 7.311 5.947 12.519 13.124 12.519h8.491V67.234c0-8.151 7.051-15.34 15.426-15.34h24.665c6.866 0 12.346-5.654 12.346-12.548V15.833c0-6.693-5.646-11.72-12.346-12.837-4.244-.706-8.645-1.027-12.866-1.008zM50.037 9.557c2.55 0 4.634 2.117 4.634 4.721 0 2.593-2.083 4.69-4.634 4.69-2.56 0-4.633-2.097-4.633-4.69-.001-2.604 2.073-4.721 4.633-4.721z"/><path fill="#FFD43B" d="M91.682 28.38v10.966c0 8.5-7.208 15.655-15.426 15.655H51.591c-6.756 0-12.346 5.783-12.346 12.549v23.515c0 6.691 5.818 10.628 12.346 12.547 7.816 2.297 15.312 2.713 24.665 0 6.216-1.801 12.346-5.423 12.346-12.547v-9.412H63.938v-3.138h37.012c7.176 0 9.852-5.005 12.348-12.519 2.578-7.735 2.467-15.174 0-25.096-1.774-7.145-5.161-12.521-12.348-12.521h-9.268zM77.809 87.927c2.561 0 4.634 2.097 4.634 4.692 0 2.602-2.074 4.719-4.634 4.719-2.55 0-4.633-2.117-4.633-4.719 0-2.595 2.083-4.692 4.633-4.692z"/></svg>
-  )},
-  { name: 'NumPy', icon: (
-    <svg viewBox="0 0 128 128"><path fill="#4DABCF" d="M63.7 95.5l-32.4-18.7V39.6l32.4 18.7v37.2zM96.1 39.6v37.2l-32.4 18.7V58.3l32.4-18.7zm.4-18.5L64.1 39.8 31.7 21.1l32.4-18.7 32.4 18.7z"/></svg>
-  )},
-  { name: 'Pandas', icon: (
-    <svg viewBox="0 0 128 128"><path fill="#150458" d="M38.5 8.8h15.2v35.7H38.5zm0 75.4h15.2v35H38.5zm0-45.9h15.2v31.2H38.5zM74.3 23h15.2v20.5H74.3zm0 75.5h15.2V119H74.3zm0-55.3h15.2v35.6H74.3z"/></svg>
-  )},
-  { name: 'Matplotlib', icon: (
-    <svg viewBox="0 0 128 128"><path fill="#11557C" d="M64 10c-29.8 0-54 24.2-54 54s24.2 54 54 54 54-24.2 54-54-24.2-54-54-54zm0 96c-23.2 0-42-18.8-42-42s18.8-42 42-42 42 18.8 42 42-18.8 42-42 42z"/><circle fill="#11557C" cx="64" cy="64" r="24"/></svg>
-  )},
-  { name: 'Django', icon: (
-    <svg viewBox="0 0 128 128"><path fill="#092E20" d="M59.448 0h20.93v96.88c-10.737 2.04-18.62 2.855-27.181 2.855-25.551-.001-38.87-11.551-38.87-33.705 0-21.338 14.135-35.2 36.015-35.2 3.398 0 5.98.272 9.106 1.087zm0 48.765c-2.446-.815-4.485-1.086-7.067-1.086-10.6 0-16.717 6.523-16.717 17.939 0 11.144 5.845 17.26 16.582 17.26 2.309 0 4.212-.136 7.202-.543z"/><path fill="#092E20" d="M113.672 32.321V80.84c0 16.717-1.224 24.735-4.893 31.666-3.398 6.661-7.883 10.873-17.124 15.494l-19.435-9.241c9.242-4.35 13.726-8.153 16.58-14.135 2.99-6.117 3.943-13.179 3.943-31.394V32.321h20.93zM92.742.111h20.93v21.474h-20.93z"/></svg>
-  )},
-  { name: 'React', icon: (
-    <svg viewBox="0 0 128 128"><circle fill="#61DAFB" cx="64" cy="64" r="11.4"/><path fill="#61DAFB" d="M107.3 45.2c-2.2-.8-4.5-1.6-6.9-2.3.6-2.4 1.1-4.8 1.5-7.1 2.1-13.2-.2-22.5-6.6-26.1-1.9-1.1-4-1.6-6.4-1.6-7 0-15.9 5.2-24.9 13.9-9-8.7-17.9-13.9-24.9-13.9-2.4 0-4.5.5-6.4 1.6-6.4 3.7-8.7 13-6.6 26.1.4 2.3.9 4.7 1.5 7.1-2.4.7-4.7 1.4-6.9 2.3C8.2 50 1.4 56.6 1.4 64s6.9 14 19.3 18.8c2.2.8 4.5 1.6 6.9 2.3-.6 2.4-1.1 4.8-1.5 7.1-2.1 13.2.2 22.5 6.6 26.1 1.9 1.1 4 1.6 6.4 1.6 7.1 0 16-5.2 24.9-13.9 9 8.7 17.9 13.9 24.9 13.9 2.4 0 4.5-.5 6.4-1.6 6.4-3.7 8.7-13 6.6-26.1-.4-2.3-.9-4.7-1.5-7.1 2.4-.7 4.7-1.4 6.9-2.3 12.5-4.8 19.3-11.4 19.3-18.8s-6.8-14-19.3-18.8zM92.5 14.7c4.1 2.4 5.5 9.8 3.8 20.3-.3 2.1-.8 4.3-1.4 6.6-5.2-1.2-10.7-2-16.5-2.5-3.4-4.8-6.9-9.1-10.4-13 7.4-7.3 14.9-12.3 21-12.3 1.3 0 2.5.3 3.5.9zM81.3 74c-1.8 3.2-3.9 6.4-6.1 9.6-3.7.3-7.4.4-11.2.4-3.9 0-7.6-.1-11.2-.4-2.2-3.2-4.2-6.4-6-9.6-1.9-3.3-3.7-6.7-5.3-10 1.6-3.3 3.4-6.7 5.3-10 1.8-3.2 3.9-6.4 6.1-9.6 3.7-.3 7.4-.4 11.2-.4 3.9 0 7.6.1 11.2.4 2.2 3.2 4.2 6.4 6 9.6 1.9 3.3 3.7 6.7 5.3 10-1.7 3.3-3.4 6.6-5.3 10zm8.3-3.3c1.5 3.5 2.7 6.9 3.8 10.3-3.4.8-7 1.4-10.8 1.9 1.2-1.9 2.5-3.9 3.6-6 1.2-2.1 2.3-4.2 3.4-6.2zM64 97.8c-2.4-2.6-4.7-5.4-6.9-8.3 2.3.1 4.6.2 6.9.2 2.3 0 4.6-.1 6.9-.2-2.2 2.9-4.5 5.7-6.9 8.3zm-18.6-15c-3.8-.5-7.4-1.1-10.8-1.9 1.1-3.3 2.3-6.8 3.8-10.3 1.1 2 2.2 4.1 3.4 6.1 1.2 2.2 2.4 4.1 3.6 6.1zm-7-25.5c-1.5-3.5-2.7-6.9-3.8-10.3 3.4-.8 7-1.4 10.8-1.9-1.2 1.9-2.5 3.9-3.6 6-1.2 2.1-2.3 4.2-3.4 6.2zM64 30.2c2.4 2.6 4.7 5.4 6.9 8.3-2.3-.1-4.6-.2-6.9-.2-2.3 0-4.6.1-6.9.2 2.2-2.9 4.5-5.7 6.9-8.3zm22.2 21l-3.6-6c3.8.5 7.4 1.1 10.8 1.9-1.1 3.3-2.3 6.8-3.8 10.3-1.1-2.1-2.2-4.2-3.4-6.2zM31.7 35c-1.7-10.5-.3-17.9 3.8-20.3 1-.6 2.2-.9 3.5-.9 6 0 13.5 4.9 21 12.3-3.5 3.8-7 8.2-10.4 13-5.8.5-11.3 1.4-16.5 2.5-.6-2.3-1-4.5-1.4-6.6zM7 64c0-4.7 5.7-9.7 15.7-13.4 2-.8 4.2-1.5 6.4-2.1 1.6 5 3.6 10.3 6 15.6-2.4 5.3-4.5 10.5-6 15.5C15.3 75.6 7 69.6 7 64zm28.5 49.3c-4.1-2.4-5.5-9.8-3.8-20.3.3-2.1.8-4.3 1.4-6.6 5.2 1.2 10.7 2 16.5 2.5 3.4 4.8 6.9 9.1 10.4 13-7.4 7.3-14.9 12.3-21 12.3-1.3 0-2.5-.3-3.5-.9zM96.3 93c1.7 10.5.3 17.9-3.8 20.3-1 .6-2.2.9-3.5.9-6 0-13.5-4.9-21-12.3 3.5-3.8 7-8.2 10.4-13 5.8-.5 11.3-1.4 16.5-2.5.6 2.3 1 4.5 1.4 6.6zm9-15.6c-2 .8-4.2 1.5-6.4 2.1-1.6-5-3.6-10.3-6-15.6 2.4-5.3 4.5-10.5 6-15.5 13.8 4 22.1 10 22.1 15.6 0 4.7-5.8 9.7-15.7 13.4z"/></svg>
-  )},
-  { name: 'JavaScript', icon: (
-    <svg viewBox="0 0 128 128"><rect fill="#F7DF1E" width="128" height="128"/><path fill="#000" d="M80.774 100.122c3.072 5.002 7.064 8.678 14.128 8.678 5.934 0 9.723-2.967 9.723-7.065 0-4.902-3.893-6.638-10.418-9.485l-3.578-1.535c-10.337-4.404-17.2-9.923-17.2-21.587 0-10.743 8.191-18.933 20.994-18.933 9.113 0 15.667 3.17 20.391 11.479l-11.163 7.166c-2.458-4.404-5.112-6.139-9.228-6.139-4.199 0-6.858 2.665-6.858 6.139 0 4.302 2.659 6.037 8.799 8.711l3.578 1.535c12.169 5.218 19.032 10.54 19.032 22.494 0 12.885-10.12 19.943-23.715 19.943-13.292 0-21.89-6.332-26.084-14.641l11.599-6.76zm-48.024-1.149c2.255 4.002 4.305 7.371 9.229 7.371 4.717 0 7.682-1.846 7.682-9.026V51.613h14.323v45.847c0 14.877-8.717 21.638-21.442 21.638-11.499 0-18.156-5.947-21.555-13.117l11.763-6.008z"/></svg>
-  )},
-  { name: 'Git', icon: (
-    <svg viewBox="0 0 128 128"><path fill="#F05032" d="M124.737 58.378L69.621 3.264c-3.172-3.174-8.32-3.174-11.497 0L46.68 14.71l14.518 14.518c3.375-1.139 7.243-.375 9.932 2.314 2.703 2.706 3.461 6.607 2.294 9.993l13.992 13.993c3.385-1.167 7.292-.413 9.994 2.295 3.78 3.777 3.78 9.9 0 13.679a9.673 9.673 0 01-13.683 0 9.677 9.677 0 01-2.105-10.521L68.574 47.933l-.002 34.341a9.708 9.708 0 012.559 1.828c3.778 3.777 3.778 9.898 0 13.683-3.779 3.777-9.904 3.777-13.679 0-3.778-3.784-3.778-9.905 0-13.683a9.65 9.65 0 013.167-2.11V47.333a9.581 9.581 0 01-3.167-2.111c-2.862-2.86-3.551-7.06-2.083-10.576L41.056 20.333 3.264 58.123a8.133 8.133 0 000 11.5l55.117 55.114c3.174 3.174 8.32 3.174 11.499 0l54.858-54.858a8.135 8.135 0 00-.001-11.501z"/></svg>
-  )},
-  { name: 'GitHub', icon: (
-    <svg viewBox="0 0 128 128"><path fill="#181616" d="M64 5.103c-33.347 0-60.388 27.035-60.388 60.388 0 26.682 17.303 49.317 41.297 57.303 3.017.56 4.125-1.31 4.125-2.905 0-1.44-.056-6.197-.082-11.243-16.8 3.653-20.345-7.125-20.345-7.125-2.747-6.98-6.705-8.836-6.705-8.836-5.48-3.748.413-3.67.413-3.67 6.063.425 9.257 6.223 9.257 6.223 5.386 9.23 14.127 6.562 17.573 5.02.542-3.903 2.107-6.568 3.834-8.076-13.413-1.525-27.514-6.704-27.514-29.843 0-6.593 2.36-11.98 6.223-16.21-.628-1.52-2.695-7.662.584-15.98 0 0 5.07-1.623 16.61 6.19C53.7 35 58.867 34.327 64 34.304c5.13.023 10.3.694 15.127 2.033 11.526-7.813 16.59-6.19 16.59-6.19 3.287 8.317 1.22 14.46.593 15.98 3.872 4.23 6.215 9.617 6.215 16.21 0 23.194-14.127 28.3-27.574 29.796 2.167 1.874 4.097 5.55 4.097 11.183 0 8.08-.07 14.583-.07 16.572 0 1.607 1.088 3.49 4.148 2.897 23.98-7.994 41.263-30.622 41.263-57.294C124.388 32.14 97.35 5.104 64 5.104z"/></svg>
-  )},
-  { name: 'C', icon: (
-    <svg viewBox="0 0 128 128"><path fill="#A8B9CC" d="M117.5 33.5l.3-.2c-.6-1.1-1.5-2.1-2.4-2.6L67.1 2.9c-.8-.5-1.9-.7-3.1-.7-1.2 0-2.3.3-3.1.7l-48 27.9c-1.7 1-2.9 3.5-2.9 5.4v55.7c0 1.1.2 2.3.9 3.4l-.2.1c.5.8 1.2 1.5 1.9 1.9l48.2 27.9c.8.5 1.9.7 3.1.7 1.2 0 2.3-.3 3.1-.7l48-27.9c1.7-1 2.9-3.5 2.9-5.4V36.1c.1-.8 0-1.7-.4-2.6zM64 88.5c9.1 0 17.1-5 21.3-12.4l12.9 7.6c-6.8 11.8-19.6 19.8-34.2 19.8-21.8 0-39.5-17.7-39.5-39.5S42.2 24.5 64 24.5c14.7 0 27.5 8.1 34.3 20l-13 7.5C81.1 44.5 73.1 39.5 64 39.5c-13.5 0-24.5 11-24.5 24.5s11 24.5 24.5 24.5z"/></svg>
-  )},
-  { name: 'Seaborn', icon: (
-    <svg viewBox="0 0 128 128"><path fill="#4C72B0" d="M64 10C34 10 10 34 10 64s24 54 54 54 54-24 54-54S94 10 64 10zm0 90c-20 0-36-16-36-36s16-36 36-36 36 16 36 36-16 36-36 36z"/><path fill="#4C72B0" d="M64 46c-10 0-18 8-18 18s8 18 18 18 18-8 18-18-8-18-18-18z"/></svg>
-  )}
+// Skills - simplified icons (monochrome)
+const skills = [
+  { name: 'Python', letter: 'Py' },
+  { name: 'NumPy', letter: 'Np' },
+  { name: 'Pandas', letter: 'Pd' },
+  { name: 'Django', letter: 'Dj' },
+  { name: 'React', letter: 'Re' },
+  { name: 'JavaScript', letter: 'Js' },
+  { name: 'Git', letter: 'Gt' },
+  { name: 'C', letter: 'C' }
 ];
 
 const About = () => {
+  const { theme } = useContext(ThemeContext);
+  const isDark = theme === 'dark';
+  const monoFont = "'JetBrains Mono', 'SF Mono', 'Fira Code', 'Consolas', monospace";
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -67,98 +48,194 @@ const About = () => {
   return (
     <section 
       id="about" 
-      className="section"
-      style={{ borderTop: '1px solid var(--color-border)' }}
+      style={{ 
+        background: 'var(--color-bg)',
+        padding: '120px 0'
+      }}
     >
       <div className="container">
         <motion.div 
-          className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-12 lg:gap-16 items-start"
+          style={{
+            display: 'grid',
+            gridTemplateColumns: '220px 1fr',
+            gap: '80px',
+            alignItems: 'start'
+          }}
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: '-100px' }}
         >
           {/* Left - Avatar */}
-          <motion.div 
-            className="flex justify-center lg:justify-start"
-            variants={itemVariants}
-          >
+          <motion.div variants={itemVariants}>
             <div 
-              className="w-56 h-56 lg:w-64 lg:h-64 overflow-hidden transition-all duration-200"
               style={{
-                border: '8px solid var(--color-text)',
-                boxShadow: '0 8px 32px var(--color-shadow)'
+                width: '200px',
+                height: '240px',
+                overflow: 'hidden',
+                border: `1px solid ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'}`,
+                borderRadius: '4px'
               }}
             >
               <img 
                 src={avatarImg} 
                 alt="Gaurav" 
-                className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-300"
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                  filter: 'grayscale(100%)',
+                  opacity: 0.9,
+                  transition: 'all 0.3s ease'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.filter = 'grayscale(0%)';
+                  e.currentTarget.style.opacity = '1';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.filter = 'grayscale(100%)';
+                  e.currentTarget.style.opacity = '0.9';
+                }}
               />
             </div>
           </motion.div>
 
           {/* Right - Content */}
-          <div className="flex flex-col">
-            {/* Section Header */}
-            <motion.span 
-              className="section-label"
+          <div style={{ paddingTop: '8px' }}>
+            {/* Subtle label */}
+            <motion.p 
               variants={itemVariants}
+              style={{
+                fontFamily: monoFont,
+                fontSize: '11px',
+                color: 'var(--color-text-muted)',
+                textTransform: 'uppercase',
+                letterSpacing: '0.1em',
+                marginBottom: '12px',
+                opacity: 0.6
+              }}
             >
-              [About]
-            </motion.span>
+              [ABOUT]
+            </motion.p>
             
+            {/* Main headline */}
             <motion.h2 
-              className="text-2xl lg:text-3xl font-semibold mb-2"
-              style={{ color: 'var(--color-text)' }}
               variants={itemVariants}
+              style={{
+                fontFamily: monoFont,
+                fontSize: '32px',
+                fontWeight: 600,
+                color: 'var(--color-text)',
+                letterSpacing: '-0.02em',
+                marginBottom: '8px'
+              }}
             >
               About Me
             </motion.h2>
             
-            <motion.h3 
-              className="text-lg font-normal mb-4"
-              style={{ color: 'var(--color-text-muted)' }}
+            {/* Name - smaller, lighter */}
+            <motion.p 
               variants={itemVariants}
+              style={{
+                fontFamily: monoFont,
+                fontSize: '14px',
+                fontWeight: 400,
+                color: isDark ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.4)',
+                marginBottom: '32px'
+              }}
             >
               Gaurav
-            </motion.h3>
-            
-            <motion.p 
-              className="text-base leading-relaxed mb-8"
-              style={{ color: 'var(--color-text-secondary)' }}
-              variants={itemVariants}
-            >
-              I'm an aspiring Data Scientist and Python Backend Developer with a passion 
-              for building clean, efficient solutions. Currently focused on data analysis, 
-              machine learning fundamentals, and web development. I enjoy turning complex 
-              problems into simple, elegant code.
             </motion.p>
+            
+            {/* Description - concise, confident */}
+            <motion.div variants={itemVariants}>
+              <p 
+                style={{
+                  fontSize: '15px',
+                  lineHeight: 1.8,
+                  color: 'var(--color-text-muted)',
+                  marginBottom: '12px',
+                  maxWidth: '480px'
+                }}
+              >
+                Data Scientist and Backend Developer focused on building 
+                clean, efficient solutions.
+              </p>
+              <p 
+                style={{
+                  fontSize: '15px',
+                  lineHeight: 1.8,
+                  color: 'var(--color-text-muted)',
+                  marginBottom: '12px',
+                  maxWidth: '480px'
+                }}
+              >
+                I work with Python, machine learning, and modern web technologies.
+              </p>
+              <p 
+                style={{
+                  fontSize: '15px',
+                  lineHeight: 1.8,
+                  color: 'var(--color-text-muted)',
+                  maxWidth: '480px'
+                }}
+              >
+                Currently learning, building, and sharing what I create.
+              </p>
+            </motion.div>
 
             {/* Skills */}
             <motion.div 
-              className="pt-6"
-              style={{ borderTop: '1px solid var(--color-border)' }}
               variants={itemVariants}
+              style={{ marginTop: '48px' }}
             >
-              <h4 
-                className="mono text-xs uppercase tracking-widest mb-4"
-                style={{ color: 'var(--color-text-muted)' }}
+              <p 
+                style={{
+                  fontFamily: monoFont,
+                  fontSize: '10px',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.1em',
+                  color: isDark ? 'rgba(255,255,255,0.35)' : 'rgba(0,0,0,0.35)',
+                  marginBottom: '16px'
+                }}
               >
                 Skills
-              </h4>
-              <div className="flex flex-wrap gap-3">
-                {skillIcons.map((skill, index) => (
+              </p>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
+                {skills.map((skill, index) => (
                   <motion.div 
                     key={skill.name}
-                    className="w-8 h-8 cursor-default transition-transform duration-200 hover:scale-110"
                     title={skill.name}
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
+                    initial={{ opacity: 0, y: 10 }}
+                    whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ delay: index * 0.05 }}
+                    whileHover={{ 
+                      opacity: 1,
+                      scale: 1.05
+                    }}
+                    style={{
+                      fontFamily: monoFont,
+                      fontSize: '11px',
+                      fontWeight: 500,
+                      color: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)',
+                      background: isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.04)',
+                      padding: '8px 12px',
+                      borderRadius: '0',
+                      cursor: 'default',
+                      transition: 'all 0.2s ease',
+                      border: `1px solid ${isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)'}`
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.background = isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.06)';
+                      e.currentTarget.style.color = isDark ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.7)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.background = isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.04)';
+                      e.currentTarget.style.color = isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)';
+                    }}
                   >
-                    {skill.icon}
+                    {skill.name}
                   </motion.div>
                 ))}
               </div>
