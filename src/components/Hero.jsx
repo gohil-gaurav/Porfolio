@@ -50,7 +50,7 @@ const Hero = () => {
 
   // Terminal content
   const terminalLines = [
-    { command: 'whoami', output: 'gaurav' },
+    { command: 'whoami', output: 'Gaurav' },
     { command: 'cat skills.txt', output: ['Python, Pandas, NumPy', 'Django, React, Git'] },
     { command: 'echo $STATUS', output: 'Open to opportunities' },
     { command: '', cursor: true }
