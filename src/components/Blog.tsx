@@ -57,9 +57,9 @@ const Blog = (): JSX.Element => {
   return (
     <section 
       id="blog" 
+      className="py-20 md:py-24 lg:py-28"
       style={{ 
-        background: isDark ? '#0f0f0f' : '#f5f5f5',
-        padding: '100px 0'
+        background: isDark ? '#0f0f0f' : '#f5f5f5'
       }}
     >
       <div className="container">
@@ -126,9 +126,8 @@ const Blog = (): JSX.Element => {
 
         {/* Blog Cards Grid */}
         <div 
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
           style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(3, 1fr)',
             gap: '28px',
             marginBottom: '48px'
           }}
