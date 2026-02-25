@@ -4,17 +4,17 @@
  */
 
 import { useContext } from 'react';
-import { motion } from 'framer-motion';
+import { motion, Variants } from 'framer-motion';
 import { ThemeContext } from '../App';
 import { projects } from '../data/projects';
 import ProjectCard from './ProjectCard';
 
-const Projects = () => {
+const Projects = (): JSX.Element => {
   const { theme } = useContext(ThemeContext);
-  const isDark = theme === 'dark';
-  const monoFont = "'JetBrains Mono', 'SF Mono', 'Fira Code', 'Consolas', monospace";
+  const isDark: boolean = theme === 'dark';
+  const monoFont: string = "'JetBrains Mono', 'SF Mono', 'Fira Code', 'Consolas', monospace";
 
-  const containerVariants = {
+  const containerVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
@@ -27,13 +27,14 @@ const Projects = () => {
       id="projects" 
       style={{ 
         background: 'var(--color-bg)',
-        padding: '100px 0'
+        paddingTop: '120px',
+        paddingBottom: '120px'
       }}
     >
       <div className="container">
         {/* Section Header */}
         <motion.div 
-          style={{ marginBottom: '56px' }}
+          style={{ marginBottom: '60px' }}
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -49,12 +50,12 @@ const Projects = () => {
               marginBottom: '12px'
             }}
           >
-            // Projects
+            // PROJECTS
           </p>
           <h2 
+            className="text-2xl md:text-3xl"
             style={{ 
               fontFamily: monoFont,
-              fontSize: '32px',
               fontWeight: 600,
               color: 'var(--color-text)',
               marginBottom: '16px',
@@ -76,14 +77,10 @@ const Projects = () => {
           </p>
         </motion.div>
 
-        {/* Projects Grid */}
+        {/* Projects Grid - Responsive */}
         <motion.div 
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(3, 1fr)',
-            gap: '24px',
-            marginBottom: '56px'
-          }}
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
+          style={{ gap: '24px', marginBottom: '60px' }}
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"

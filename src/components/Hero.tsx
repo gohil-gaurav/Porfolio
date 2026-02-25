@@ -4,17 +4,42 @@
  */
 
 import { useContext } from 'react';
-import { motion } from 'framer-motion';
+import { motion, Variants } from 'framer-motion';
 import { ThemeContext } from '../App';
 
-const Hero = () => {
-  const { theme } = useContext(ThemeContext);
-  const isDark = theme === 'dark';
+interface TerminalColors {
+  close: string;
+  minimize: string;
+  maximize: string;
+}
 
-  const monoFont = "'JetBrains Mono', 'SF Mono', 'Fira Code', 'Consolas', monospace";
+interface TerminalStyle {
+  bg: string;
+  headerBg: string;
+  border: string;
+  text: string;
+  muted: string;
+  prompt: string;
+  command: string;
+  output: string;
+  shadow: string;
+  controls: TerminalColors;
+}
+
+interface TerminalLine {
+  command: string;
+  output?: string | string[];
+  cursor?: boolean;
+}
+
+const Hero = (): JSX.Element => {
+  const { theme } = useContext(ThemeContext);
+  const isDark: boolean = theme === 'dark';
+
+  const monoFont: string = "'JetBrains Mono', 'SF Mono', 'Fira Code', 'Consolas', monospace";
 
   // Terminal styling - pure black, minimal
-  const terminal = {
+  const terminal: TerminalStyle = {
     bg: isDark ? '#0a0a0a' : '#ffffff',
     headerBg: isDark ? '#111111' : '#f8f8f8',
     border: isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.1)',
@@ -31,7 +56,7 @@ const Hero = () => {
       : { close: '#d4d4d4', minimize: '#d4d4d4', maximize: '#d4d4d4' }
   };
 
-  const containerVariants = {
+  const containerVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
@@ -39,7 +64,7 @@ const Hero = () => {
     }
   };
 
-  const itemVariants = {
+  const itemVariants: Variants = {
     hidden: { opacity: 0, y: 20 },
     visible: { 
       opacity: 1, 
@@ -49,7 +74,7 @@ const Hero = () => {
   };
 
   // Terminal content
-  const terminalLines = [
+  const terminalLines: TerminalLine[] = [
     { command: 'whoami', output: 'Gaurav' },
     { command: 'cat skills.txt', output: ['Python, Pandas, NumPy', 'Django, React, Git'] },
     { command: 'echo $STATUS', output: 'Open to opportunities' },
@@ -305,7 +330,7 @@ const Hero = () => {
                   justifyContent: 'space-around'
                 }}
               >
-                {terminalLines.map((line, index) => (
+                {terminalLines.map((line: TerminalLine, index: number) => (
                   <div key={index}>
                     {/* Command */}
                     <div style={{ 
@@ -337,7 +362,7 @@ const Hero = () => {
                         }}
                       >
                         {Array.isArray(line.output) 
-                          ? line.output.map((text, i) => <div key={i}>{text}</div>)
+                          ? line.output.map((text: string, i: number) => <div key={i}>{text}</div>)
                           : line.output
                         }
                       </div>

@@ -4,36 +4,52 @@
  * Inspired by modern developer portfolios
  */
 
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useContext, MouseEvent } from 'react';
 import { ThemeContext } from '../App';
 import avatarImg from '../assets/images/avatar.jpeg';
 
-const Navbar = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [scrollProgress, setScrollProgress] = useState(0);
-  const [activeSection, setActiveSection] = useState('');
-  const [searchHovered, setSearchHovered] = useState(false);
-  const { theme, toggleTheme } = useContext(ThemeContext);
-  const isDark = theme === 'dark';
+interface NavLink {
+  id: string;
+  label: string;
+}
 
-  const navLinks = [
+interface Colors {
+  text: string;
+  textHover: string;
+  textActive: string;
+  muted: string;
+  subtleBg: string;
+  hoverBg: string;
+  activeDot: string;
+  statusOnline: string;
+}
+
+const Navbar = (): JSX.Element => {
+  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
+  const [scrollProgress, setScrollProgress] = useState<number>(0);
+  const [activeSection, setActiveSection] = useState<string>('');
+  const [searchHovered, setSearchHovered] = useState<boolean>(false);
+  const { theme, toggleTheme } = useContext(ThemeContext);
+  const isDark: boolean = theme === 'dark';
+
+  const navLinks: NavLink[] = [
     { id: 'projects', label: 'Work' },
     { id: 'blog', label: 'Blog' },
     { id: 'about', label: 'About' }
   ];
 
   // Monospace font for terminal aesthetic
-  const monoFont = "'JetBrains Mono', 'SF Mono', 'Fira Code', 'Consolas', monospace";
+  const monoFont: string = "'JetBrains Mono', 'SF Mono', 'Fira Code', 'Consolas', monospace";
 
   // Smooth scroll tracking for navbar transformation
   useEffect(() => {
-    const handleScroll = () => {
-      const scrollY = window.scrollY;
-      const progress = Math.min(scrollY / 150, 1);
+    const handleScroll = (): void => {
+      const scrollY: number = window.scrollY;
+      const progress: number = Math.min(scrollY / 150, 1);
       setScrollProgress(progress);
 
       // Detect active section
-      const sections = navLinks.map(link => document.getElementById(link.id)).filter(Boolean);
+      const sections = navLinks.map(link => document.getElementById(link.id)).filter(Boolean) as HTMLElement[];
       for (const section of sections.reverse()) {
         if (section.getBoundingClientRect().top <= 150) {
           setActiveSection(section.id);
@@ -47,37 +63,37 @@ const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const scrollToTop = (e) => {
+  const scrollToTop = (e: MouseEvent<HTMLAnchorElement>): void => {
     e.preventDefault();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const scrollToSection = (e, id) => {
+  const scrollToSection = (e: MouseEvent<HTMLAnchorElement>, id: string): void => {
     e.preventDefault();
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
     setIsMenuOpen(false);
   };
 
   // Dynamic values based on scroll progress
-  const navWidth = 94 - (scrollProgress * 22);
-  const navPadding = 20 - (scrollProgress * 8);
-  const navHeight = 56 - (scrollProgress * 8);
-  const bgOpacity = isDark 
+  const navWidth: number = 94 - (scrollProgress * 22);
+  const navPadding: number = 20 - (scrollProgress * 8);
+  const navHeight: number = 56 - (scrollProgress * 8);
+  const bgOpacity: number = isDark 
     ? 0.4 + (scrollProgress * 0.35)
     : 0.5 + (scrollProgress * 0.35);
-  const blurAmount = 16 + (scrollProgress * 8);
+  const blurAmount: number = 16 + (scrollProgress * 8);
 
   // Glass background colors - softer charcoal instead of pure black
-  const glassBg = isDark
+  const glassBg: string = isDark
     ? `rgba(28, 30, 35, ${bgOpacity})`
     : `rgba(250, 250, 252, ${bgOpacity})`;
   
-  const borderColor = isDark
+  const borderColor: string = isDark
     ? `rgba(255, 255, 255, ${0.04 + scrollProgress * 0.02})`
     : `rgba(0, 0, 0, ${0.04 + scrollProgress * 0.02})`;
 
   // Refined color palette
-  const colors = {
+  const colors: Colors = {
     text: isDark ? 'rgba(255, 255, 255, 0.55)' : 'rgba(0, 0, 0, 0.5)',
     textHover: isDark ? 'rgba(255, 255, 255, 0.9)' : 'rgba(0, 0, 0, 0.85)',
     textActive: isDark ? 'rgba(255, 255, 255, 1)' : 'rgba(0, 0, 0, 0.95)',
@@ -151,8 +167,8 @@ const Navbar = () => {
 
           {/* Navigation Links - Left aligned */}
           <ul className="hidden md:flex items-center gap-3">
-          {navLinks.map((link, index) => {
-            const isActive = activeSection === link.id;
+          {navLinks.map((link: NavLink, index: number) => {
+            const isActive: boolean = activeSection === link.id;
             return (
               <li key={`${link.id}-${index}`} className="relative">
                 <a 
@@ -167,10 +183,10 @@ const Navbar = () => {
                     letterSpacing: '0.02em'
                   }}
                   onMouseEnter={(e) => {
-                    if (!isActive) e.target.style.color = colors.textHover;
+                    if (!isActive) (e.target as HTMLAnchorElement).style.color = colors.textHover;
                   }}
                   onMouseLeave={(e) => {
-                    if (!isActive) e.target.style.color = colors.text;
+                    if (!isActive) (e.target as HTMLAnchorElement).style.color = colors.text;
                   }}
                 >
                   {link.label}
@@ -387,8 +403,8 @@ const Navbar = () => {
         }}
       >
         <ul className="flex flex-col">
-          {navLinks.map((link, index) => {
-            const isActive = activeSection === link.id;
+          {navLinks.map((link: NavLink, index: number) => {
+            const isActive: boolean = activeSection === link.id;
             return (
               <li key={`mobile-${link.id}-${index}`}>
                 <a 

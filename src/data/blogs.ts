@@ -3,7 +3,17 @@
  * Demo blog entries for the blog preview section
  */
 
-export const blogs = [
+export interface Blog {
+  id: number;
+  filename: string;
+  title: string;
+  excerpt: string;
+  date: string;
+  readTime: string;
+  link: string;
+}
+
+export const blogs: Blog[] = [
   {
     id: 1,
     filename: '2026-01-getting-started-data-science.md',

@@ -3,13 +3,13 @@
  * Dark/Light mode toggle with Tailwind CSS
  */
 
-import { useContext } from 'react';
+import { useContext, MouseEvent } from 'react';
 import { motion } from 'framer-motion';
 import { ThemeContext } from '../App';
 
-const ThemeToggle = () => {
+const ThemeToggle = (): JSX.Element => {
   const { theme, toggleTheme } = useContext(ThemeContext);
-  const isDark = theme === 'dark';
+  const isDark: boolean = theme === 'dark';
 
   return (
     <motion.button
@@ -19,12 +19,12 @@ const ThemeToggle = () => {
         border: '1px solid var(--color-border)',
         color: 'var(--color-text)'
       }}
-      onMouseEnter={(e) => {
+      onMouseEnter={(e: MouseEvent<HTMLButtonElement>) => {
         e.currentTarget.style.background = 'var(--color-text)';
         e.currentTarget.style.color = 'var(--color-bg)';
         e.currentTarget.style.borderColor = 'var(--color-text)';
       }}
-      onMouseLeave={(e) => {
+      onMouseLeave={(e: MouseEvent<HTMLButtonElement>) => {
         e.currentTarget.style.background = 'transparent';
         e.currentTarget.style.color = 'var(--color-text)';
         e.currentTarget.style.borderColor = 'var(--color-border)';

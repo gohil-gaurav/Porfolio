@@ -3,13 +3,18 @@
  * Personal introduction with minimal, developer-focused aesthetic
  */
 
-import { useContext } from 'react';
-import { motion } from 'framer-motion';
+import { useContext, MouseEvent } from 'react';
+import { motion, Variants } from 'framer-motion';
 import { ThemeContext } from '../App';
 import avatarImg from '../assets/images/avatar.jpeg';
 
+interface Skill {
+  name: string;
+  letter: string;
+}
+
 // Skills - simplified icons (monochrome)
-const skills = [
+const skills: Skill[] = [
   { name: 'Python', letter: 'Py' },
   { name: 'NumPy', letter: 'Np' },
   { name: 'Pandas', letter: 'Pd' },
@@ -20,12 +25,12 @@ const skills = [
   { name: 'C', letter: 'C' }
 ];
 
-const About = () => {
+const About = (): JSX.Element => {
   const { theme } = useContext(ThemeContext);
-  const isDark = theme === 'dark';
-  const monoFont = "'JetBrains Mono', 'SF Mono', 'Fira Code', 'Consolas', monospace";
+  const isDark: boolean = theme === 'dark';
+  const monoFont: string = "'JetBrains Mono', 'SF Mono', 'Fira Code', 'Consolas', monospace";
 
-  const containerVariants = {
+  const containerVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
@@ -36,7 +41,7 @@ const About = () => {
     }
   };
 
-  const itemVariants = {
+  const itemVariants: Variants = {
     hidden: { opacity: 0, y: 20 },
     visible: { 
       opacity: 1, 
@@ -48,30 +53,26 @@ const About = () => {
   return (
     <section 
       id="about" 
+      className="py-20 md:py-24 lg:py-28"
       style={{ 
         background: 'var(--color-bg)',
-        padding: '120px 0'
+        position: 'relative',
+        zIndex: 1
       }}
     >
       <div className="container">
         <motion.div 
-          style={{
-            display: 'grid',
-            gridTemplateColumns: '220px 1fr',
-            gap: '80px',
-            alignItems: 'start'
-          }}
+          className="grid grid-cols-1 md:grid-cols-[240px_1fr] gap-12 md:gap-16 lg:gap-20 items-start"
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: '-100px' }}
         >
           {/* Left - Avatar */}
-          <motion.div variants={itemVariants}>
+          <motion.div variants={itemVariants} className="flex justify-center md:justify-start" style={{ paddingTop: '24px' }}>
             <div 
+              className="w-56 h-64 md:w-[240px] md:h-[280px]"
               style={{
-                width: '200px',
-                height: '240px',
                 overflow: 'hidden',
                 border: `1px solid ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'}`,
                 borderRadius: '4px'
@@ -84,17 +85,18 @@ const About = () => {
                   width: '100%',
                   height: '100%',
                   objectFit: 'cover',
-                  filter: 'grayscale(100%)',
-                  opacity: 0.9,
+                  objectPosition: 'center top',
+                  filter: 'grayscale(0%)',
+                  opacity: 1,
                   transition: 'all 0.3s ease'
                 }}
-                onMouseEnter={(e) => {
+                onMouseEnter={(e: MouseEvent<HTMLImageElement>) => {
                   e.currentTarget.style.filter = 'grayscale(0%)';
                   e.currentTarget.style.opacity = '1';
                 }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.filter = 'grayscale(100%)';
-                  e.currentTarget.style.opacity = '0.9';
+                onMouseLeave={(e: MouseEvent<HTMLImageElement>) => {
+                  e.currentTarget.style.filter = 'grayscale(0%)';
+                  e.currentTarget.style.opacity = '1';
                 }}
               />
             </div>
@@ -121,9 +123,9 @@ const About = () => {
             {/* Main headline */}
             <motion.h2 
               variants={itemVariants}
+              className="text-2xl md:text-3xl"
               style={{
                 fontFamily: monoFont,
-                fontSize: '32px',
                 fontWeight: 600,
                 color: 'var(--color-text)',
                 letterSpacing: '-0.02em',
@@ -202,7 +204,7 @@ const About = () => {
                 Skills
               </p>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
-                {skills.map((skill, index) => (
+                {skills.map((skill: Skill, index: number) => (
                   <motion.div 
                     key={skill.name}
                     title={skill.name}
@@ -226,11 +228,11 @@ const About = () => {
                       transition: 'all 0.2s ease',
                       border: `1px solid ${isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)'}`
                     }}
-                    onMouseEnter={(e) => {
+                    onMouseEnter={(e: MouseEvent<HTMLDivElement>) => {
                       e.currentTarget.style.background = isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.06)';
                       e.currentTarget.style.color = isDark ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.7)';
                     }}
-                    onMouseLeave={(e) => {
+                    onMouseLeave={(e: MouseEvent<HTMLDivElement>) => {
                       e.currentTarget.style.background = isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.04)';
                       e.currentTarget.style.color = isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)';
                     }}

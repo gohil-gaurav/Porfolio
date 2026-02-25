@@ -3,29 +3,43 @@
  * Premium project card with image, clean layout, and minimal styling
  */
 
-import { motion } from 'framer-motion';
+import { motion, Variants } from 'framer-motion';
+import { Project, ProjectStatus } from '../data/projects';
+
+interface StatusConfig {
+  label: string;
+  color: string;
+  bg: string;
+}
+
+interface ProjectCardProps {
+  project: Project;
+  index: number;
+  isDark: boolean;
+  monoFont: string;
+}
 
 // Status configuration with muted colors
-const STATUS_CONFIG = {
+const STATUS_CONFIG: Record<ProjectStatus, StatusConfig> = {
   'coming-soon': { label: 'Coming Soon', color: '#f97316', bg: 'rgba(249, 115, 22, 0.1)' },
   'building': { label: 'Building', color: '#ef4444', bg: 'rgba(239, 68, 68, 0.1)' },
   'live': { label: 'Live', color: '#4ade80', bg: 'rgba(74, 222, 128, 0.1)' }
 };
 
 // Placeholder image patterns for projects (gradient backgrounds)
-const PROJECT_IMAGES = {
+const PROJECT_IMAGES: Record<number, string> = {
   1: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)',
   2: 'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #1a1a1a 100%)',
   3: 'linear-gradient(135deg, #0a0a0a 0%, #1f1f1f 50%, #0a0a0a 100%)'
 };
 
-const ProjectCard = ({ project, index, isDark, monoFont }) => {
+const ProjectCard = ({ project, index, isDark, monoFont }: ProjectCardProps): JSX.Element => {
   const { id, filename, title, description, techStack, link, status } = project;
 
-  const statusConfig = STATUS_CONFIG[status] || STATUS_CONFIG['coming-soon'];
-  const isClickable = status === 'live';
+  const statusConfig: StatusConfig = STATUS_CONFIG[status] || STATUS_CONFIG['coming-soon'];
+  const isClickable: boolean = status === 'live';
 
-  const cardVariants = {
+  const cardVariants: Variants = {
     hidden: { opacity: 0, y: 30 },
     visible: { 
       opacity: 1, 
@@ -146,7 +160,7 @@ const ProjectCard = ({ project, index, isDark, monoFont }) => {
             marginBottom: '20px'
           }}
         >
-          {techStack.map((tech, i) => (
+          {techStack.map((tech: string, i: number) => (
             <span 
               key={i}
               style={{

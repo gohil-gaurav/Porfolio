@@ -4,21 +4,28 @@
  * Confident, calm, developer-portfolio tone
  */
 
-import { useContext, useState } from 'react';
+import { useContext, useState, MouseEvent } from 'react';
 import { motion } from 'framer-motion';
 import { ThemeContext } from '../App';
 
-const Contact = () => {
+const Contact = (): JSX.Element => {
   const { theme } = useContext(ThemeContext);
-  const isDark = theme === 'dark';
-  const monoFont = "'JetBrains Mono', 'SF Mono', 'Fira Code', 'Consolas', monospace";
-  const [isHovered, setIsHovered] = useState(false);
+  const isDark: boolean = theme === 'dark';
+  const monoFont: string = "'JetBrains Mono', 'SF Mono', 'Fira Code', 'Consolas', monospace";
+  const [isHovered, setIsHovered] = useState<boolean>(false);
 
   return (
     <section
+      id="contact"
+      className="py-32 md:py-40 lg:py-48 px-4"
       style={{
         background: 'var(--color-bg)',
-        padding: '120px 24px',
+        position: 'relative',
+        zIndex: 1,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        minHeight: '60vh'
       }}
     >
       <motion.div
@@ -26,14 +33,12 @@ const Contact = () => {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: '-60px' }}
         transition={{ duration: 0.6, ease: 'easeOut' }}
+        className="max-w-2xl w-full text-center"
         style={{
-          maxWidth: '640px',
-          margin: '0 auto',
-          padding: '56px 48px',
           background: isDark ? 'rgba(255,255,255,0.02)' : 'rgba(0,0,0,0.02)',
           border: `1px solid ${isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.08)'}`,
           borderRadius: '12px',
-          textAlign: 'center',
+          padding: '48px 60px',
           transition: 'border-color 0.3s ease, box-shadow 0.3s ease',
           ...(isHovered ? {
             borderColor: isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.12)',
@@ -49,8 +54,8 @@ const Contact = () => {
         <h2
           style={{
             fontFamily: monoFont,
-            fontSize: 'clamp(18px, 2.5vw, 24px)',
             fontWeight: 500,
+            fontSize: '20px',
             color: isDark ? 'rgba(255,255,255,0.75)' : 'rgba(0,0,0,0.75)',
             letterSpacing: '0.02em',
             lineHeight: 1.5,
@@ -79,25 +84,23 @@ const Contact = () => {
           whileHover={{ scale: 1.03, y: -2 }}
           whileTap={{ scale: 0.98 }}
           transition={{ type: 'spring', stiffness: 400, damping: 20 }}
+          className="inline-flex items-center gap-3"
           style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '10px',
-            marginTop: '40px',
-            padding: '14px 28px',
             background: isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.04)',
             border: `1px solid ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'}`,
             borderRadius: '8px',
             fontFamily: monoFont,
-            fontSize: '13px',
             fontWeight: 500,
+            fontSize: '16px',
+            padding: '18px 40px',
+            marginTop: '32px',
             color: isDark ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.7)',
             textDecoration: 'none',
             cursor: 'pointer',
             letterSpacing: '0.02em',
             transition: 'background 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease',
           }}
-          onMouseEnter={(e) => {
+          onMouseEnter={(e: MouseEvent<HTMLAnchorElement>) => {
             e.currentTarget.style.background = isDark
               ? 'rgba(255,255,255,0.08)'
               : 'rgba(0,0,0,0.06)';
@@ -108,7 +111,7 @@ const Contact = () => {
               ? '0 4px 20px rgba(255,255,255,0.04)'
               : '0 4px 20px rgba(0,0,0,0.06)';
           }}
-          onMouseLeave={(e) => {
+          onMouseLeave={(e: MouseEvent<HTMLAnchorElement>) => {
             e.currentTarget.style.background = isDark
               ? 'rgba(255,255,255,0.05)'
               : 'rgba(0,0,0,0.04)';
@@ -120,8 +123,8 @@ const Contact = () => {
         >
           {/* Small avatar icon */}
           <svg
-            width="18"
-            height="18"
+            width="22"
+            height="22"
             viewBox="0 0 24 24"
             fill="none"
             stroke={isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)'}

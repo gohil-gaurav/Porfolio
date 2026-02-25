@@ -7,17 +7,17 @@ import { useContext } from 'react';
 import { motion } from 'framer-motion';
 import { ThemeContext } from '../App';
 
-const Footer = () => {
+const Footer = (): JSX.Element => {
   const { theme } = useContext(ThemeContext);
-  const isDark = theme === 'dark';
-  const monoFont = "'JetBrains Mono', 'SF Mono', 'Fira Code', 'Consolas', monospace";
-  const currentYear = new Date().getFullYear();
+  const isDark: boolean = theme === 'dark';
+  const monoFont: string = "'JetBrains Mono', 'SF Mono', 'Fira Code', 'Consolas', monospace";
+  const currentYear: number = new Date().getFullYear();
 
   return (
     <motion.footer 
+      className="pt-12 md:pt-16"
       style={{ 
-        background: 'var(--color-bg)',
-        paddingTop: '48px'
+        background: 'var(--color-bg)'
       }}
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}
@@ -29,21 +29,22 @@ const Footer = () => {
         style={{
           height: '1px',
           background: isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)',
-          marginBottom: '32px'
+          marginBottom: '24px'
         }}
       />
 
       {/* Footer content */}
       <div 
-        className="container"
+        className="container pb-8 md:pb-10"
         style={{
           display: 'flex',
-          justifyContent: 'space-between',
+          flexDirection: 'column',
+          gap: '16px',
           alignItems: 'center',
-          paddingBottom: '32px'
+          textAlign: 'center'
         }}
       >
-        {/* Left - Copyright */}
+        {/* Copyright */}
         <p 
           style={{
             fontFamily: monoFont,
@@ -55,7 +56,7 @@ const Footer = () => {
           © {currentYear} Gaurav
         </p>
 
-        {/* Right - Built with */}
+        {/* Built with */}
         <p 
           style={{
             fontFamily: monoFont,

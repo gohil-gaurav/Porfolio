@@ -3,12 +3,19 @@
  * Premium blog preview section with intentional "coming soon" state
  */
 
-import { useContext } from 'react';
-import { motion } from 'framer-motion';
+import { useContext, MouseEvent } from 'react';
+import { motion, Variants } from 'framer-motion';
 import { ThemeContext } from '../App';
 
+interface UpcomingPost {
+  id: number;
+  category: string;
+  title: string;
+  description: string;
+}
+
 // Upcoming blog post drafts
-const upcomingPosts = [
+const upcomingPosts: UpcomingPost[] = [
   {
     id: 1,
     category: 'Data Science',
@@ -29,14 +36,14 @@ const upcomingPosts = [
   }
 ];
 
-const Blog = () => {
+const Blog = (): JSX.Element => {
   const { theme } = useContext(ThemeContext);
-  const isDark = theme === 'dark';
-  const monoFont = "'JetBrains Mono', 'SF Mono', 'Fira Code', 'Consolas', monospace";
+  const isDark: boolean = theme === 'dark';
+  const monoFont: string = "'JetBrains Mono', 'SF Mono', 'Fira Code', 'Consolas', monospace";
 
-  const cardVariants = {
+  const cardVariants: Variants = {
     hidden: { opacity: 0, y: 24 },
-    visible: (index) => ({
+    visible: (index: number) => ({
       opacity: 1,
       y: 0,
       transition: {
@@ -126,7 +133,7 @@ const Blog = () => {
             marginBottom: '48px'
           }}
         >
-          {upcomingPosts.map((post, index) => (
+          {upcomingPosts.map((post: UpcomingPost, index: number) => (
             <motion.article 
               key={post.id}
               variants={cardVariants}
@@ -149,11 +156,11 @@ const Blog = () => {
                 cursor: 'pointer',
                 transition: 'all 0.25s ease'
               }}
-              onMouseEnter={(e) => {
+              onMouseEnter={(e: MouseEvent<HTMLElement>) => {
                 e.currentTarget.style.borderColor = isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.12)';
                 e.currentTarget.style.background = isDark ? '#171717' : '#fefefe';
               }}
-              onMouseLeave={(e) => {
+              onMouseLeave={(e: MouseEvent<HTMLElement>) => {
                 e.currentTarget.style.borderColor = isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.06)';
                 e.currentTarget.style.background = isDark ? '#141414' : '#ffffff';
               }}

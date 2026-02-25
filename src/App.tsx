@@ -13,14 +13,25 @@ import About from './components/About';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 
-// Theme context for child components
-export const ThemeContext = createContext();
+// Theme types
+export type Theme = 'light' | 'dark';
 
-function App() {
+export interface ThemeContextType {
+  theme: Theme;
+  toggleTheme: () => void;
+}
+
+// Theme context for child components
+export const ThemeContext = createContext<ThemeContextType>({
+  theme: 'dark',
+  toggleTheme: () => {}
+});
+
+function App(): JSX.Element {
   // Initialize theme from localStorage or system preference
-  const [theme, setTheme] = useState(() => {
+  const [theme, setTheme] = useState<Theme>(() => {
     const savedTheme = localStorage.getItem('theme');
-    if (savedTheme) return savedTheme;
+    if (savedTheme) return savedTheme as Theme;
     return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
   });
 
@@ -31,7 +42,7 @@ function App() {
   }, [theme]);
 
   // Toggle function
-  const toggleTheme = () => {
+  const toggleTheme = (): void => {
     setTheme(prevTheme => prevTheme === 'light' ? 'dark' : 'light');
   };
 

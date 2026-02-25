@@ -3,7 +3,20 @@
  * Demo project entries for portfolio display
  */
 
-export const projects = [
+export type ProjectStatus = 'coming-soon' | 'building' | 'live';
+
+export interface Project {
+  id: number;
+  filename: string;
+  title: string;
+  description: string;
+  techStack: string[];
+  link: string;
+  status: ProjectStatus;
+  image: string | null;
+}
+
+export const projects: Project[] = [
   {
     id: 1,
     filename: 'data-dashboard.py',
@@ -11,8 +24,8 @@ export const projects = [
     description: 'Interactive dashboard for visualizing and analyzing datasets with data cleaning, statistical analysis, and beautiful charts.',
     techStack: ['Python', 'Pandas', 'Matplotlib', 'Seaborn'],
     link: '#',
-    status: 'coming-soon', // Options: 'coming-soon' | 'building' | 'live'
-    image: null // Add image URL when available
+    status: 'coming-soon',
+    image: null
   },
   {
     id: 2,

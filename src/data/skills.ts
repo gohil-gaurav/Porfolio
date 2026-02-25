@@ -3,7 +3,18 @@
  * Developer-focused skills with categories and descriptions
  */
 
-export const skills = [
+export type SkillLevel = 'Learning' | 'Intermediate' | 'Proficient';
+export type SkillCategory = 'Language' | 'Data Analysis' | 'Visualization' | 'Backend' | 'Frontend' | 'Database' | 'Tools';
+
+export interface Skill {
+  id: number;
+  name: string;
+  category: SkillCategory;
+  description: string;
+  level: SkillLevel;
+}
+
+export const skills: Skill[] = [
   {
     id: 1,
     name: 'Python',
@@ -90,7 +101,7 @@ export const skills = [
   }
 ];
 
-export const skillCategories = [
+export const skillCategories: string[] = [
   'All',
   'Language',
   'Data Analysis',
