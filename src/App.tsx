@@ -7,6 +7,7 @@
 import { useState, useEffect, createContext } from 'react';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
+import TechStack from './components/TechStack';
 import Projects from './components/Projects';
 import Blog from './components/Blog';
 import About from './components/About';
@@ -55,6 +56,7 @@ function App(): JSX.Element {
         {/* Main Content */}
         <main>
           <Hero />
+          <TechStack />
           <Projects />
           <Blog />
           <About />

@@ -104,6 +104,29 @@ const Hero = (): JSX.Element => {
             animate="visible"
             style={{ maxWidth: '520px' }}
           >
+            {/* Profile Picture */}
+            <motion.div
+              variants={itemVariants}
+              style={{
+                width: '80px',
+                height: '80px',
+                borderRadius: '50%',
+                overflow: 'hidden',
+                border: `2px solid ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'}`,
+                marginBottom: '24px'
+              }}
+            >
+              <img 
+                src={new URL('../assets/images/avatar.jpeg', import.meta.url).href}
+                alt="Gaurav"
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover'
+                }}
+              />
+            </motion.div>
+
             {/* Greeting */}
             <motion.p 
               variants={itemVariants}
