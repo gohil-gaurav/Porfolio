@@ -5,14 +5,11 @@
  */
 
 import { useState, useEffect, createContext } from 'react';
+import { Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
-import Hero from './components/Hero';
-import TechStack from './components/TechStack';
-import Projects from './components/Projects';
-import Blog from './components/Blog';
-import About from './components/About';
-import Contact from './components/Contact';
 import Footer from './components/Footer';
+import Home from './pages/Home';
+import AllProjects from './pages/AllProjects';
 
 // Theme types
 export type Theme = 'light' | 'dark';
@@ -53,14 +50,12 @@ function App(): JSX.Element {
         {/* Navigation */}
         <Navbar />
         
-        {/* Main Content */}
+        {/* Main Content with Routes */}
         <main>
-          <Hero />
-          <TechStack />
-          <Projects />
-          <Blog />
-          <About />
-          <Contact />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/projects" element={<AllProjects />} />
+          </Routes>
         </main>
         
         {/* Footer */}

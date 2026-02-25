@@ -5,6 +5,7 @@
 
 import { useContext } from 'react';
 import { motion, Variants } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import { ThemeContext } from '../App';
 import { projects } from '../data/projects';
 import ProjectCard from './ProjectCard';
@@ -79,8 +80,8 @@ const Projects = (): JSX.Element => {
 
         {/* Projects Grid - Responsive */}
         <motion.div 
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
-          style={{ gap: '24px', marginBottom: '60px' }}
+          className="grid grid-cols-1 md:grid-cols-2"
+          style={{ gap: '32px', marginBottom: '60px', maxWidth: '1000px', margin: '0 auto 60px' }}
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
@@ -105,28 +106,30 @@ const Projects = (): JSX.Element => {
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.3 }}
         >
-          <motion.a 
-            href="#" 
-            whileHover={{ y: -2 }}
-            whileTap={{ scale: 0.98 }}
-            style={{
-              fontFamily: monoFont,
-              fontSize: '13px',
-              padding: '12px 28px',
-              background: 'transparent',
-              color: 'var(--color-text)',
-              border: `1px solid ${isDark ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.15)'}`,
-              borderRadius: '0',
-              textDecoration: 'none',
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '8px',
-              transition: 'all 0.2s ease'
-            }}
-          >
-            View All Projects
-            <span>→</span>
-          </motion.a>
+          <Link to="/projects" style={{ textDecoration: 'none' }}>
+            <motion.div
+              whileHover={{ y: -2 }}
+              whileTap={{ scale: 0.98 }}
+              style={{
+                fontFamily: monoFont,
+                fontSize: '13px',
+                padding: '12px 28px',
+                background: 'transparent',
+                color: 'var(--color-text)',
+                border: `1px solid ${isDark ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.15)'}`,
+                borderRadius: '0',
+                textDecoration: 'none',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '8px',
+                transition: 'all 0.2s ease',
+                cursor: 'pointer'
+              }}
+            >
+              View All Projects
+              <span>→</span>
+            </motion.div>
+          </Link>
         </motion.div>
       </div>
     </section>
