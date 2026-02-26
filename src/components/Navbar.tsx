@@ -35,7 +35,8 @@ const Navbar = (): JSX.Element => {
   const navLinks: NavLink[] = [
     { id: 'projects', label: 'Work' },
     { id: 'blog', label: 'Blog' },
-    { id: 'about', label: 'About' }
+    { id: 'about', label: 'About' },
+    { id: 'contact', label: 'Contact' }
   ];
 
   // Monospace font for terminal aesthetic
@@ -77,7 +78,7 @@ const Navbar = (): JSX.Element => {
   // Dynamic values based on scroll progress
   const navWidth: number = 94 - (scrollProgress * 22);
   const navPadding: number = 20 - (scrollProgress * 8);
-  const navHeight: number = 56 - (scrollProgress * 8);
+  const navHeight: number = 64 - (scrollProgress * 8);
   const bgOpacity: number = isDark 
     ? 0.4 + (scrollProgress * 0.35)
     : 0.5 + (scrollProgress * 0.35);
@@ -92,9 +93,10 @@ const Navbar = (): JSX.Element => {
     ? `rgba(255, 255, 255, ${0.04 + scrollProgress * 0.02})`
     : `rgba(0, 0, 0, ${0.04 + scrollProgress * 0.02})`;
 
-  // Refined color palette
+  // Refined color palette - text gets darker as you scroll
+  const textOpacity = 0.55 + (scrollProgress * 0.25); // Gets darker on scroll
   const colors: Colors = {
-    text: isDark ? 'rgba(255, 255, 255, 0.55)' : 'rgba(0, 0, 0, 0.5)',
+    text: isDark ? `rgba(255, 255, 255, ${textOpacity})` : `rgba(0, 0, 0, ${0.5 + scrollProgress * 0.25})`,
     textHover: isDark ? 'rgba(255, 255, 255, 0.9)' : 'rgba(0, 0, 0, 0.85)',
     textActive: isDark ? 'rgba(255, 255, 255, 1)' : 'rgba(0, 0, 0, 0.95)',
     muted: isDark ? 'rgba(255, 255, 255, 0.35)' : 'rgba(0, 0, 0, 0.35)',
@@ -120,7 +122,7 @@ const Navbar = (): JSX.Element => {
           backdropFilter: `blur(${blurAmount}px) saturate(180%)`,
           WebkitBackdropFilter: `blur(${blurAmount}px) saturate(180%)`,
           border: `1px solid ${borderColor}`,
-          borderRadius: '16px',
+          borderRadius: '8px',
           boxShadow: isDark
             ? `0 4px 24px rgba(0, 0, 0, ${0.25 + scrollProgress * 0.15}), 
                inset 0 1px 0 rgba(255, 255, 255, 0.02)`
@@ -183,26 +185,13 @@ const Navbar = (): JSX.Element => {
                     letterSpacing: '0.02em'
                   }}
                   onMouseEnter={(e) => {
-                    if (!isActive) (e.target as HTMLAnchorElement).style.color = colors.textHover;
+                    (e.target as HTMLAnchorElement).style.color = colors.textHover;
                   }}
                   onMouseLeave={(e) => {
                     if (!isActive) (e.target as HTMLAnchorElement).style.color = colors.text;
                   }}
                 >
                   {link.label}
-                  {/* Active indicator - subtle underline */}
-                  <span 
-                    className="absolute left-1/2 transition-all duration-300 ease-out"
-                    style={{
-                      bottom: '6px',
-                      width: isActive ? '16px' : '0px',
-                      height: '1.5px',
-                      background: colors.activeDot,
-                      opacity: isActive ? 0.7 : 0,
-                      transform: 'translateX(-50%)',
-                      borderRadius: '1px'
-                    }}
-                  />
                 </a>
               </li>
             );
@@ -217,7 +206,8 @@ const Navbar = (): JSX.Element => {
             className="relative flex items-center gap-2 transition-all duration-300 ease-out"
             style={{ 
               height: `${32 - scrollProgress * 2}px`,
-              padding: '0 12px',
+              padding: '0 14px',
+              minWidth: '180px',
               background: colors.subtleBg,
               border: `1px solid ${borderColor}`,
               borderRadius: '8px',
@@ -249,16 +239,21 @@ const Navbar = (): JSX.Element => {
               <path d="M8.5 3a5.5 5.5 0 014.383 8.823l3.896 3.9a.75.75 0 01-1.06 1.06l-3.9-3.896A5.5 5.5 0 118.5 3zm0 1.5a4 4 0 100 8 4 4 0 000-8z"/>
             </svg>
             <span 
-              className="hidden sm:block text-[11px] transition-all duration-200"
+              className="text-[12px] transition-all duration-200 flex-1"
               style={{ opacity: 0.6 }}
             >Search</span>
             <kbd 
-              className="hidden sm:flex items-center text-[10px] font-medium px-1.5 py-0.5 rounded transition-all duration-200"
+              className="flex items-center gap-0.5 text-[11px] font-medium px-2 py-0.5 rounded transition-all duration-200"
               style={{ 
                 background: isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.04)',
-                opacity: 0.7
+                opacity: 0.7,
+                fontFamily: monoFont
               }}
-            >⌘K</kbd>
+            >
+              <span style={{ fontSize: '10px' }}>Ctrl</span>
+              <span style={{ fontSize: '9px', opacity: 0.5 }}>+</span>
+              <span style={{ fontSize: '10px' }}>K</span>
+            </kbd>
           </button>
 
           {/* Divider */}

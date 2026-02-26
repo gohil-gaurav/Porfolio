@@ -28,7 +28,7 @@ const Projects = (): JSX.Element => {
       id="projects" 
       style={{ 
         background: 'var(--color-bg)',
-        paddingTop: '120px',
+        paddingTop: '60px',
         paddingBottom: '120px'
       }}
     >

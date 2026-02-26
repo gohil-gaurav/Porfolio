@@ -11,18 +11,19 @@ import avatarImg from '../assets/images/avatar.jpeg';
 interface Skill {
   name: string;
   letter: string;
+  icon: string;
 }
 
 // Skills - simplified icons (monochrome)
 const skills: Skill[] = [
-  { name: 'Python', letter: 'Py' },
-  { name: 'NumPy', letter: 'Np' },
-  { name: 'Pandas', letter: 'Pd' },
-  { name: 'Django', letter: 'Dj' },
-  { name: 'React', letter: 'Re' },
-  { name: 'JavaScript', letter: 'Js' },
-  { name: 'Git', letter: 'Gt' },
-  { name: 'C', letter: 'C' }
+  { name: 'Python', letter: 'Py', icon: '🐍' },
+  { name: 'NumPy', letter: 'Np', icon: '🔢' },
+  { name: 'Pandas', letter: 'Pd', icon: '🐼' },
+  { name: 'Django', letter: 'Dj', icon: '🎸' },
+  { name: 'React', letter: 'Re', icon: '⚛️' },
+  { name: 'JavaScript', letter: 'Js', icon: '⚡' },
+  { name: 'Git', letter: 'Gt', icon: '📦' },
+  { name: 'C', letter: 'C', icon: '©️' }
 ];
 
 const About = (): JSX.Element => {
@@ -62,11 +63,12 @@ const About = (): JSX.Element => {
     >
       <div className="container">
         <motion.div 
-          className="grid grid-cols-1 md:grid-cols-[240px_1fr] gap-12 md:gap-16 lg:gap-20 items-start"
+          className="grid grid-cols-1 md:grid-cols-[240px_1fr] gap-12 md:gap-16 lg:gap-20 items-start justify-items-center"
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: '-100px' }}
+          style={{ maxWidth: '1000px', margin: '0 auto' }}
         >
           {/* Left - Avatar */}
           <motion.div variants={itemVariants} className="flex justify-center md:justify-start" style={{ paddingTop: '24px' }}>
@@ -218,26 +220,30 @@ const About = (): JSX.Element => {
                     }}
                     style={{
                       fontFamily: monoFont,
-                      fontSize: '11px',
+                      fontSize: '12px',
                       fontWeight: 500,
-                      color: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)',
-                      background: isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.04)',
-                      padding: '8px 12px',
+                      color: isDark ? 'rgba(255,255,255,0.9)' : 'rgba(0,0,0,0.9)',
+                      background: isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.06)',
+                      padding: '10px 14px',
                       borderRadius: '0',
                       cursor: 'default',
                       transition: 'all 0.2s ease',
-                      border: `1px solid ${isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)'}`
+                      border: `1px solid ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'}`,
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '8px'
                     }}
                     onMouseEnter={(e: MouseEvent<HTMLDivElement>) => {
-                      e.currentTarget.style.background = isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.06)';
-                      e.currentTarget.style.color = isDark ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.7)';
+                      e.currentTarget.style.background = isDark ? 'rgba(255,255,255,0.12)' : 'rgba(0,0,0,0.1)';
+                      e.currentTarget.style.color = isDark ? 'rgba(255,255,255,1)' : 'rgba(0,0,0,1)';
                     }}
                     onMouseLeave={(e: MouseEvent<HTMLDivElement>) => {
-                      e.currentTarget.style.background = isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.04)';
-                      e.currentTarget.style.color = isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)';
+                      e.currentTarget.style.background = isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.06)';
+                      e.currentTarget.style.color = isDark ? 'rgba(255,255,255,0.9)' : 'rgba(0,0,0,0.9)';
                     }}
                   >
-                    {skill.name}
+                    <span style={{ fontSize: '16px', lineHeight: 1, opacity: 1 }}>{skill.icon}</span>
+                    <span>{skill.name}</span>
                   </motion.div>
                 ))}
               </div>
