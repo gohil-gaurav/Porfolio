@@ -3,6 +3,7 @@
  * Premium project card with image, clean layout, and minimal styling
  */
 
+import React from 'react';
 import { motion, Variants } from 'framer-motion';
 import { Project, ProjectStatus } from '../data/projects';
 
@@ -37,6 +38,7 @@ const ProjectCard = ({ project, index, isDark, monoFont }: ProjectCardProps): JS
   const { id, filename, title, description, techStack, githubUrl, liveUrl, status } = project;
 
   const statusConfig: StatusConfig = STATUS_CONFIG[status] || STATUS_CONFIG['coming-soon'];
+  const [isHovered, setIsHovered] = React.useState<boolean>(false);
 
   const cardVariants: Variants = {
     hidden: { opacity: 0, y: 30 },
@@ -61,6 +63,8 @@ const ProjectCard = ({ project, index, isDark, monoFont }: ProjectCardProps): JS
         y: -6,
         transition: { duration: 0.25, ease: 'easeOut' }
       }}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
       style={{
         background: isDark ? '#111111' : '#fafafa',
         border: `1px solid ${isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.08)'}`,
@@ -79,39 +83,50 @@ const ProjectCard = ({ project, index, isDark, monoFont }: ProjectCardProps): JS
       <div 
         style={{
           height: '280px',
-          background: PROJECT_IMAGES[id] || PROJECT_IMAGES[1],
           position: 'relative',
           overflow: 'hidden'
         }}
       >
-        {/* Dark overlay for consistency */}
-        <div 
+        <div
           style={{
-            position: 'absolute',
-            inset: 0,
-            background: isDark 
-              ? 'rgba(0,0,0,0.3)' 
-              : 'rgba(255,255,255,0.1)',
-            transition: 'background 0.3s ease'
-          }}
-        />
-        
-        {/* Terminal-style filename badge */}
-        <div 
-          style={{
-            position: 'absolute',
-            bottom: '12px',
-            left: '12px',
-            fontFamily: monoFont,
-            fontSize: '11px',
-            color: isDark ? 'rgba(255,255,255,0.6)' : 'rgba(0,0,0,0.5)',
-            background: isDark ? 'rgba(0,0,0,0.6)' : 'rgba(255,255,255,0.8)',
-            padding: '4px 10px',
-            borderRadius: '0',
-            backdropFilter: 'blur(8px)'
+            width: '100%',
+            height: '100%',
+            background: project.image ? `url(${project.image}) center/cover` : (PROJECT_IMAGES[id] || PROJECT_IMAGES[1]),
+            transform: isHovered ? 'scale(1.05)' : 'scale(1)',
+            filter: isHovered ? 'brightness(1.1)' : 'brightness(1)',
+            transition: 'transform 0.4s ease, filter 0.4s ease',
+            transformOrigin: 'center'
           }}
         >
-          {filename}
+          {/* Dark overlay for consistency */}
+          <div 
+            style={{
+              position: 'absolute',
+              inset: 0,
+              background: isDark 
+                ? 'rgba(0,0,0,0.3)' 
+                : 'rgba(255,255,255,0.1)',
+              transition: 'background 0.3s ease'
+            }}
+          />
+          
+          {/* Terminal-style filename badge */}
+          <div 
+            style={{
+              position: 'absolute',
+              bottom: '12px',
+              left: '12px',
+              fontFamily: monoFont,
+              fontSize: '11px',
+              color: isDark ? 'rgba(255,255,255,0.6)' : 'rgba(0,0,0,0.5)',
+              background: isDark ? 'rgba(0,0,0,0.6)' : 'rgba(255,255,255,0.8)',
+              padding: '4px 10px',
+              borderRadius: '0',
+              backdropFilter: 'blur(8px)'
+            }}
+          >
+            {filename}
+          </div>
         </div>
       </div>
 

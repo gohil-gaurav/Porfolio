@@ -49,7 +49,7 @@ export const projects: Project[] = [
     githubUrl: 'https://github.com/gohil-gaurav/student-performance-predictor',
     liveUrl: 'https://student-performance-predictor01.streamlit.app/',
     status: 'live',
-    image: null
+    image: '/src/assets/images/project/studentmarkpredition.png'
   }
 ];
 
