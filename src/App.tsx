@@ -5,7 +5,7 @@
  */
 
 import { useState, useEffect, createContext } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Home from './pages/Home';
@@ -26,6 +26,8 @@ export const ThemeContext = createContext<ThemeContextType>({
 });
 
 function App(): JSX.Element {
+  const location = useLocation();
+
   // Initialize theme from localStorage or system preference
   const [theme, setTheme] = useState<Theme>(() => {
     const savedTheme = localStorage.getItem('theme');
@@ -38,6 +40,11 @@ function App(): JSX.Element {
     document.documentElement.setAttribute('data-theme', theme);
     localStorage.setItem('theme', theme);
   }, [theme]);
+
+  // Scroll to top on route change
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location.pathname]);
 
   // Toggle function
   const toggleTheme = (): void => {

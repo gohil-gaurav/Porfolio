@@ -27,7 +27,7 @@ export const projects: Project[] = [
     githubUrl: 'https://github.com/yourusername/data-dashboard',
     liveUrl: undefined,
     status: 'coming-soon',
-    image: null
+    image: '/src/assets/images/project/hrmanagement.png'
   },
   {
     id: 2,
@@ -38,7 +38,7 @@ export const projects: Project[] = [
     githubUrl: 'https://github.com/yourusername/student-system',
     liveUrl: undefined,
     status: 'building',
-    image: null
+    image: '/src/assets/images/project/blognest.png'
   },
   {
     id: 3,

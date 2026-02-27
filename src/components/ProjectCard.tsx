@@ -109,24 +109,6 @@ const ProjectCard = ({ project, index, isDark, monoFont }: ProjectCardProps): JS
               transition: 'background 0.3s ease'
             }}
           />
-          
-          {/* Terminal-style filename badge */}
-          <div 
-            style={{
-              position: 'absolute',
-              bottom: '12px',
-              left: '12px',
-              fontFamily: monoFont,
-              fontSize: '11px',
-              color: isDark ? 'rgba(255,255,255,0.6)' : 'rgba(0,0,0,0.5)',
-              background: isDark ? 'rgba(0,0,0,0.6)' : 'rgba(255,255,255,0.8)',
-              padding: '4px 10px',
-              borderRadius: '0',
-              backdropFilter: 'blur(8px)'
-            }}
-          >
-            {filename}
-          </div>
         </div>
       </div>
 
