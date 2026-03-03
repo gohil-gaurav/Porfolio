@@ -422,7 +422,7 @@ const Hero = (): JSX.Element => {
                     textAlign: 'center',
                     fontFamily: monoFont,
                     fontSize: '11px',
-                    color: terminal.muted,
+                    color: isDark ? '#ffffff' : '#000000',
                     letterSpacing: '0.05em'
                   }}
                 >
