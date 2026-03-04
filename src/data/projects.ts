@@ -61,6 +61,17 @@ export const projects: Project[] = [
     liveUrl: 'https://gaurav89.pythonanywhere.com/',
     status: 'live',
     image: '/src/assets/images/project/blognest.png'
+  },
+  {
+    id: 5,
+    filename: 'kushi-fashion.html',
+    title: 'Kushi - Fashion Blog Website',
+    description: 'Elegant fashion blog showcasing latest trends, red carpet looks, and style insights with modern design.',
+    techStack: ['HTML', 'CSS', 'JavaScript'],
+    githubUrl: 'https://github.com/gohil-gaurav/webpage_kushi',
+    liveUrl: 'https://iridescent-starship-c12fa1.netlify.app/',
+    status: 'live',
+    image: '/src/assets/images/project/kushi.png'
   }
 ];
 

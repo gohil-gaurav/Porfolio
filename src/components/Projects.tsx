@@ -87,7 +87,7 @@ const Projects = (): JSX.Element => {
           whileInView="visible"
           viewport={{ once: true, margin: '-100px' }}
         >
-          {projects.map((project, index) => (
+          {projects.slice(0, 4).map((project, index) => (
             <ProjectCard 
               key={project.id} 
               project={project} 
