@@ -5,7 +5,6 @@
 
 import { useContext } from 'react';
 import { motion, Variants } from 'framer-motion';
-import { Link } from 'react-router-dom';
 import { ThemeContext } from '../App';
 
 interface TerminalColors {
@@ -92,7 +91,7 @@ const Hero = (): JSX.Element => {
     >
       <div className="container">
         <div 
-          className="grid grid-cols-1 lg:grid-cols-2 items-center"
+          className="grid grid-cols-1 lg:grid-cols-2 items-start"
           style={{ 
             gap: '80px',
             padding: '60px 0'
@@ -108,32 +107,31 @@ const Hero = (): JSX.Element => {
             {/* Profile Picture */}
             <motion.div
               variants={itemVariants}
-              style={{
-                width: '80px',
-                height: '80px',
-                borderRadius: '50%',
-                overflow: 'hidden',
-                border: `2px solid ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'}`,
-                marginBottom: '24px'
-              }}
+              style={{ marginBottom: '24px' }}
             >
               <img 
-                src={new URL('../assets/images/avatar.jpeg', import.meta.url).href}
-                alt="Gaurav"
+                src="/src/assets/images/avatar.jpeg"
+                alt="Gaurav Gohil"
                 style={{
-                  width: '100%',
-                  height: '100%',
-                  objectFit: 'cover'
+                  width: '120px',
+                  height: '120px',
+                  borderRadius: '50%',
+                  objectFit: 'cover',
+                  border: `2px solid ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'}`,
+                  boxShadow: isDark 
+                    ? '0 4px 12px rgba(0,0,0,0.3)' 
+                    : '0 4px 12px rgba(0,0,0,0.1)'
                 }}
               />
             </motion.div>
 
-            {/* Greeting */}
+            {/* Small intro text */}
             <motion.p 
               variants={itemVariants}
               style={{ 
                 fontFamily: monoFont,
-                fontSize: '20px',
+                fontSize: '16px',
+                fontWeight: 400,
                 color: 'var(--color-text-muted)',
                 marginBottom: '12px',
                 letterSpacing: '0.02em'
@@ -142,51 +140,141 @@ const Hero = (): JSX.Element => {
               Hello, I'm
             </motion.p>
 
-            {/* Name */}
+            {/* Main Name Heading */}
             <motion.h1 
               variants={itemVariants}
               style={{ 
                 fontFamily: monoFont,
-                fontSize: '52px',
+                fontSize: '56px',
                 fontWeight: 700,
                 color: 'var(--color-text)',
                 marginBottom: '16px',
                 lineHeight: 1.1,
-                letterSpacing: '-0.02em'
+                letterSpacing: '-0.03em'
               }}
             >
-              Gaurav
+              Gaurav Gohil
             </motion.h1>
 
-            {/* Role */}
-            <motion.p 
+            {/* Role/Title Heading */}
+            <motion.h2 
               variants={itemVariants}
               style={{ 
                 fontFamily: monoFont,
-                fontSize: '16px',
-                color: 'var(--color-text-secondary)',
+                fontSize: '24px',
+                fontWeight: 600,
+                color: 'var(--color-text)',
                 marginBottom: '24px',
-                letterSpacing: '0.01em'
+                lineHeight: 1.3,
+                letterSpacing: '-0.01em',
+                opacity: 0.9
               }}
             >
-              Data Scientist & Backend Developer
-            </motion.p>
+              Data Scientist & Python Backend Developer
+            </motion.h2>
 
-            {/* Description */}
-            <motion.p 
+            {/* Description with inline technology badges */}
+            <motion.div 
               variants={itemVariants}
               style={{ 
                 fontSize: '15px',
-                lineHeight: 1.7,
+                lineHeight: 1.8,
                 color: 'var(--color-text-muted)',
                 marginBottom: '32px',
-                maxWidth: '440px'
+                maxWidth: '520px'
               }}
             >
-              Passionate about turning data into insights and building 
-              scalable backend solutions. I specialize in Python, Data Scientist, 
-              and Web Technologies.
-            </motion.p>
+              <p style={{ marginBottom: '16px' }}>
+                I build intelligent data-driven applications using{' '}
+                <span style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '4px',
+                  padding: '2px 8px',
+                  background: isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.05)',
+                  borderRadius: '4px',
+                  fontWeight: 500,
+                  verticalAlign: 'middle'
+                }}>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" style={{ flexShrink: 0 }}>
+                    <path d="M14.25.18l.9.2.73.26.59.3.45.32.34.34.25.34.16.33.1.3.04.26.02.2-.01.13V8.5l-.05.63-.13.55-.21.46-.26.38-.3.31-.33.25-.35.19-.35.14-.33.1-.3.07-.26.04-.21.02H8.77l-.69.05-.59.14-.5.22-.41.27-.33.32-.27.35-.2.36-.15.37-.1.35-.07.32-.04.27-.02.21v3.06H3.17l-.21-.03-.28-.07-.32-.12-.35-.18-.36-.26-.36-.36-.35-.46-.32-.59-.28-.73-.21-.88-.14-1.05-.05-1.23.06-1.22.16-1.04.24-.87.32-.71.36-.57.4-.44.42-.33.42-.24.4-.16.36-.1.32-.05.24-.01h.16l.06.01h8.16v-.83H6.18l-.01-2.75-.02-.37.05-.34.11-.31.17-.28.25-.26.31-.23.38-.2.44-.18.51-.15.58-.12.64-.1.71-.06.77-.04.84-.02 1.27.05zm-6.3 1.98l-.23.33-.08.41.08.41.23.34.33.22.41.09.41-.09.33-.22.23-.34.08-.41-.08-.41-.23-.33-.33-.22-.41-.09-.41.09zm13.09 3.95l.28.06.32.12.35.18.36.27.36.35.35.47.32.59.28.73.21.88.14 1.04.05 1.23-.06 1.23-.16 1.04-.24.86-.32.71-.36.57-.4.45-.42.33-.42.24-.4.16-.36.09-.32.05-.24.02-.16-.01h-8.22v.82h5.84l.01 2.76.02.36-.05.34-.11.31-.17.29-.25.25-.31.24-.38.2-.44.17-.51.15-.58.13-.64.09-.71.07-.77.04-.84.01-1.27-.04-1.07-.14-.9-.2-.73-.25-.59-.3-.45-.33-.34-.34-.25-.34-.16-.33-.1-.3-.04-.25-.02-.2.01-.13v-5.34l.05-.64.13-.54.21-.46.26-.38.3-.32.33-.24.35-.2.35-.14.33-.1.3-.06.26-.04.21-.02.13-.01h5.84l.69-.05.59-.14.5-.21.41-.28.33-.32.27-.35.2-.36.15-.36.1-.35.07-.32.04-.28.02-.21V6.07h2.09l.14.01zm-6.47 14.25l-.23.33-.08.41.08.41.23.33.33.23.41.08.41-.08.33-.23.23-.33.08-.41-.08-.41-.23-.33-.33-.23-.41-.08-.41.08z" fill="url(#python-gradient)"/>
+                    <defs>
+                      <linearGradient id="python-gradient" x1="0" y1="0" x2="0" y2="24" gradientUnits="userSpaceOnUse">
+                        <stop offset="0%" stopColor="#3776AB"/>
+                        <stop offset="100%" stopColor="#FFD43B"/>
+                      </linearGradient>
+                    </defs>
+                  </svg>
+                  Python
+                </span>
+                ,{' '}
+                <span style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '4px',
+                  padding: '2px 8px',
+                  background: isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.05)',
+                  borderRadius: '4px',
+                  fontWeight: 500,
+                  verticalAlign: 'middle'
+                }}>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" style={{ flexShrink: 0 }}>
+                    <path d="M16.922 0h2.623v18.104h-2.623zm-4.126 12.94h2.623v2.57h-2.623zm0-7.037h2.623v5.446h-2.623zm0 11.197h2.623v5.446h-2.623zM4.456 5.896h2.622V24H4.456zm4.213 2.559h2.623v2.57H8.67zm0 4.151h2.623v5.447H8.67zm0-11.187h2.623v5.446H8.67z" fill="#150458"/>
+                  </svg>
+                  Pandas
+                </span>
+                ,{' '}
+                <span style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '4px',
+                  padding: '2px 8px',
+                  background: isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.05)',
+                  borderRadius: '4px',
+                  fontWeight: 500,
+                  verticalAlign: 'middle'
+                }}>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" style={{ flexShrink: 0 }}>
+                    <path d="M10.315 4.876L6.3048 2.8918l-4.401 2.1699 4.1186 2.0726zm.794.3894l4.2045-2.0844-4.406-2.1841-4.2045 2.0844zM5.9 15.8562l4.0107-2.0845V9.5024L5.9 11.5869zm5.8984-2.0845l4.0107 2.0845v-4.2693L11.7984 9.5024zm-5.0835-7.555l4.1186 2.0726 4.1186-2.0726-4.1186-2.0845zm12.769 2.4218l-4.401-2.1699-4.0107 1.9943 4.1186 2.0726zm-7.2924 9.3369l4.0107-2.0845v-4.2693l-4.0107 2.0845zm-1.7889 0V13.772l-4.0107-2.0845v4.2693zm.8944 8.3548l4.2045-2.0844-4.406-2.1841-4.2045 2.0844zm4.9984-2.4699l-4.0107-2.0726-4.0107 2.0726 4.0107 2.0845zm5.0835-7.555l-4.1186-2.0726-4.1186 2.0726 4.1186 2.0845zm-9.2924-9.3369l-4.401 2.1699 4.0107 1.9943 4.1186-2.0726z" fill="#4DABCF"/>
+                  </svg>
+                  NumPy
+                </span>
+                ,{' '}
+                <span style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '4px',
+                  padding: '2px 8px',
+                  background: isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.05)',
+                  borderRadius: '4px',
+                  fontWeight: 500,
+                  verticalAlign: 'middle'
+                }}>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" style={{ flexShrink: 0 }}>
+                    <path d="M11.146 0h3.924v18.166c-2.013.382-3.491.535-5.096.535-4.791 0-7.288-2.166-7.288-6.32 0-4.002 2.65-6.6 6.753-6.6.637 0 1.121.05 1.707.203zm0 9.143a3.894 3.894 0 00-1.325-.204c-1.988 0-3.134 1.223-3.134 3.365 0 2.09 1.096 3.236 3.109 3.236.433 0 .79-.025 1.35-.102V9.142zM21.314 6.06v9.098c0 3.134-.229 4.638-.917 5.937-.637 1.249-1.478 2.039-3.211 2.905l-3.644-1.733c1.733-.815 2.574-1.529 3.109-2.625.56-1.121.739-2.421.739-5.835V6.059h3.924zM17.39.021h3.924v4.026H17.39z" fill="#092E20"/>
+                  </svg>
+                  Django
+                </span>
+                , and{' '}
+                <span style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '4px',
+                  padding: '2px 8px',
+                  background: isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.05)',
+                  borderRadius: '4px',
+                  fontWeight: 500,
+                  verticalAlign: 'middle'
+                }}>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" style={{ flexShrink: 0 }}>
+                    <circle cx="12" cy="12" r="10" fill="#F7931E"/>
+                    <path d="M8 10h8M8 14h8" stroke="white" strokeWidth="2" strokeLinecap="round"/>
+                  </svg>
+                  Scikit-learn
+                </span>
+                , focusing on transforming raw data into meaningful insights and building scalable backend systems.
+              </p>
+            </motion.div>
 
             {/* Buttons */}
             <motion.div 
