@@ -152,38 +152,6 @@ const SearchModal = ({ isOpen, onClose }: SearchModalProps): JSX.Element | null 
   const results = [...filteredSections, ...filteredProjects, ...filteredSocial, ...filteredBlog];
   const hasResults = results.length > 0;
 
-  // Handle keyboard navigation
-  useEffect(() => {
-    const handleKeyDown = (e: globalThis.KeyboardEvent) => {
-      if (!isOpen) return;
-
-      if (e.key === 'ArrowDown') {
-        e.preventDefault();
-        if (results.length > 0) {
-          setSelectedIndex(prev => (prev + 1) % results.length);
-        }
-      } else if (e.key === 'ArrowUp') {
-        e.preventDefault();
-        if (results.length > 0) {
-          setSelectedIndex(prev => (prev - 1 + results.length) % results.length);
-        }
-      } else if (e.key === 'Enter') {
-        e.preventDefault();
-        if (results.length > 0 && results[selectedIndex]) {
-          results[selectedIndex].action();
-        }
-      } else if (e.key === 'Escape') {
-        e.preventDefault();
-        onClose();
-      }
-    };
-
-    if (isOpen) {
-      window.addEventListener('keydown', handleKeyDown);
-      return () => window.removeEventListener('keydown', handleKeyDown);
-    }
-  }, [isOpen, results, selectedIndex, onClose]);
-
   // Reset state when modal opens/closes
   useEffect(() => {
     if (isOpen) {
@@ -191,6 +159,41 @@ const SearchModal = ({ isOpen, onClose }: SearchModalProps): JSX.Element | null 
       setSelectedIndex(0);
     }
   }, [isOpen]);
+
+  // Handle keyboard navigation
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handleKeyDown = (e: globalThis.KeyboardEvent) => {
+      switch (e.key) {
+        case 'ArrowDown':
+          e.preventDefault();
+          if (results.length > 0) {
+            setSelectedIndex(prev => (prev + 1) % results.length);
+          }
+          break;
+        case 'ArrowUp':
+          e.preventDefault();
+          if (results.length > 0) {
+            setSelectedIndex(prev => (prev - 1 + results.length) % results.length);
+          }
+          break;
+        case 'Enter':
+          e.preventDefault();
+          if (results.length > 0 && results[selectedIndex]) {
+            results[selectedIndex].action();
+          }
+          break;
+        case 'Escape':
+          e.preventDefault();
+          onClose();
+          break;
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown as EventListener);
+    return () => document.removeEventListener('keydown', handleKeyDown as EventListener);
+  }, [isOpen, results, selectedIndex, onClose]);
 
   if (!isOpen) return null;
 
@@ -247,6 +250,12 @@ const SearchModal = ({ isOpen, onClose }: SearchModalProps): JSX.Element | null 
             placeholder="Search projects, blog, sections, social..."
             value={query}
             onChange={(e: ChangeEvent<HTMLInputElement>) => setQuery(e.target.value)}
+            onKeyDown={(e: KeyboardEvent<HTMLInputElement>) => {
+              // Prevent default behavior for navigation keys
+              if (e.key === 'ArrowDown' || e.key === 'ArrowUp' || e.key === 'Enter' || e.key === 'Escape') {
+                e.preventDefault();
+              }
+            }}
             autoFocus
             style={{
               width: '100%',
@@ -433,10 +442,57 @@ const SearchModal = ({ isOpen, onClose }: SearchModalProps): JSX.Element | null 
         </div>
 
         {/* Footer */}
-        <div style={{ padding: '10px 18px', borderTop: `1px solid ${isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)'}`, display: 'flex', gap: '14px', fontSize: '10px', fontFamily: monoFont, color: isDark ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.4)' }}>
-          <span>↑↓ Navigate</span>
-          <span>↵ Select</span>
-          <span>ESC Close</span>
+        <div style={{ 
+          padding: '12px 18px', 
+          borderTop: `1px solid ${isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)'}`, 
+          display: 'flex', 
+          alignItems: 'center',
+          gap: '16px', 
+          fontFamily: monoFont, 
+          fontSize: '11px',
+          color: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)'
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+            <kbd style={{ 
+              padding: '2px 6px', 
+              background: isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.06)', 
+              borderRadius: '4px',
+              border: `1px solid ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'}`,
+              fontSize: '10px',
+              fontWeight: 500
+            }}>↑</kbd>
+            <kbd style={{ 
+              padding: '2px 6px', 
+              background: isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.06)', 
+              borderRadius: '4px',
+              border: `1px solid ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'}`,
+              fontSize: '10px',
+              fontWeight: 500
+            }}>↓</kbd>
+            <span style={{ marginLeft: '2px' }}>to navigate</span>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+            <kbd style={{ 
+              padding: '2px 8px', 
+              background: isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.06)', 
+              borderRadius: '4px',
+              border: `1px solid ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'}`,
+              fontSize: '10px',
+              fontWeight: 500
+            }}>↵</kbd>
+            <span style={{ marginLeft: '2px' }}>to select</span>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+            <kbd style={{ 
+              padding: '2px 6px', 
+              background: isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.06)', 
+              borderRadius: '4px',
+              border: `1px solid ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'}`,
+              fontSize: '9px',
+              fontWeight: 500
+            }}>ESC</kbd>
+            <span style={{ marginLeft: '2px' }}>to close</span>
+          </div>
         </div>
       </div>
 

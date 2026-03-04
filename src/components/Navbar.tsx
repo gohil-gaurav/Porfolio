@@ -53,18 +53,30 @@ const Navbar = ({ onSearchClick }: NavbarProps): JSX.Element => {
       const progress: number = Math.min(scrollY / 150, 1);
       setScrollProgress(progress);
 
-      // Detect active section
-      const sections = navLinks.map(link => document.getElementById(link.id)).filter(Boolean) as HTMLElement[];
-      for (const section of sections.reverse()) {
-        if (section.getBoundingClientRect().top <= 150) {
-          setActiveSection(section.id);
-          return;
+      // Detect active section - check from top to bottom
+      const sections = navLinks.map(link => ({
+        id: link.id,
+        element: document.getElementById(link.id)
+      })).filter(section => section.element !== null);
+
+      let currentSection = '';
+      
+      // Find the section that is currently in view
+      for (const section of sections) {
+        if (section.element) {
+          const rect = section.element.getBoundingClientRect();
+          // Check if section is in viewport (top is above middle of screen)
+          if (rect.top <= window.innerHeight / 2 && rect.bottom >= 0) {
+            currentSection = section.id;
+          }
         }
       }
-      setActiveSection('');
+      
+      setActiveSection(currentSection);
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll(); // Call once on mount
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
