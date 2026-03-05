@@ -133,7 +133,7 @@ const Navbar = ({ onSearchClick }: NavbarProps): JSX.Element => {
           width: `${navWidth}%`,
           maxWidth: '1200px',
           height: `${navHeight}px`,
-          padding: '0 20px',
+          padding: '0 12px',
           background: glassBg,
           backdropFilter: `blur(${blurAmount}px) saturate(180%)`,
           WebkitBackdropFilter: `blur(${blurAmount}px) saturate(180%)`,
@@ -147,7 +147,7 @@ const Navbar = ({ onSearchClick }: NavbarProps): JSX.Element => {
         }}
       >
         {/* Left: Avatar + Navigation */}
-        <div className="flex items-center gap-6">
+        <div className="flex items-center gap-3 sm:gap-6">
           <a 
             href="#" 
             onClick={scrollToTop}
@@ -212,14 +212,14 @@ const Navbar = ({ onSearchClick }: NavbarProps): JSX.Element => {
         </div>
 
         {/* Right: Utilities */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3">
           {/* Search - Command bar style */}
           <button 
             className="relative flex items-center gap-2 transition-all duration-300 ease-out"
             style={{ 
               height: `${32 - scrollProgress * 2}px`,
-              padding: '0 14px',
-              minWidth: '180px',
+              padding: '0 12px',
+              minWidth: '110px',
               background: colors.subtleBg,
               border: `1px solid ${borderColor}`,
               borderRadius: '8px',
@@ -260,7 +260,7 @@ const Navbar = ({ onSearchClick }: NavbarProps): JSX.Element => {
               style={{ opacity: 0.6 }}
             >Search</span>
             <kbd 
-              className="flex items-center gap-0.5 text-[11px] font-medium px-2 py-0.5 rounded transition-all duration-200"
+              className="hidden sm:flex items-center gap-0.5 text-[11px] font-medium px-2 py-0.5 rounded transition-all duration-200"
               style={{ 
                 background: isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.06)',
                 color: isDark ? 'rgba(255, 255, 255, 0.7)' : 'rgba(0, 0, 0, 0.7)',
@@ -400,25 +400,26 @@ const Navbar = ({ onSearchClick }: NavbarProps): JSX.Element => {
 
       {/* Mobile Menu Dropdown */}
       <div 
-        className="md:hidden pointer-events-auto absolute left-1/2 -translate-x-1/2 py-2 px-2 transition-all duration-300"
+        className="md:hidden pointer-events-auto absolute right-4 transition-all duration-300"
         style={{
-          width: `${navWidth - 4}%`,
-          maxWidth: '1160px',
-          top: `${navPadding + navHeight + 8}px`,
-          background: glassBg,
-          backdropFilter: `blur(${blurAmount}px) saturate(180%)`,
-          WebkitBackdropFilter: `blur(${blurAmount}px) saturate(180%)`,
-          border: `1px solid ${borderColor}`,
+          width: '240px',
+          top: `${navPadding + navHeight + 12}px`,
+          background: isDark ? 'rgba(30, 30, 30, 0.98)' : 'rgba(255, 255, 255, 0.98)',
+          backdropFilter: 'blur(20px) saturate(180%)',
+          WebkitBackdropFilter: 'blur(20px) saturate(180%)',
+          border: `1px solid ${isDark ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.2)'}`,
           borderRadius: '12px',
           boxShadow: isDark
-            ? '0 8px 32px rgba(0, 0, 0, 0.35)'
-            : '0 8px 32px rgba(0, 0, 0, 0.08)',
+            ? '0 8px 32px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
+            : '0 8px 32px rgba(0, 0, 0, 0.2)',
           opacity: isMenuOpen ? 1 : 0,
-          transform: isMenuOpen ? 'translateY(0)' : 'translateY(-8px)',
-          pointerEvents: isMenuOpen ? 'auto' : 'none'
+          transform: isMenuOpen ? 'translateY(0) scale(1)' : 'translateY(-8px) scale(0.95)',
+          pointerEvents: isMenuOpen ? 'auto' : 'none',
+          padding: '12px',
+          zIndex: 100
         }}
       >
-        <ul className="flex flex-col">
+        <ul className="flex flex-col gap-2">
           {navLinks.map((link: NavLink, index: number) => {
             const isActive: boolean = activeSection === link.id;
             return (
@@ -426,21 +427,70 @@ const Navbar = ({ onSearchClick }: NavbarProps): JSX.Element => {
                 <a 
                   href={`#${link.id}`}
                   onClick={(e) => scrollToSection(e, link.id)}
-                  className="flex items-center gap-2 px-4 py-3 text-[13px] font-normal rounded-lg transition-all duration-200"
+                  className="flex items-center justify-between px-4 py-3.5 text-[15px] rounded-lg transition-all duration-200"
                   style={{ 
-                    color: isActive ? colors.textActive : colors.text,
-                    background: isActive ? colors.subtleBg : 'transparent',
+                    color: isDark ? '#f5f5f5' : '#171717',
+                    background: isActive 
+                      ? (isDark ? 'rgba(255, 255, 255, 0.15)' : 'rgba(0, 0, 0, 0.1)')
+                      : 'transparent',
                     fontFamily: monoFont,
-                    textTransform: 'lowercase'
+                    fontWeight: isActive ? 600 : 500,
+                    textTransform: 'lowercase',
+                    letterSpacing: '0.02em'
+                  }}
+                  onTouchStart={(e) => {
+                    if (!isActive) {
+                      (e.currentTarget as HTMLAnchorElement).style.background = isDark 
+                        ? 'rgba(255, 255, 255, 0.1)' 
+                        : 'rgba(0, 0, 0, 0.06)';
+                    }
+                  }}
+                  onTouchEnd={(e) => {
+                    if (!isActive) {
+                      (e.currentTarget as HTMLAnchorElement).style.background = 'transparent';
+                    }
+                  }}
+                  onMouseEnter={(e) => {
+                    if (!isActive) {
+                      (e.currentTarget as HTMLAnchorElement).style.background = isDark 
+                        ? 'rgba(255, 255, 255, 0.1)' 
+                        : 'rgba(0, 0, 0, 0.06)';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (!isActive) {
+                      (e.currentTarget as HTMLAnchorElement).style.background = 'transparent';
+                    }
                   }}
                 >
-                  {isActive && (
-                    <span 
-                      className="w-1.5 h-1.5 rounded-full"
-                      style={{ background: colors.activeDot }}
-                    />
-                  )}
-                  {link.label}
+                  <span className="flex items-center gap-3">
+                    {isActive && (
+                      <span 
+                        className="w-2 h-2 rounded-full"
+                        style={{ background: isDark ? '#f5f5f5' : '#171717' }}
+                      />
+                    )}
+                    {!isActive && (
+                      <span 
+                        className="w-2 h-2"
+                        style={{ opacity: 0 }}
+                      />
+                    )}
+                    <span style={{ fontSize: '15px', fontWeight: isActive ? 600 : 500 }}>
+                      {link.label}
+                    </span>
+                  </span>
+                  <svg 
+                    width="16" 
+                    height="16" 
+                    viewBox="0 0 24 24" 
+                    fill="none" 
+                    stroke="currentColor" 
+                    strokeWidth="2.5"
+                    style={{ opacity: 0.7 }}
+                  >
+                    <path d="M9 18l6-6-6-6"/>
+                  </svg>
                 </a>
               </li>
             );
