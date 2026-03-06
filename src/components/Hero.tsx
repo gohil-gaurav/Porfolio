@@ -3,7 +3,7 @@
  * Minimal, clean, developer-focused landing section
  */
 
-import { useContext } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import { motion, Variants } from 'framer-motion';
 import { ThemeContext } from '../App';
 import avatarImg from '../assets/images/avatar.jpeg';
@@ -34,11 +34,113 @@ interface TerminalLine {
   cursor?: boolean;
 }
 
+interface LanyardData {
+  discord_status: 'online' | 'idle' | 'dnd' | 'offline';
+  activities?: Array<{
+    name: string;
+    type: number;
+  }>;
+  kv?: {
+    last_seen?: string;
+  };
+}
+
+interface LanyardResponse {
+  success: boolean;
+  data: LanyardData;
+}
+
+// Utility function to format last seen time
+const formatLastSeen = (timestamp: number): string => {
+  const now = Date.now();
+  const diff = now - timestamp;
+  const minutes = Math.floor(diff / 60000);
+  const hours = Math.floor(diff / 3600000);
+  const days = Math.floor(diff / 86400000);
+
+  if (minutes < 1) return 'just now';
+  if (minutes < 60) return `${minutes}m ago`;
+  if (hours < 24) return `${hours}h ago`;
+  return `${days}d ago`;
+};
+
 const Hero = (): JSX.Element => {
   const { theme } = useContext(ThemeContext);
   const isDark: boolean = theme === 'dark';
+  const [discordStatus, setDiscordStatus] = useState<string>('offline');
+  const [lastSeenTime, setLastSeenTime] = useState<number>(Date.now());
+  const [showTooltip, setShowTooltip] = useState<boolean>(false);
 
   const monoFont: string = "'JetBrains Mono', 'SF Mono', 'Fira Code', 'Consolas', monospace";
+
+  // Fetch Discord status from Lanyard API
+  useEffect(() => {
+    const fetchDiscordStatus = async (): Promise<void> => {
+      try {
+        const response = await fetch('https://api.lanyard.rest/v1/users/1369896039858835531');
+        const data: LanyardResponse = await response.json();
+        if (data.success && data.data.discord_status) {
+          const status = data.data.discord_status;
+          setDiscordStatus(status);
+          
+          // If user is online, update last seen time
+          if (status !== 'offline') {
+            const currentTime = Date.now();
+            setLastSeenTime(currentTime);
+            localStorage.setItem('discord_last_seen', currentTime.toString());
+          } else {
+            // If offline, try to get last seen from localStorage
+            const stored = localStorage.getItem('discord_last_seen');
+            if (stored) {
+              setLastSeenTime(parseInt(stored));
+            }
+          }
+        }
+      } catch (error) {
+        console.error('Failed to fetch Discord status:', error);
+        setDiscordStatus('offline');
+      }
+    };
+
+    // Fetch immediately on mount
+    fetchDiscordStatus();
+
+    // Refresh every 15 seconds
+    const intervalId = setInterval(fetchDiscordStatus, 15000);
+
+    return () => clearInterval(intervalId);
+  }, []);
+
+  // Get status dot color based on Discord status
+  const getStatusColor = (status: string): string => {
+    switch (status) {
+      case 'online':
+        return '#23a55a';
+      case 'idle':
+        return '#faa61a';
+      case 'dnd':
+        return '#ed4245';
+      case 'offline':
+      default:
+        return '#747f8d';
+    }
+  };
+
+  // Get tooltip message based on status
+  const getTooltipMessage = (status: string): string => {
+    switch (status) {
+      case 'online':
+        return 'Currently coding';
+      case 'idle':
+        return 'Away right now';
+      case 'dnd':
+        return 'Do Not Disturb';
+      case 'offline':
+        return `Last active ${formatLastSeen(lastSeenTime)}`;
+      default:
+        return 'Offline';
+    }
+  };
 
   // Terminal styling - pure black, minimal
   const terminal: TerminalStyle = {
@@ -110,7 +212,11 @@ const Hero = (): JSX.Element => {
             {/* Profile Picture */}
             <motion.div
               variants={itemVariants}
-              style={{ marginBottom: '24px' }}
+              style={{ 
+                marginBottom: '24px',
+                position: 'relative',
+                display: 'inline-block'
+              }}
             >
               <img 
                 src={avatarImg}
@@ -126,6 +232,76 @@ const Hero = (): JSX.Element => {
                     : '0 4px 12px rgba(0,0,0,0.1)'
                 }}
               />
+              {/* Discord Status Dot with Tooltip */}
+              <div
+                style={{
+                  position: 'absolute',
+                  bottom: '6px',
+                  right: '6px',
+                  zIndex: 2
+                }}
+                onMouseEnter={() => setShowTooltip(true)}
+                onMouseLeave={() => setShowTooltip(false)}
+              >
+                <span
+                  style={{
+                    display: 'block',
+                    width: '18px',
+                    height: '18px',
+                    borderRadius: '50%',
+                    backgroundColor: getStatusColor(discordStatus),
+                    border: `3px solid ${isDark ? '#000000' : '#ffffff'}`,
+                    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.3)',
+                    transition: 'all 0.3s ease',
+                    cursor: 'pointer'
+                  }}
+                  aria-label={`Discord status: ${discordStatus}`}
+                />
+                {/* Tooltip */}
+                {showTooltip && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -5 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -5 }}
+                    transition={{ duration: 0.2 }}
+                    style={{
+                      position: 'absolute',
+                      top: '100%',
+                      left: '50%',
+                      transform: 'translateX(-50%)',
+                      marginTop: '8px',
+                      padding: '8px 12px',
+                      background: isDark ? 'rgba(30, 30, 30, 0.98)' : 'rgba(0, 0, 0, 0.9)',
+                      color: '#ffffff',
+                      fontSize: '13px',
+                      fontFamily: monoFont,
+                      fontWeight: 500,
+                      borderRadius: '8px',
+                      whiteSpace: 'nowrap',
+                      boxShadow: '0 4px 12px rgba(0, 0, 0, 0.4)',
+                      backdropFilter: 'blur(8px)',
+                      WebkitBackdropFilter: 'blur(8px)',
+                      pointerEvents: 'none',
+                      zIndex: 10
+                    }}
+                  >
+                    {getTooltipMessage(discordStatus)}
+                    {/* Tooltip Arrow */}
+                    <span
+                      style={{
+                        position: 'absolute',
+                        top: '-4px',
+                        left: '50%',
+                        width: '8px',
+                        height: '8px',
+                        background: isDark ? 'rgba(30, 30, 30, 0.98)' : 'rgba(0, 0, 0, 0.9)',
+                        transform: 'translateX(-50%) rotate(45deg)',
+                        borderRadius: '2px'
+                      }}
+                    />
+                  </motion.div>
+                )}
+              </div>
             </motion.div>
 
             {/* Small intro text */}
