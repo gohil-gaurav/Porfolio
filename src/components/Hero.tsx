@@ -83,13 +83,13 @@ const Hero = (): JSX.Element => {
           const status = data.data.discord_status;
           setDiscordStatus(status);
           
-          // If user is online, update last seen time
+          // If user is online/idle/dnd, update and store the timestamp
           if (status !== 'offline') {
             const currentTime = Date.now();
             setLastSeenTime(currentTime);
             localStorage.setItem('discord_last_seen', currentTime.toString());
           } else {
-            // If offline, try to get last seen from localStorage
+            // If offline, retrieve the stored timestamp (don't overwrite it)
             const stored = localStorage.getItem('discord_last_seen');
             if (stored) {
               setLastSeenTime(parseInt(stored));
@@ -99,8 +99,19 @@ const Hero = (): JSX.Element => {
       } catch (error) {
         console.error('Failed to fetch Discord status:', error);
         setDiscordStatus('offline');
+        // On error, try to get last seen from localStorage
+        const stored = localStorage.getItem('discord_last_seen');
+        if (stored) {
+          setLastSeenTime(parseInt(stored));
+        }
       }
     };
+
+    // On component mount, check localStorage first
+    const stored = localStorage.getItem('discord_last_seen');
+    if (stored) {
+      setLastSeenTime(parseInt(stored));
+    }
 
     // Fetch immediately on mount
     fetchDiscordStatus();
@@ -110,6 +121,18 @@ const Hero = (): JSX.Element => {
 
     return () => clearInterval(intervalId);
   }, []);
+
+  // Force re-render every minute to update "last active" display
+  useEffect(() => {
+    if (discordStatus === 'offline') {
+      const updateInterval = setInterval(() => {
+        // Force component to re-render by updating state
+        setLastSeenTime(prev => prev);
+      }, 60000); // Update every minute
+
+      return () => clearInterval(updateInterval);
+    }
+  }, [discordStatus]);
 
   // Get status dot color based on Discord status
   const getStatusColor = (status: string): string => {
