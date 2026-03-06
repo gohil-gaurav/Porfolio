@@ -278,7 +278,7 @@ const Hero = (): JSX.Element => {
                   height: '120px',
                   borderRadius: '50%',
                   objectFit: 'cover',
-                  border: `2px solid ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'}`,
+                  border: `2px solid ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'}`,  
                   boxShadow: isDark 
                     ? '0 4px 12px rgba(0,0,0,0.3)' 
                     : '0 4px 12px rgba(0,0,0,0.1)'
