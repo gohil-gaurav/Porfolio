@@ -70,48 +70,69 @@ const Hero = (): JSX.Element => {
   const [discordStatus, setDiscordStatus] = useState<string>('offline');
   const [lastSeenTime, setLastSeenTime] = useState<number>(Date.now());
   const [showTooltip, setShowTooltip] = useState<boolean>(false);
+  const [isClient, setIsClient] = useState<boolean>(false);
 
   const monoFont: string = "'JetBrains Mono', 'SF Mono', 'Fira Code', 'Consolas', monospace";
 
+  // Initialize client-side only
+  useEffect(() => {
+    setIsClient(true);
+    // Load stored timestamp immediately on client mount
+    const stored = localStorage.getItem('discord_last_seen');
+    if (stored) {
+      setLastSeenTime(parseInt(stored));
+    }
+  }, []);
+
   // Fetch Discord status from Lanyard API
   useEffect(() => {
+    if (!isClient) return; // Only run on client side
+
     const fetchDiscordStatus = async (): Promise<void> => {
       try {
-        const response = await fetch('https://api.lanyard.rest/v1/users/1369896039858835531');
+        // Add timestamp to prevent caching
+        const timestamp = Date.now();
+        const response = await fetch(
+          `https://api.lanyard.rest/v1/users/1369896039858835531?t=${timestamp}`,
+          { 
+            cache: 'no-store',
+            headers: {
+              'Cache-Control': 'no-cache'
+            }
+          }
+        );
         const data: LanyardResponse = await response.json();
         if (data.success && data.data.discord_status) {
           const status = data.data.discord_status;
           setDiscordStatus(status);
           
-          // If user is online/idle/dnd, update and store the timestamp
+          // ONLY update timestamp when user is online/idle/dnd
           if (status !== 'offline') {
             const currentTime = Date.now();
             setLastSeenTime(currentTime);
             localStorage.setItem('discord_last_seen', currentTime.toString());
           } else {
-            // If offline, retrieve the stored timestamp (don't overwrite it)
+            // If offline, ONLY read from localStorage (never overwrite)
             const stored = localStorage.getItem('discord_last_seen');
             if (stored) {
-              setLastSeenTime(parseInt(stored));
+              const storedTime = parseInt(stored);
+              // Only update state if it's different to avoid unnecessary re-renders
+              if (storedTime !== lastSeenTime) {
+                setLastSeenTime(storedTime);
+              }
             }
           }
         }
       } catch (error) {
         console.error('Failed to fetch Discord status:', error);
         setDiscordStatus('offline');
-        // On error, try to get last seen from localStorage
+        // On error, preserve the stored timestamp
         const stored = localStorage.getItem('discord_last_seen');
         if (stored) {
           setLastSeenTime(parseInt(stored));
         }
       }
     };
-
-    // On component mount, check localStorage first
-    const stored = localStorage.getItem('discord_last_seen');
-    if (stored) {
-      setLastSeenTime(parseInt(stored));
-    }
 
     // Fetch immediately on mount
     fetchDiscordStatus();
@@ -120,7 +141,7 @@ const Hero = (): JSX.Element => {
     const intervalId = setInterval(fetchDiscordStatus, 15000);
 
     return () => clearInterval(intervalId);
-  }, []);
+  }, [isClient]);
 
   // Force re-render every minute to update "last active" display
   useEffect(() => {
