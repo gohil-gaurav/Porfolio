@@ -9,6 +9,7 @@ import { Routes, Route, useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import SearchModal from './components/SearchModal';
+import VisitorMilestone from './components/VisitorMilestone';
 import Home from './pages/Home';
 import AllProjects from './pages/AllProjects';
 
@@ -74,6 +75,9 @@ function App(): JSX.Element {
         
         {/* Search Modal */}
         <SearchModal isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
+        
+        {/* Visitor Milestone */}
+        <VisitorMilestone />
         
         {/* Main Content with Routes */}
         <main>

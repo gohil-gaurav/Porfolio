@@ -6,6 +6,7 @@
 import { useContext, useState, useEffect } from 'react';
 import { motion, Variants } from 'framer-motion';
 import { ThemeContext } from '../App';
+import { trackResumeDownload, trackSocialClick } from '../utils/analytics';
 import avatarImg from '../assets/images/avatar.jpeg';
 import resumePdf from '../assets/images/project/Gaurav_Gohil_Resume.pdf';
 
@@ -520,6 +521,7 @@ const Hero = (): JSX.Element => {
                 href={resumePdf}
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() => trackResumeDownload()}
                 whileHover={{ y: -2 }}
                 whileTap={{ scale: 0.98 }}
                 style={{
@@ -590,6 +592,7 @@ const Hero = (): JSX.Element => {
                 href="https://x.com/GauravGohi01"
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() => trackSocialClick('twitter')}
                 whileHover={{ y: -2 }}
                 title="Follow me on X"
                 aria-label="X (Twitter)"
@@ -615,6 +618,7 @@ const Hero = (): JSX.Element => {
                 href="https://www.linkedin.com/in/gaurav-gohil-344758346/"
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() => trackSocialClick('linkedin')}
                 whileHover={{ y: -2 }}
                 title="Connect on LinkedIn"
                 aria-label="LinkedIn"
@@ -641,6 +645,7 @@ const Hero = (): JSX.Element => {
                 href="https://github.com/gohil-gaurav"
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() => trackSocialClick('github')}
                 whileHover={{ y: -2 }}
                 title="Check out my GitHub"
                 aria-label="GitHub"
