@@ -70,11 +70,13 @@ const GitHubActivity = (): JSX.Element => {
         };
 
         // Fetch real contribution data from GitHub GraphQL API
+        const token = import.meta.env.VITE_GITHUB_TOKEN;
+        
         const graphqlResponse = await fetch('https://api.github.com/graphql', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${import.meta.env.VITE_GITHUB_TOKEN}`
+            ...(token && { 'Authorization': `Bearer ${token}` })
           },
           body: JSON.stringify(graphqlQuery)
         });
