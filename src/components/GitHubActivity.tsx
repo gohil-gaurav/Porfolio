@@ -72,6 +72,11 @@ const GitHubActivity = (): JSX.Element => {
         // Fetch real contribution data from GitHub GraphQL API
         const token = import.meta.env.VITE_GITHUB_TOKEN;
         
+        if (!token) {
+          console.error('VITE_GITHUB_TOKEN is not set. Please add it to your environment variables.');
+          console.log('Add VITE_GITHUB_TOKEN to your .env file or deployment platform settings');
+        }
+        
         const graphqlResponse = await fetch('https://api.github.com/graphql', {
           method: 'POST',
           headers: {
@@ -83,6 +88,13 @@ const GitHubActivity = (): JSX.Element => {
 
         if (graphqlResponse.ok) {
           const data = await graphqlResponse.json();
+          
+          if (data.errors) {
+            console.error('GraphQL API errors:', data.errors);
+            if (data.errors[0]?.message?.includes('401')) {
+              console.error('Authentication failed. Check if VITE_GITHUB_TOKEN is valid.');
+            }
+          }
           
           if (data.data?.user?.contributionsCollection) {
             const calendar = data.data.user.contributionsCollection.contributionCalendar;
@@ -359,74 +371,91 @@ const GitHubActivity = (): JSX.Element => {
                 width: 'fit-content',
                 maxWidth: '100%'
               }}>
-                {/* Day Labels */}
-                <div style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: '3px',
-                  marginRight: '8px'
-                }}>
-                  <div style={{ height: '11px' }} />
+                {contributionData.length === 0 ? (
                   <div style={{
-                    fontFamily: monoFont,
-                    fontSize: '10px',
+                    padding: '40px',
+                    textAlign: 'center',
                     color: '#8b949e',
-                    height: '11px',
-                    lineHeight: '11px'
-                  }}>Mon</div>
-                  <div style={{ height: '11px' }} />
-                  <div style={{
                     fontFamily: monoFont,
-                    fontSize: '10px',
-                    color: '#8b949e',
-                    height: '11px',
-                    lineHeight: '11px'
-                  }}>Wed</div>
-                  <div style={{ height: '11px' }} />
-                  <div style={{
-                    fontFamily: monoFont,
-                    fontSize: '10px',
-                    color: '#8b949e',
-                    height: '11px',
-                    lineHeight: '11px'
-                  }}>Fri</div>
-                  <div style={{ height: '11px' }} />
-                </div>
+                    fontSize: '14px'
+                  }}>
+                    <p>Unable to load contribution data.</p>
+                    <p style={{ fontSize: '12px', marginTop: '8px', opacity: 0.7 }}>
+                      Check browser console for details.
+                    </p>
+                  </div>
+                ) : (
+                  <>
+                    {/* Day Labels */}
+                    <div style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      gap: '3px',
+                      marginRight: '8px'
+                    }}>
+                      <div style={{ height: '11px' }} />
+                      <div style={{
+                        fontFamily: monoFont,
+                        fontSize: '10px',
+                        color: '#8b949e',
+                        height: '11px',
+                        lineHeight: '11px'
+                      }}>Mon</div>
+                      <div style={{ height: '11px' }} />
+                      <div style={{
+                        fontFamily: monoFont,
+                        fontSize: '10px',
+                        color: '#8b949e',
+                        height: '11px',
+                        lineHeight: '11px'
+                      }}>Wed</div>
+                      <div style={{ height: '11px' }} />
+                      <div style={{
+                        fontFamily: monoFont,
+                        fontSize: '10px',
+                        color: '#8b949e',
+                        height: '11px',
+                        lineHeight: '11px'
+                      }}>Fri</div>
+                      <div style={{ height: '11px' }} />
+                    </div>
 
-                {/* Weeks Grid - Dynamic Width */}
-                <div style={{ 
-                  display: 'flex', 
-                  gap: '3px', 
-                  flexWrap: 'nowrap',
-                  width: 'fit-content'
-                }}>
-                  {contributionData.map((week, weekIndex) => (
-                    <div key={weekIndex} style={{ display: 'flex', flexDirection: 'column', gap: '3px' }}>
-                      {week.contributionDays.map((day, dayIndex) => (
-                        <div
-                          key={dayIndex}
-                          title={`${day.contributionCount} contributions on ${day.date}`}
-                          style={{
-                            width: '11px',
-                            height: '11px',
-                            backgroundColor: getContributionColor(day.contributionCount),
-                            borderRadius: '2px',
-                            cursor: 'pointer',
-                            transition: 'all 0.2s ease'
-                          }}
-                          onMouseEnter={(e) => {
-                            e.currentTarget.style.transform = 'scale(1.2)';
-                            e.currentTarget.style.outline = '1px solid #8b949e';
-                          }}
-                          onMouseLeave={(e) => {
-                            e.currentTarget.style.transform = 'scale(1)';
-                            e.currentTarget.style.outline = 'none';
-                          }}
-                        />
+                    {/* Weeks Grid - Dynamic Width */}
+                    <div style={{ 
+                      display: 'flex', 
+                      gap: '3px', 
+                      flexWrap: 'nowrap',
+                      width: 'fit-content'
+                    }}>
+                      {contributionData.map((week, weekIndex) => (
+                        <div key={weekIndex} style={{ display: 'flex', flexDirection: 'column', gap: '3px' }}>
+                          {week.contributionDays.map((day, dayIndex) => (
+                            <div
+                              key={dayIndex}
+                              title={`${day.contributionCount} contributions on ${day.date}`}
+                              style={{
+                                width: '11px',
+                                height: '11px',
+                                backgroundColor: getContributionColor(day.contributionCount),
+                                borderRadius: '2px',
+                                cursor: 'pointer',
+                                transition: 'all 0.2s ease'
+                              }}
+                              onMouseEnter={(e) => {
+                                e.currentTarget.style.transform = 'scale(1.2)';
+                                e.currentTarget.style.outline = '1px solid #8b949e';
+                              }}
+                              onMouseLeave={(e) => {
+                                e.currentTarget.style.transform = 'scale(1)';
+                                e.currentTarget.style.outline = 'none';
+                              }}
+                            />
+                          ))}
+                        </div>
                       ))}
                     </div>
-                  ))}
-                </div>
+                  </>
+                )}
               </div>
             </div>
 
