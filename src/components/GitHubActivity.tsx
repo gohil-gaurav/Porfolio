@@ -47,6 +47,14 @@ const GitHubActivity = (): JSX.Element => {
   useEffect(() => {
     const fetchGitHubData = async () => {
       try {
+        // Check if GitHub token is available
+        if (!import.meta.env.VITE_GITHUB_TOKEN) {
+          console.error('GitHub token not found in environment variables');
+          console.error('Please add VITE_GITHUB_TOKEN to your .env file or Vercel environment variables');
+          setIsLoading(false);
+          return;
+        }
+
         // GitHub GraphQL query for real contribution data
         const graphqlQuery = {
           query: `
@@ -70,18 +78,11 @@ const GitHubActivity = (): JSX.Element => {
         };
 
         // Fetch real contribution data from GitHub GraphQL API
-        const token = import.meta.env.VITE_GITHUB_TOKEN;
-        
-        if (!token) {
-          console.error('VITE_GITHUB_TOKEN is not set. Please add it to your environment variables.');
-          console.log('Add VITE_GITHUB_TOKEN to your .env file or deployment platform settings');
-        }
-        
         const graphqlResponse = await fetch('https://api.github.com/graphql', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            ...(token && { 'Authorization': `Bearer ${token}` })
+            'Authorization': `Bearer ${import.meta.env.VITE_GITHUB_TOKEN}`
           },
           body: JSON.stringify(graphqlQuery)
         });
@@ -94,6 +95,8 @@ const GitHubActivity = (): JSX.Element => {
             if (data.errors[0]?.message?.includes('401')) {
               console.error('Authentication failed. Check if VITE_GITHUB_TOKEN is valid.');
             }
+            setIsLoading(false);
+            return;
           }
           
           if (data.data?.user?.contributionsCollection) {
