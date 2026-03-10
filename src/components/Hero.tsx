@@ -290,22 +290,53 @@ const Hero = (): JSX.Element => {
                   position: 'absolute',
                   bottom: '6px',
                   right: '6px',
-                  zIndex: 2
+                  zIndex: 2,
+                  width: '18px',
+                  height: '18px'
                 }}
                 onMouseEnter={() => setShowTooltip(true)}
                 onMouseLeave={() => setShowTooltip(false)}
               >
+                {/* Pulsing ring animation (only when active) */}
+                {(discordStatus === 'online' || discordStatus === 'idle' || discordStatus === 'dnd') && (
+                  <motion.span
+                    animate={{
+                      scale: [1, 2.2],
+                      opacity: [0.7, 0]
+                    }}
+                    transition={{
+                      duration: 2,
+                      repeat: Infinity,
+                      ease: 'easeOut'
+                    }}
+                    style={{
+                      position: 'absolute',
+                      top: '0',
+                      left: '0',
+                      width: '100%',
+                      height: '100%',
+                      borderRadius: '50%',
+                      border: `2px solid ${getStatusColor(discordStatus)}`,
+                      pointerEvents: 'none',
+                      transformOrigin: 'center'
+                    }}
+                  />
+                )}
+                
+                {/* Status dot */}
                 <span
                   style={{
                     display: 'block',
-                    width: '18px',
-                    height: '18px',
+                    width: '100%',
+                    height: '100%',
                     borderRadius: '50%',
                     backgroundColor: getStatusColor(discordStatus),
                     border: `3px solid ${isDark ? '#000000' : '#ffffff'}`,
                     boxShadow: '0 2px 8px rgba(0, 0, 0, 0.3)',
                     transition: 'all 0.3s ease',
-                    cursor: 'pointer'
+                    cursor: 'pointer',
+                    position: 'relative',
+                    zIndex: 1
                   }}
                   aria-label={`Discord status: ${discordStatus}`}
                 />
