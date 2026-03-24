@@ -278,20 +278,12 @@ const GitHubActivity = (): JSX.Element => {
             </p>
           </motion.div>
 
-          {/* GitHub Contribution Calendar Card */}
+          {/* GitHub Contribution Calendar */}
           <motion.div
             variants={itemVariants}
-            whileHover={{ y: -4 }}
-            transition={{ duration: 0.3 }}
             style={{
-              background: '#161b22',
-              border: '1px solid #30363d',
-              borderRadius: '12px',
-              padding: 'clamp(16px, 4vw, 32px)',
-              transition: 'all 0.3s ease',
               width: 'fit-content',
               maxWidth: '100%',
-              overflow: 'hidden',
               margin: '0 auto'
             }}
           >
@@ -300,17 +292,17 @@ const GitHubActivity = (): JSX.Element => {
               display: 'flex',
               justifyContent: 'space-between',
               alignItems: 'flex-start',
-              marginBottom: '20px',
+              marginBottom: '32px',
               flexDirection: window.innerWidth < 640 ? 'column' : 'row',
-              gap: '12px',
+              gap: '16px',
               minWidth: 'fit-content'
             }}>
               <div style={{
                 fontFamily: monoFont,
-                fontSize: 'clamp(11px, 2.5vw, 14px)',
-                color: '#c9d1d9'
+                fontSize: 'clamp(12px, 2.5vw, 15px)',
+                color: isDark ? 'rgba(255,255,255,0.8)' : 'rgba(0,0,0,0.8)'
               }}>
-                <span style={{ fontWeight: 600, color: '#f0f6fc' }}>Total:</span>{' '}
+                <span style={{ fontWeight: 600, color: 'var(--color-text)' }}>Total:</span>{' '}
                 {isLoading ? (
                   <span style={{ opacity: 0.5 }}>Loading...</span>
                 ) : (
@@ -321,10 +313,10 @@ const GitHubActivity = (): JSX.Element => {
               </div>
               <div style={{
                 fontFamily: monoFont,
-                fontSize: 'clamp(11px, 2.5vw, 14px)',
-                color: '#c9d1d9'
+                fontSize: 'clamp(12px, 2.5vw, 15px)',
+                color: isDark ? 'rgba(255,255,255,0.8)' : 'rgba(0,0,0,0.8)'
               }}>
-                <span style={{ fontWeight: 600, color: '#f0f6fc' }}>Last commit:</span>{' '}
+                <span style={{ fontWeight: 600, color: 'var(--color-text)' }}>Last commit:</span>{' '}
                 {isLoading ? (
                   <span style={{ opacity: 0.5 }}>Loading...</span>
                 ) : (
@@ -335,14 +327,13 @@ const GitHubActivity = (): JSX.Element => {
 
             {/* Contribution Calendar Grid */}
             <div style={{ 
-              background: '#0d1117',
-              borderRadius: '8px',
-              padding: 'clamp(12px, 3vw, 20px)',
+              padding: 'clamp(16px, 3vw, 24px)',
               overflow: 'auto',
-              border: '1px solid #30363d',
               width: 'fit-content',
               maxWidth: '100%',
-              margin: '0 auto'
+              margin: '0 auto',
+              border: `1px solid ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'}`,
+              borderRadius: '8px'
             }}>
               {/* Month Labels */}
               <div style={{
@@ -378,14 +369,14 @@ const GitHubActivity = (): JSX.Element => {
               }}>
                 {contributionData.length === 0 ? (
                   <div style={{
-                    padding: 'clamp(20px, 5vw, 40px)',
+                    padding: 'clamp(24px, 5vw, 48px)',
                     textAlign: 'center',
-                    color: '#8b949e',
+                    color: isDark ? 'rgba(255,255,255,0.6)' : 'rgba(0,0,0,0.6)',
                     fontFamily: monoFont,
-                    fontSize: 'clamp(12px, 2.5vw, 14px)'
+                    fontSize: 'clamp(13px, 2.5vw, 15px)'
                   }}>
                     <p>Unable to load contribution data.</p>
-                    <p style={{ fontSize: 'clamp(10px, 2vw, 12px)', marginTop: '8px', opacity: 0.7 }}>
+                    <p style={{ fontSize: 'clamp(11px, 2vw, 13px)', marginTop: '8px', opacity: 0.7 }}>
                       Check browser console for details.
                     </p>
                   </div>
@@ -399,31 +390,31 @@ const GitHubActivity = (): JSX.Element => {
                       marginRight: 'clamp(4px, 1.5vw, 8px)',
                       flexShrink: 0
                     }}>
-                      <div style={{ height: '11px' }} />
+                      <div style={{ height: '13px' }} />
                       <div style={{
                         fontFamily: monoFont,
-                        fontSize: 'clamp(8px, 1.8vw, 10px)',
-                        color: '#8b949e',
-                        height: '11px',
-                        lineHeight: '11px'
+                        fontSize: 'clamp(9px, 1.8vw, 11px)',
+                        color: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)',
+                        height: '13px',
+                        lineHeight: '13px'
                       }}>Mon</div>
-                      <div style={{ height: '11px' }} />
+                      <div style={{ height: '13px' }} />
                       <div style={{
                         fontFamily: monoFont,
-                        fontSize: 'clamp(8px, 1.8vw, 10px)',
-                        color: '#8b949e',
-                        height: '11px',
-                        lineHeight: '11px'
+                        fontSize: 'clamp(9px, 1.8vw, 11px)',
+                        color: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)',
+                        height: '13px',
+                        lineHeight: '13px'
                       }}>Wed</div>
-                      <div style={{ height: '11px' }} />
+                      <div style={{ height: '13px' }} />
                       <div style={{
                         fontFamily: monoFont,
-                        fontSize: 'clamp(8px, 1.8vw, 10px)',
-                        color: '#8b949e',
-                        height: '11px',
-                        lineHeight: '11px'
+                        fontSize: 'clamp(9px, 1.8vw, 11px)',
+                        color: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)',
+                        height: '13px',
+                        lineHeight: '13px'
                       }}>Fri</div>
-                      <div style={{ height: '11px' }} />
+                      <div style={{ height: '13px' }} />
                     </div>
 
                     {/* Weeks Grid - Dynamic Width */}
@@ -441,8 +432,8 @@ const GitHubActivity = (): JSX.Element => {
                               key={dayIndex}
                               title={`${day.contributionCount} contributions on ${day.date}`}
                               style={{
-                                width: '11px',
-                                height: '11px',
+                                width: '13px',
+                                height: '13px',
                                 backgroundColor: getContributionColor(day.contributionCount),
                                 borderRadius: '2px',
                                 cursor: 'pointer',
@@ -474,47 +465,47 @@ const GitHubActivity = (): JSX.Element => {
               display: 'flex',
               justifyContent: window.innerWidth < 640 ? 'center' : 'flex-end',
               alignItems: 'center',
-              marginTop: '16px',
-              gap: 'clamp(6px, 1.5vw, 8px)',
+              marginTop: '20px',
+              gap: 'clamp(8px, 1.5vw, 10px)',
               fontFamily: monoFont,
-              fontSize: 'clamp(10px, 2vw, 12px)',
-              color: '#8b949e',
+              fontSize: 'clamp(11px, 2vw, 13px)',
+              color: isDark ? 'rgba(255,255,255,0.6)' : 'rgba(0,0,0,0.6)',
               minWidth: 'fit-content'
             }}>
               <span>Less</span>
               <div style={{ display: 'flex', gap: '3px' }}>
                 <div style={{ 
-                  width: '11px', 
-                  height: '11px', 
+                  width: '13px', 
+                  height: '13px', 
                   background: '#161b22', 
                   borderRadius: '2px',
                   border: '1px solid #21262d',
                   flexShrink: 0
                 }} />
                 <div style={{ 
-                  width: '11px', 
-                  height: '11px', 
+                  width: '13px', 
+                  height: '13px', 
                   background: '#0e4429', 
                   borderRadius: '2px',
                   flexShrink: 0
                 }} />
                 <div style={{ 
-                  width: '11px', 
-                  height: '11px', 
+                  width: '13px', 
+                  height: '13px', 
                   background: '#006d32', 
                   borderRadius: '2px',
                   flexShrink: 0
                 }} />
                 <div style={{ 
-                  width: '11px', 
-                  height: '11px', 
+                  width: '13px', 
+                  height: '13px', 
                   background: '#26a641', 
                   borderRadius: '2px',
                   flexShrink: 0
                 }} />
                 <div style={{ 
-                  width: '11px', 
-                  height: '11px', 
+                  width: '13px', 
+                  height: '13px', 
                   background: '#39d353', 
                   borderRadius: '2px',
                   flexShrink: 0
