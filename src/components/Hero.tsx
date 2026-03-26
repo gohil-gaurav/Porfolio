@@ -182,13 +182,13 @@ const Hero = (): JSX.Element => {
   const getTooltipMessage = (status: string): string => {
     switch (status) {
       case 'online':
-        return 'Currently coding';
+        return 'Coding…';
       case 'idle':
         return 'Away right now';
       case 'dnd':
         return 'Do Not Disturb';
       case 'offline':
-        return `Last active ${formatLastSeen(lastSeenTime)}`;
+        return 'Back soon';
       default:
         return 'Offline';
     }

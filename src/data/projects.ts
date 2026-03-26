@@ -23,6 +23,7 @@ export interface Project {
   liveUrl?: string;
   status: ProjectStatus;
   image: string | null;
+  tags: string[];
 }
 
 export const projects: Project[] = [
@@ -35,7 +36,8 @@ export const projects: Project[] = [
     githubUrl: 'https://github.com/gohil-gaurav/hr_management_odoo',
     liveUrl: 'https://hr-management-odoo-rose.vercel.app/',
     status: 'live',
-    image: hrManagementImg
+    image: hrManagementImg,
+    tags: ['Hackathon']
   },
   {
     id: 2,
@@ -46,7 +48,8 @@ export const projects: Project[] = [
     githubUrl: 'https://github.com/gohil-gaurav/BankManagementSystem',
     liveUrl: 'https://bankmanagement.pythonanywhere.com/users/',
     status: 'live',
-    image: bankManagementImg
+    image: bankManagementImg,
+    tags: ['Django']
   },
   {
     id: 3,
@@ -57,7 +60,8 @@ export const projects: Project[] = [
     githubUrl: 'https://github.com/gohil-gaurav/RentalManagementSystem',
     liveUrl: 'https://rental-management-system-nine.vercel.app/',
     status: 'live',
-    image: rentalHubImg
+    image: rentalHubImg,
+    tags: ['Hackathon']
   },
   {
     id: 4,
@@ -68,7 +72,8 @@ export const projects: Project[] = [
     githubUrl: 'https://github.com/gohil-gaurav/student-performance-predictor',
     liveUrl: 'https://student-performance-predictor01.streamlit.app/',
     status: 'live',
-    image: studentPredictionImg
+    image: studentPredictionImg,
+    tags: ['ML']
   },
   {
     id: 5,
@@ -79,7 +84,8 @@ export const projects: Project[] = [
     githubUrl: 'https://github.com/gohil-gaurav/blognest',
     liveUrl: 'https://gaurav89.pythonanywhere.com/',
     status: 'live',
-    image: blogNestImg
+    image: blogNestImg,
+    tags: ['Django']
   },
   {
     id: 6,
@@ -90,7 +96,8 @@ export const projects: Project[] = [
     githubUrl: 'https://github.com/gohil-gaurav/webpage_kushi',
     liveUrl: 'https://iridescent-starship-c12fa1.netlify.app/',
     status: 'live',
-    image: kushiImg
+    image: kushiImg,
+    tags: ['Web']
   }
 ];
 
