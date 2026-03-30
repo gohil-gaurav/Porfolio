@@ -47,7 +47,8 @@ export const projects: Project[] = [
     description: 'AI-powered movie recommendation engine using collaborative filtering and content-based algorithms to suggest personalized movies.',
     techStack: ['Python', 'FastAPI', 'React', 'Pandas', 'NumPy', 'Scikit-Learn', 'Jupyter Notebook'],
     githubUrl: 'https://github.com/gohil-gaurav/Movie-Recommendation-System',
-    status: 'building',
+    liveUrl: 'https://cinevault-black.vercel.app/',
+    status: 'live',
     image: movieRecommendationImg,
     tags: ['ML']
   },
