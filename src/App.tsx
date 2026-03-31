@@ -7,7 +7,6 @@
 import { useState, useEffect, createContext } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar';
-import Footer from './components/Footer';
 import SearchModal from './components/SearchModal';
 import Home from './pages/Home';
 import AllProjects from './pages/AllProjects';
@@ -91,9 +90,6 @@ function App(): JSX.Element {
             } />
           </Routes>
         </main>
-        
-        {/* Footer */}
-        <Footer />
       </div>
     </ThemeContext.Provider>
   );

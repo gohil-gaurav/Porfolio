@@ -763,87 +763,93 @@ const ProjectDetail = (): JSX.Element => {
               <h2 
                 style={{ 
                   fontFamily: monoFont,
-                  fontSize: isMobile ? '20px' : '24px',
-                  fontWeight: 700,
+                  fontSize: isMobile ? '18px' : '20px',
+                  fontWeight: 600,
                   color: 'var(--color-text)',
-                  marginBottom: '40px',
-                  letterSpacing: '-0.02em',
-                  textAlign: 'left'
+                  marginBottom: '32px',
+                  letterSpacing: '-0.01em',
+                  textAlign: 'left',
+                  textTransform: 'uppercase',
+                  opacity: 0.9
                 }}
               >
                 Key Features
               </h2>
               
-              {/* Features Grid - Clean Minimal Cards */}
+              {/* Features Grid - Professional Square Cards */}
               <div 
                 style={{
                   display: 'grid',
                   gridTemplateColumns: isMobile ? '1fr' : 'repeat(2, 1fr)',
-                  gap: '20px'
+                  gap: '16px'
                 }}
               >
                 {projectContent.keyHighlights.map((feature, index) => (
                   <motion.div
                     key={index}
-                    initial={{ opacity: 0, y: 30 }}
+                    initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ 
-                      duration: 0.5, 
-                      delay: index * 0.1,
+                      duration: 0.4, 
+                      delay: index * 0.08,
                       ease: [0.25, 0.46, 0.45, 0.94]
                     }}
                     whileHover={{ 
-                      scale: 1.02,
+                      scale: 1.01,
                       transition: { duration: 0.2, ease: 'easeOut' }
                     }}
                     style={{
-                      background: isDark ? 'rgba(20, 20, 20, 0.6)' : 'rgba(250, 250, 250, 0.8)',
-                      border: `1px solid ${isDark ? '#1f1f1f' : 'rgba(0,0,0,0.08)'}`,
-                      borderRadius: '12px',
-                      padding: '20px',
+                      background: isDark ? 'rgba(18, 18, 18, 0.8)' : 'rgba(255, 255, 255, 0.9)',
+                      border: `1px solid ${isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)'}`,
+                      borderRadius: '0px', // Square borders
+                      padding: '24px',
                       cursor: 'default',
-                      transition: 'all 0.3s ease',
-                      backdropFilter: 'blur(10px)',
+                      transition: 'all 0.25s ease',
+                      backdropFilter: 'blur(8px)',
                       boxShadow: isDark 
-                        ? '0 4px 20px rgba(0, 0, 0, 0.2)' 
-                        : '0 4px 20px rgba(0, 0, 0, 0.05)',
+                        ? '0 2px 12px rgba(0, 0, 0, 0.15)' 
+                        : '0 2px 12px rgba(0, 0, 0, 0.04)',
                       display: 'flex',
-                      alignItems: 'center',
+                      alignItems: 'flex-start',
                       gap: '16px',
-                      minHeight: '80px'
+                      minHeight: '90px'
                     }}
                     onMouseEnter={(e) => {
                       const element = e.currentTarget;
-                      element.style.background = isDark ? 'rgba(25, 25, 25, 0.8)' : 'rgba(255, 255, 255, 0.9)';
-                      element.style.borderColor = isDark ? 'rgba(255,255,255,0.12)' : 'rgba(0,0,0,0.12)';
+                      element.style.background = isDark ? 'rgba(22, 22, 22, 0.9)' : 'rgba(255, 255, 255, 0.95)';
+                      element.style.borderColor = isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)';
                       element.style.boxShadow = isDark 
-                        ? '0 8px 32px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255,255,255,0.08)' 
-                        : '0 8px 32px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(0,0,0,0.05)';
+                        ? '0 4px 24px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(255,255,255,0.05)' 
+                        : '0 4px 24px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(0,0,0,0.03)';
                     }}
                     onMouseLeave={(e) => {
                       const element = e.currentTarget;
-                      element.style.background = isDark ? 'rgba(20, 20, 20, 0.6)' : 'rgba(250, 250, 250, 0.8)';
-                      element.style.borderColor = isDark ? '#1f1f1f' : 'rgba(0,0,0,0.08)';
+                      element.style.background = isDark ? 'rgba(18, 18, 18, 0.8)' : 'rgba(255, 255, 255, 0.9)';
+                      element.style.borderColor = isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)';
                       element.style.boxShadow = isDark 
-                        ? '0 4px 20px rgba(0, 0, 0, 0.2)' 
-                        : '0 4px 20px rgba(0, 0, 0, 0.05)';
+                        ? '0 2px 12px rgba(0, 0, 0, 0.15)' 
+                        : '0 2px 12px rgba(0, 0, 0, 0.04)';
                     }}
                   >
                     {/* Icon - Left Side */}
                     <div 
                       style={{
-                        width: '48px',
-                        height: '48px',
-                        borderRadius: '10px',
-                        background: isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.04)',
+                        width: '44px',
+                        height: '44px',
+                        borderRadius: '0px', // Square icon container
+                        background: isDark ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.03)',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        border: `1px solid ${isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.06)'}`,
-                        flexShrink: 0
+                        border: `1px solid ${isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.04)'}`,
+                        flexShrink: 0,
+                        marginTop: '2px'
                       }}
                     >
-                      <div style={{ color: 'var(--color-text-secondary)' }}>
+                      <div style={{ 
+                        color: isDark ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.7)',
+                        fontSize: '20px'
+                      }}>
                         {feature.icon}
                       </div>
                     </div>
@@ -853,10 +859,10 @@ const ProjectDetail = (): JSX.Element => {
                       <h4
                         style={{
                           fontFamily: monoFont,
-                          fontSize: isMobile ? '15px' : '16px',
+                          fontSize: isMobile ? '14px' : '15px',
                           fontWeight: 600,
-                          color: 'var(--color-text)',
-                          marginBottom: '6px',
+                          color: isDark ? 'rgba(255,255,255,0.95)' : 'rgba(0,0,0,0.9)',
+                          marginBottom: '8px',
                           lineHeight: 1.3,
                           letterSpacing: '-0.01em'
                         }}
@@ -865,12 +871,11 @@ const ProjectDetail = (): JSX.Element => {
                       </h4>
                       <p
                         style={{
-                          fontSize: isMobile ? '13px' : '14px',
-                          lineHeight: 1.4,
-                          color: 'var(--color-text-secondary)',
+                          fontSize: isMobile ? '12px' : '13px',
+                          lineHeight: 1.5,
+                          color: isDark ? 'rgba(255,255,255,0.6)' : 'rgba(0,0,0,0.6)',
                           margin: 0,
-                          fontWeight: 400,
-                          opacity: 0.8
+                          fontWeight: 400
                         }}
                       >
                         {feature.description}

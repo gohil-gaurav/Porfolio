@@ -234,7 +234,7 @@ const SearchModal = ({ isOpen, onClose }: SearchModalProps): JSX.Element | null 
           maxWidth: '540px',
           background: isDark ? '#1a1a1a' : '#ffffff',
           border: `1px solid ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'}`,
-          borderRadius: '12px',
+          borderRadius: '0px', // Square border
           boxShadow: isDark
             ? '0 20px 60px rgba(0,0,0,0.5)'
             : '0 20px 60px rgba(0,0,0,0.15)',
@@ -456,7 +456,7 @@ const SearchModal = ({ isOpen, onClose }: SearchModalProps): JSX.Element | null 
             <kbd style={{ 
               padding: '2px 6px', 
               background: isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.06)', 
-              borderRadius: '4px',
+              borderRadius: '0px', // Square border
               border: `1px solid ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'}`,
               fontSize: '10px',
               fontWeight: 500
@@ -464,7 +464,7 @@ const SearchModal = ({ isOpen, onClose }: SearchModalProps): JSX.Element | null 
             <kbd style={{ 
               padding: '2px 6px', 
               background: isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.06)', 
-              borderRadius: '4px',
+              borderRadius: '0px', // Square border
               border: `1px solid ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'}`,
               fontSize: '10px',
               fontWeight: 500
@@ -475,7 +475,7 @@ const SearchModal = ({ isOpen, onClose }: SearchModalProps): JSX.Element | null 
             <kbd style={{ 
               padding: '2px 8px', 
               background: isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.06)', 
-              borderRadius: '4px',
+              borderRadius: '0px', // Square border
               border: `1px solid ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'}`,
               fontSize: '10px',
               fontWeight: 500
@@ -486,7 +486,7 @@ const SearchModal = ({ isOpen, onClose }: SearchModalProps): JSX.Element | null 
             <kbd style={{ 
               padding: '2px 6px', 
               background: isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.06)', 
-              borderRadius: '4px',
+              borderRadius: '0px', // Square border
               border: `1px solid ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'}`,
               fontSize: '9px',
               fontWeight: 500

@@ -132,7 +132,7 @@ const Projects = (): JSX.Element => {
             flexWrap: isMobile ? 'wrap' : 'nowrap', // Wrap on mobile
             gap: '2px',
             background: isDark ? 'rgba(255,255,255,0.03)' : 'rgba(0,0,0,0.03)',
-            borderRadius: '8px',
+            borderRadius: '0px', // Square border
             padding: '4px',
             border: `1px solid ${isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)'}`
           }}>
@@ -151,7 +151,7 @@ const Projects = (): JSX.Element => {
                     ? 'var(--color-text)' 
                     : (isDark ? 'rgba(255,255,255,0.6)' : 'rgba(0,0,0,0.6)'),
                   border: 'none',
-                  borderRadius: '8px',
+                  borderRadius: '0px', // Square border
                   cursor: 'pointer',
                   transition: 'all 0.2s ease',
                   textTransform: 'uppercase',
