@@ -52,6 +52,7 @@ export const projects: Project[] = [
     image: movieRecommendationImg,
     tags: ['ML']
   },
+
   {
     id: 3,
     filename: 'bank-system.py',

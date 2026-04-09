@@ -36,7 +36,7 @@ const PROJECT_IMAGES: Record<number, string> = {
 };
 
 const ProjectCard = ({ project, index, isDark, monoFont }: ProjectCardProps): JSX.Element => {
-  const { id, filename, title, description, techStack, githubUrl, liveUrl, status } = project;
+  const { id, title, description, techStack, githubUrl, liveUrl, status } = project;
   const navigate = useNavigate();
 
   const statusConfig: StatusConfig = STATUS_CONFIG[status] || STATUS_CONFIG['coming-soon'];

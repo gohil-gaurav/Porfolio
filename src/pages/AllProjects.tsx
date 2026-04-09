@@ -244,6 +244,195 @@ const AllProjects = (): JSX.Element => {
             No projects found for "{activeFilter}" category.
           </motion.div>
         )}
+
+        {/* AI Models Hub Section - Only show in AI/ML and All Work tabs */}
+        {(activeFilter === 'AI / ML' || activeFilter === 'All Work') && (
+          <motion.div
+            style={{
+              marginTop: '80px',
+              paddingTop: '40px',
+              borderTop: `1px solid ${isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)'}`,
+              maxWidth: '1000px',
+              margin: '80px auto 0',
+              paddingBottom: '80px'
+            }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+          >
+            {/* Section Header */}
+            <div style={{ marginBottom: '32px', textAlign: 'center' }}>
+              <h3 
+                style={{
+                  fontFamily: monoFont,
+                  fontSize: '24px',
+                  fontWeight: 600,
+                  color: 'var(--color-text)',
+                  marginBottom: '12px',
+                  letterSpacing: '-0.02em'
+                }}
+              >
+                AI Models Hub
+              </h3>
+              <p 
+                style={{
+                  fontSize: '15px',
+                  color: isDark ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.7)',
+                  maxWidth: '600px',
+                  margin: '0 auto 24px',
+                  lineHeight: 1.6
+                }}
+              >
+                A modular collection of machine learning systems including fraud detection, spam classification, and recommendation engines.
+              </p>
+              
+              {/* Explore Repository Button */}
+              <motion.a
+                href="https://github.com/gohil-gaurav/ai-models-hub"
+                target="_blank"
+                rel="noopener noreferrer"
+                whileHover={{ y: -2 }}
+                whileTap={{ scale: 0.98 }}
+                style={{
+                  fontFamily: monoFont,
+                  fontSize: '13px',
+                  padding: '12px 24px',
+                  background: isDark ? 'rgba(139, 92, 246, 0.1)' : 'rgba(139, 92, 246, 0.1)',
+                  color: '#8b5cf6',
+                  border: '1px solid rgba(139, 92, 246, 0.2)',
+                  borderRadius: '0',
+                  textDecoration: 'none',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  transition: 'all 0.2s ease',
+                  cursor: 'pointer'
+                }}
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                </svg>
+                Explore Repository
+              </motion.a>
+            </div>
+
+            {/* AI Models List */}
+            <div style={{ 
+              display: 'grid', 
+              gap: '16px',
+              maxWidth: '800px',
+              margin: '0 auto'
+            }}>
+              {[
+                {
+                  name: 'Fraud Detection System',
+                  tag: 'Classification',
+                  description: 'Machine learning model to detect fraudulent transactions using advanced algorithms',
+                  githubLink: 'https://github.com/gohil-gaurav/ai-models-hub/tree/main/fraud-detection'
+                },
+                {
+                  name: 'Spam Classifier',
+                  tag: 'NLP',
+                  description: 'Natural language processing model for email spam detection and filtering',
+                  githubLink: 'https://github.com/gohil-gaurav/ai-models-hub/tree/main/spam-classifier'
+                },
+                {
+                  name: 'Movie Recommendation System',
+                  tag: 'Recommender',
+                  description: 'Content-based recommendation engine using TF-IDF and cosine similarity',
+                  githubLink: 'https://github.com/gohil-gaurav/ai-models-hub/tree/main/movie-recommender'
+                }
+              ].map((model, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3, delay: index * 0.1 }}
+                  style={{
+                    padding: '24px',
+                    background: isDark ? 'rgba(255,255,255,0.02)' : 'rgba(0,0,0,0.02)',
+                    border: `1px solid ${isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)'}`,
+                    borderRadius: '0',
+                    transition: 'all 0.2s ease'
+                  }}
+                  whileHover={{
+                    background: isDark ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.04)',
+                    y: -2
+                  }}
+                >
+                  <div style={{ 
+                    display: 'flex', 
+                    justifyContent: 'space-between', 
+                    alignItems: 'flex-start',
+                    marginBottom: '12px'
+                  }}>
+                    <h4 style={{
+                      fontFamily: monoFont,
+                      fontSize: '16px',
+                      fontWeight: 600,
+                      color: 'var(--color-text)',
+                      margin: 0
+                    }}>
+                      {model.name}
+                    </h4>
+                    <span style={{
+                      fontFamily: monoFont,
+                      fontSize: '11px',
+                      padding: '4px 12px',
+                      background: isDark ? 'rgba(139, 92, 246, 0.1)' : 'rgba(139, 92, 246, 0.1)',
+                      color: '#8b5cf6',
+                      borderRadius: '0',
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.05em',
+                      fontWeight: 500
+                    }}>
+                      {model.tag}
+                    </span>
+                  </div>
+                  <p style={{
+                    fontSize: '14px',
+                    color: 'var(--color-text-secondary)',
+                    lineHeight: 1.6,
+                    margin: '0 0 16px 0'
+                  }}>
+                    {model.description}
+                  </p>
+                  <a
+                    href={model.githubLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                      fontFamily: monoFont,
+                      fontSize: '12px',
+                      color: 'var(--color-text-secondary)',
+                      textDecoration: 'none',
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '6px',
+                      transition: 'color 0.2s ease',
+                      padding: '6px 12px',
+                      border: `1px solid ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'}`,
+                      borderRadius: '0'
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.color = 'var(--color-text)';
+                      e.currentTarget.style.background = isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.color = 'var(--color-text-secondary)';
+                      e.currentTarget.style.background = 'transparent';
+                    }}
+                  >
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.30.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                    </svg>
+                    View Code
+                  </a>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+        )}
       </div>
     </div>
   );
