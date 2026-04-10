@@ -261,7 +261,7 @@ const AllProjects = (): JSX.Element => {
             transition={{ duration: 0.5, delay: 0.2 }}
           >
             {/* Section Header */}
-            <div style={{ marginBottom: '32px', textAlign: 'center' }}>
+            <div style={{ marginBottom: '32px', textAlign: 'left' }}>
               <h3 
                 style={{
                   fontFamily: monoFont,
@@ -279,7 +279,7 @@ const AllProjects = (): JSX.Element => {
                   fontSize: '15px',
                   color: isDark ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.7)',
                   maxWidth: '600px',
-                  margin: '0 auto 24px',
+                  margin: '0 0 24px 0',
                   lineHeight: 1.6
                 }}
               >
@@ -316,12 +316,12 @@ const AllProjects = (): JSX.Element => {
               </motion.a>
             </div>
 
-            {/* AI Models List */}
+            {/* AI Models List - 2 Column Grid */}
             <div style={{ 
               display: 'grid', 
+              gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr',
               gap: '16px',
-              maxWidth: '800px',
-              margin: '0 auto'
+              maxWidth: '1000px'
             }}>
               {[
                 {
@@ -337,10 +337,10 @@ const AllProjects = (): JSX.Element => {
                   githubLink: 'https://github.com/gohil-gaurav/ai-models-hub/tree/main/spam-classifier'
                 },
                 {
-                  name: 'Movie Recommendation System',
-                  tag: 'Recommender',
-                  description: 'Content-based recommendation engine using TF-IDF and cosine similarity',
-                  githubLink: 'https://github.com/gohil-gaurav/ai-models-hub/tree/main/movie-recommender'
+                  name: 'Customer Churn Prediction',
+                  tag: 'Random Forest',
+                  description: 'Machine learning model to predict customer churn using behavioral data and analytics',
+                  githubLink: 'https://github.com/gohil-gaurav/ml-projects-portfolio/tree/main/Customer%20Churn%20Prediction'
                 }
               ].map((model, index) => (
                 <motion.div
