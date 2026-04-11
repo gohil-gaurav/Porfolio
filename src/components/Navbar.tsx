@@ -37,7 +37,6 @@ const Navbar = ({ onSearchClick }: NavbarProps): JSX.Element => {
 
   const navLinks: NavLink[] = [
     { id: 'projects', label: 'Work' },
-    { id: 'blog', label: 'Blog' },
     { id: 'about', label: 'About' },
     { id: 'contact', label: 'Contact' }
   ];
