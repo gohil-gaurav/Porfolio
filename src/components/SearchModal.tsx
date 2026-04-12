@@ -16,7 +16,7 @@ interface SearchModalProps {
 interface SearchResult {
   id: string;
   title: string;
-  type: 'section' | 'project' | 'blog' | 'social';
+  type: 'section' | 'project' | 'social';
   description?: string;
   action: () => void;
 }
@@ -38,16 +38,6 @@ const SearchModal = ({ isOpen, onClose }: SearchModalProps): JSX.Element | null 
       description: 'View all my projects',
       action: () => {
         document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' });
-        onClose();
-      }
-    },
-    {
-      id: 'blog',
-      title: 'Blog',
-      type: 'section',
-      description: 'Read my blog posts',
-      action: () => {
-        document.getElementById('blog')?.scrollIntoView({ behavior: 'smooth' });
         onClose();
       }
     },
@@ -120,20 +110,7 @@ const SearchModal = ({ isOpen, onClose }: SearchModalProps): JSX.Element | null 
     }
   ];
 
-  const blogItems: SearchResult[] = [
-    {
-      id: 'blog-data-science',
-      title: 'What is Data Science?',
-      type: 'blog',
-      description: 'A beginner-friendly guide to understanding data science',
-      action: () => {
-        window.open('https://www.quora.com/profile/Gaurav-Gohil-39/What-is-Data-Science-A-Simple-Explanation-for-Beginners', '_blank');
-        onClose();
-      }
-    }
-  ];
-
-  const allItems: SearchResult[] = [...sections, ...projectItems, ...socialItems, ...blogItems];
+  const allItems: SearchResult[] = [...sections, ...projectItems, ...socialItems];
 
   // Filter results based on query
   const filterItems = (items: SearchResult[]) => 
@@ -147,9 +124,8 @@ const SearchModal = ({ isOpen, onClose }: SearchModalProps): JSX.Element | null 
   const filteredSections = filterItems(sections);
   const filteredProjects = filterItems(projectItems);
   const filteredSocial = filterItems(socialItems);
-  const filteredBlog = filterItems(blogItems);
 
-  const results = [...filteredSections, ...filteredProjects, ...filteredSocial, ...filteredBlog];
+  const results = [...filteredSections, ...filteredProjects, ...filteredSocial];
   const hasResults = results.length > 0;
 
   // Reset state when modal opens/closes
@@ -203,8 +179,6 @@ const SearchModal = ({ isOpen, onClose }: SearchModalProps): JSX.Element | null 
         return '📍';
       case 'project':
         return '💼';
-      case 'blog':
-        return '📝';
       case 'social':
         return '🔗';
       default:
@@ -247,7 +221,7 @@ const SearchModal = ({ isOpen, onClose }: SearchModalProps): JSX.Element | null 
         <div style={{ padding: '16px 18px', borderBottom: `1px solid ${isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)'}` }}>
           <input
             type="text"
-            placeholder="Search projects, blog, sections, social..."
+            placeholder="Search projects, sections, social..."
             value={query}
             onChange={(e: ChangeEvent<HTMLInputElement>) => setQuery(e.target.value)}
             onKeyDown={(e: KeyboardEvent<HTMLInputElement>) => {
@@ -365,46 +339,6 @@ const SearchModal = ({ isOpen, onClose }: SearchModalProps): JSX.Element | null 
                     Social
                   </div>
                   {filteredSocial.map((result, index) => {
-                    const globalIndex = results.indexOf(result);
-                    return (
-                      <div
-                        key={result.id}
-                        onClick={result.action}
-                        style={{
-                          padding: '10px 18px',
-                          cursor: 'pointer',
-                          background: selectedIndex === globalIndex
-                            ? (isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.04)')
-                            : 'transparent',
-                          borderLeft: selectedIndex === globalIndex
-                            ? `3px solid ${isDark ? '#ffffff' : '#000000'}`
-                            : '3px solid transparent',
-                          transition: 'all 0.15s ease',
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: '10px'
-                        }}
-                        onMouseEnter={() => setSelectedIndex(globalIndex)}
-                      >
-                        <span style={{ fontSize: '18px' }}>{getTypeIcon(result.type)}</span>
-                        <div style={{ flex: 1 }}>
-                          <div style={{ fontFamily: monoFont, fontSize: '13px', fontWeight: 500, color: isDark ? '#ffffff' : '#000000' }}>
-                            {result.title}
-                          </div>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              )}
-
-              {/* Blog */}
-              {filteredBlog.length > 0 && (
-                <div>
-                  <div style={{ padding: '10px 18px 6px', fontFamily: monoFont, fontSize: '11px', fontWeight: 600, color: isDark ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.4)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                    Blog
-                  </div>
-                  {filteredBlog.map((result, index) => {
                     const globalIndex = results.indexOf(result);
                     return (
                       <div

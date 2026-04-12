@@ -5,35 +5,12 @@
 
 import { useContext, useState, useEffect } from 'react';
 import { motion, Variants } from 'framer-motion';
+import { FaLinkedinIn } from 'react-icons/fa';
 import { ThemeContext } from '../App';
 import { trackResumeDownload, trackSocialClick } from '../utils/analytics';
+import { getSimpleIconUrl } from '../utils/simpleIcons';
 import avatarImg from '../assets/images/avatar.jpeg';
 import resumePdf from '../assets/images/project/Gaurav_Gohil_Resume.pdf';
-
-interface TerminalColors {
-  close: string;
-  minimize: string;
-  maximize: string;
-}
-
-interface TerminalStyle {
-  bg: string;
-  headerBg: string;
-  border: string;
-  text: string;
-  muted: string;
-  prompt: string;
-  command: string;
-  output: string;
-  shadow: string;
-  controls: TerminalColors;
-}
-
-interface TerminalLine {
-  command: string;
-  output?: string | string[];
-  cursor?: boolean;
-}
 
 interface LanyardData {
   discord_status: 'online' | 'idle' | 'dnd' | 'offline';
@@ -63,25 +40,10 @@ interface LanyardResponse {
   data: LanyardData;
 }
 
-// Utility function to format last seen time
-const formatLastSeen = (timestamp: number): string => {
-  const now = Date.now();
-  const diff = now - timestamp;
-  const minutes = Math.floor(diff / 60000);
-  const hours = Math.floor(diff / 3600000);
-  const days = Math.floor(diff / 86400000);
-
-  if (minutes < 1) return 'just now';
-  if (minutes < 60) return `${minutes}m ago`;
-  if (hours < 24) return `${hours}h ago`;
-  return `${days}d ago`;
-};
-
 const Hero = (): JSX.Element => {
   const { theme } = useContext(ThemeContext);
   const isDark: boolean = theme === 'dark';
   const [discordStatus, setDiscordStatus] = useState<string>('offline');
-  const [lastSeenTime, setLastSeenTime] = useState<number>(Date.now());
   const [showTooltip, setShowTooltip] = useState<boolean>(false);
   const [isClient, setIsClient] = useState<boolean>(false);
 
@@ -114,27 +76,6 @@ const Hero = (): JSX.Element => {
         if (data.success && data.data.discord_status) {
           const status = data.data.discord_status;
           setDiscordStatus(status);
-          
-          // When user is online/idle/dnd, store current timestamp
-          if (status === 'online' || status === 'idle' || status === 'dnd') {
-            const currentTime = Date.now();
-            setLastSeenTime(currentTime);
-            localStorage.setItem('discord_last_seen', currentTime.toString());
-          } else if (status === 'offline') {
-            // When offline, try to get timestamp from Lanyard KV first (global for all users)
-            if (data.data.kv && data.data.kv.last_seen) {
-              const kvTime = parseInt(data.data.kv.last_seen);
-              setLastSeenTime(kvTime);
-              // Also store in localStorage as backup
-              localStorage.setItem('discord_last_seen', kvTime.toString());
-            } else {
-              // Fallback to localStorage if KV not available
-              const stored = localStorage.getItem('discord_last_seen');
-              if (stored) {
-                setLastSeenTime(parseInt(stored));
-              }
-            }
-          }
         }
       } catch (error) {
         console.error('Failed to fetch Discord status:', error);
@@ -150,18 +91,6 @@ const Hero = (): JSX.Element => {
 
     return () => clearInterval(intervalId);
   }, [isClient]);
-
-  // Force re-render every minute to update "last active" display
-  useEffect(() => {
-    if (discordStatus === 'offline') {
-      const updateInterval = setInterval(() => {
-        // Force component to re-render by updating state
-        setLastSeenTime(prev => prev);
-      }, 60000); // Update every minute
-
-      return () => clearInterval(updateInterval);
-    }
-  }, [discordStatus]);
 
   // Get status dot color based on Discord status
   const getStatusColor = (status: string): string => {
@@ -194,24 +123,6 @@ const Hero = (): JSX.Element => {
     }
   };
 
-  // Terminal styling - pure black, minimal
-  const terminal: TerminalStyle = {
-    bg: isDark ? '#0a0a0a' : '#ffffff',
-    headerBg: isDark ? '#111111' : '#f8f8f8',
-    border: isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.1)',
-    text: isDark ? '#e5e5e5' : '#1a1a1a',
-    muted: isDark ? 'rgba(255, 255, 255, 0.4)' : 'rgba(0, 0, 0, 0.4)',
-    prompt: isDark ? '#6ee7b7' : '#555555',
-    command: isDark ? '#f5f5f5' : '#1a1a1a',
-    output: isDark ? 'rgba(255, 255, 255, 0.5)' : 'rgba(0, 0, 0, 0.55)',
-    shadow: isDark 
-      ? '0 4px 24px rgba(0, 0, 0, 0.3)'
-      : '0 4px 20px rgba(0, 0, 0, 0.08)',
-    controls: isDark 
-      ? { close: '#3a3a3a', minimize: '#3a3a3a', maximize: '#3a3a3a' }
-      : { close: '#d4d4d4', minimize: '#d4d4d4', maximize: '#d4d4d4' }
-  };
-
   const containerVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
@@ -229,14 +140,6 @@ const Hero = (): JSX.Element => {
     }
   };
 
-  // Terminal content
-  const terminalLines: TerminalLine[] = [
-    { command: 'whoami', output: 'Gaurav' },
-    { command: 'cat skills.txt', output: ['Python, Pandas, NumPy', 'Django, React, Git'] },
-    { command: 'echo $STATUS', output: 'Open to opportunities' },
-    { command: '', cursor: true }
-  ];
-
   return (
     <section 
       className="min-h-screen flex items-center"
@@ -247,10 +150,9 @@ const Hero = (): JSX.Element => {
     >
       <div className="container">
         <div 
-          className="grid grid-cols-1 lg:grid-cols-2 items-start"
+          className="w-full"
           style={{ 
-            gap: '80px',
-            padding: '60px 0'
+            padding: '72px 0'
           }}
         >
           {/* Left Side - Text Content */}
@@ -258,8 +160,8 @@ const Hero = (): JSX.Element => {
             variants={containerVariants}
             initial="hidden"
             animate="visible"
-            className="mx-auto lg:mx-0"
-            style={{ maxWidth: '520px' }}
+            className="w-full"
+            style={{ maxWidth: '100%' }}
           >
             {/* Profile Picture */}
             <motion.div
@@ -392,7 +294,7 @@ const Hero = (): JSX.Element => {
               variants={itemVariants}
               style={{ 
                 fontFamily: monoFont,
-                fontSize: '16px',
+                fontSize: 'clamp(18px, 2vw, 24px)',
                 fontWeight: 400,
                 color: isDark ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.7)',
                 marginBottom: '12px',
@@ -407,7 +309,7 @@ const Hero = (): JSX.Element => {
               variants={itemVariants}
               style={{ 
                 fontFamily: monoFont,
-                fontSize: '56px',
+                fontSize: 'clamp(50px, 6.2vw, 75px)',
                 fontWeight: 700,
                 color: 'var(--color-text)',
                 marginBottom: '16px',
@@ -423,7 +325,7 @@ const Hero = (): JSX.Element => {
               variants={itemVariants}
               style={{ 
                 fontFamily: monoFont,
-                fontSize: '24px',
+                fontSize: 'clamp(26px, 3.2vw, 42px)',
                 fontWeight: 600,
                 color: 'var(--color-text)',
                 marginBottom: '24px',
@@ -439,11 +341,11 @@ const Hero = (): JSX.Element => {
             <motion.div 
               variants={itemVariants}
               style={{ 
-                fontSize: '15px',
+                fontSize: '18px',
                 lineHeight: 1.8,
                 color: 'var(--color-text-muted)',
                 marginBottom: '32px',
-                maxWidth: '520px'
+                maxWidth: '100%'
               }}
             >
               <p style={{ marginBottom: '16px' }}>
@@ -639,9 +541,19 @@ const Hero = (): JSX.Element => {
                   e.currentTarget.style.filter = 'brightness(1.5)';
                 }}
               >
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-                </svg>
+                <img
+                  src={getSimpleIconUrl('X')}
+                  alt="X"
+                  width="24"
+                  height="24"
+                  style={{ width: '24px', height: '24px' }}
+                  loading="lazy"
+                  decoding="async"
+                  onError={(event) => {
+                    event.currentTarget.onerror = null;
+                    event.currentTarget.src = getSimpleIconUrl('simpleicons', true);
+                  }}
+                />
               </motion.a>
 
               {/* LinkedIn */}
@@ -665,10 +577,15 @@ const Hero = (): JSX.Element => {
                   e.currentTarget.style.filter = 'brightness(1.5)';
                 }}
               >
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/>
-                  <circle cx="4" cy="4" r="2"/>
-                </svg>
+                <FaLinkedinIn
+                  aria-hidden="true"
+                  size={26}
+                  style={{
+                    width: '26px',
+                    height: '26px',
+                    color: isDark ? '#ffffff' : '#000000'
+                  }}
+                />
               </motion.a>
 
               {/* GitHub */}
@@ -692,9 +609,19 @@ const Hero = (): JSX.Element => {
                   e.currentTarget.style.filter = 'brightness(1.5)';
                 }}
               >
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-                </svg>
+                <img
+                  src={getSimpleIconUrl('GitHub')}
+                  alt="GitHub"
+                  width="24"
+                  height="24"
+                  style={{ width: '24px', height: '24px' }}
+                  loading="lazy"
+                  decoding="async"
+                  onError={(event) => {
+                    event.currentTarget.onerror = null;
+                    event.currentTarget.src = getSimpleIconUrl('simpleicons', true);
+                  }}
+                />
               </motion.a>
             </motion.div>
 
@@ -727,127 +654,6 @@ const Hero = (): JSX.Element => {
                 Available for opportunities
               </span>
             </motion.div>
-          </motion.div>
-
-          {/* Right Side - Terminal (Hidden on Mobile) */}
-          <motion.div 
-            className="hidden lg:flex justify-center lg:justify-end"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-          >
-            <div 
-              style={{
-                background: terminal.bg,
-                border: `1px solid ${terminal.border}`,
-                borderRadius: '0',
-                boxShadow: terminal.shadow,
-                overflow: 'hidden',
-                width: '380px',
-                height: '400px',
-                display: 'flex',
-                flexDirection: 'column'
-              }}
-            >
-              {/* Terminal Header */}
-              <div 
-                style={{ 
-                  display: 'flex',
-                  alignItems: 'center',
-                  padding: '14px 16px',
-                  background: terminal.headerBg,
-                  borderBottom: `1px solid ${terminal.border}`
-                }}
-              >
-                {/* Window Controls */}
-                <div style={{ display: 'flex', gap: '6px' }}>
-                  <span style={{ 
-                    width: '10px', 
-                    height: '10px', 
-                    borderRadius: '50%',
-                    background: terminal.controls.close 
-                  }} />
-                  <span style={{ 
-                    width: '10px', 
-                    height: '10px', 
-                    borderRadius: '50%',
-                    background: terminal.controls.minimize 
-                  }} />
-                  <span style={{ 
-                    width: '10px', 
-                    height: '10px', 
-                    borderRadius: '50%',
-                    background: terminal.controls.maximize 
-                  }} />
-                </div>
-                {/* Title */}
-                <span 
-                  style={{ 
-                    flex: 1,
-                    textAlign: 'center',
-                    fontFamily: monoFont,
-                    fontSize: '11px',
-                    color: isDark ? '#ffffff' : '#000000',
-                    letterSpacing: '0.05em'
-                  }}
-                >
-                  terminal
-                </span>
-                <div style={{ width: '42px' }} />
-              </div>
-
-              {/* Terminal Body */}
-              <div 
-                style={{ 
-                  flex: 1,
-                  padding: '24px',
-                  fontFamily: monoFont,
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'space-around'
-                }}
-              >
-                {terminalLines.map((line: TerminalLine, index: number) => (
-                  <div key={index}>
-                    {/* Command */}
-                    <div style={{ 
-                      display: 'flex', 
-                      alignItems: 'center', 
-                      gap: '8px',
-                      fontSize: '13px'
-                    }}>
-                      <span style={{ color: terminal.prompt }}>$</span>
-                      <span style={{ color: terminal.command }}>{line.command}</span>
-                      {line.cursor && (
-                        <span 
-                          style={{ 
-                            color: terminal.command,
-                            animation: 'blink 1s step-end infinite'
-                          }}
-                        >_</span>
-                      )}
-                    </div>
-                    {/* Output */}
-                    {line.output && (
-                      <div 
-                        style={{ 
-                          marginTop: '6px',
-                          marginLeft: '20px',
-                          fontSize: '13px',
-                          color: terminal.output,
-                          lineHeight: 1.6
-                        }}
-                      >
-                        {Array.isArray(line.output) 
-                          ? line.output.map((text: string, i: number) => <div key={i}>{text}</div>)
-                          : line.output
-                        }
-                      </div>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </div>
           </motion.div>
         </div>
       </div>

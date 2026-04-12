@@ -32,7 +32,7 @@ const AllProjects = (): JSX.Element => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
     };
-    
+
     checkMobile();
     window.addEventListener('resize', checkMobile);
     
@@ -244,6 +244,7 @@ const AllProjects = (): JSX.Element => {
             No projects found for "{activeFilter}" category.
           </motion.div>
         )}
+
       </div>
     </div>
   );
